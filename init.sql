@@ -37,7 +37,9 @@ CREATE TABLE request
     create_date   TIMESTAMP    NOT NULL,
     complete_date TIMESTAMP    NOT NULL,
     resource_id   INTEGER      NOT NULL,
-    FOREIGN KEY (resource_id) REFERENCES resource (id) ON UPDATE CASCADE ON DELETE RESTRICT
+    role_id       INTEGER      NOT NULL,
+    FOREIGN KEY (resource_id) REFERENCES resource (id) ON UPDATE CASCADE ON DELETE RESTRICT,
+    FOREIGN KEY (role_id) REFERENCES role (id) ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
 CREATE TABLE "user"
@@ -48,6 +50,7 @@ CREATE TABLE "user"
     name           VARCHAR(40),
     surname        VARCHAR(40),
     middle_name    VARCHAR(40),
+    subdivision    VARCHAR(80),
     service_number INTEGER UNIQUE,
     role_id        INTEGER,
     FOREIGN KEY (role_id) REFERENCES role (id) ON UPDATE CASCADE ON DELETE RESTRICT
