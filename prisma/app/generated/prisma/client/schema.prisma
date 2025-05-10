@@ -1,0 +1,84 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "app/generated/prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model access {
+  id          Int     @id @default(autoincrement())
+  level       Int     @unique
+  description String? @db.VarChar(255)
+  role        role[]
+}
+
+model log {
+  id          Int      @id @default(autoincrement())
+  account_id  Int
+  action      String   @db.VarChar(200)
+  action_time DateTime @db.Timestamp(6)
+  user        user     @relation(fields: [account_id], references: [id], onDelete: Cascade)
+}
+
+model request {
+  id            Int            @id @default(autoincrement())
+  status        String         @db.VarChar(255)
+  create_date   DateTime       @db.Timestamp(6)
+  complete_date DateTime       @db.Timestamp(6)
+  resource_id   Int
+  resource      resource       @relation(fields: [resource_id], references: [id])
+  user_request  user_request[]
+}
+
+model resource {
+  id            Int             @id @default(autoincrement())
+  name          String          @db.VarChar(100)
+  description   String          @db.VarChar(255)
+  request       request[]
+  resource_role resource_role[]
+}
+
+model resource_role {
+  role_id      Int
+  resources_id Int
+  resource     resource @relation(fields: [resources_id], references: [id])
+  role         role     @relation(fields: [role_id], references: [id])
+
+  @@id([role_id, resources_id])
+}
+
+model role {
+  id            Int             @id @default(autoincrement())
+  name          String          @unique @db.VarChar(100)
+  description   String          @db.VarChar(255)
+  access_id     Int
+  resource_role resource_role[]
+  access        access          @relation(fields: [access_id], references: [id])
+  user          user[]
+}
+
+model user {
+  id             Int            @id @default(autoincrement())
+  email          String         @unique @db.VarChar(255)
+  password       String         @db.VarChar(100)
+  name           String?        @db.VarChar(40)
+  surname        String?        @db.VarChar(40)
+  middle_name    String?        @db.VarChar(40)
+  service_number Int?           @unique
+  role_id        Int?
+  log            log[]
+  role           role?          @relation(fields: [role_id], references: [id], onDelete: Restrict)
+  user_request   user_request[]
+}
+
+model user_request {
+  user_id    Int
+  request_id Int
+  request    request @relation(fields: [request_id], references: [id], onDelete: Cascade)
+  user       user    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@id([user_id, request_id])
+}

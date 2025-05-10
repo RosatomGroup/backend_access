@@ -71,10 +71,11 @@ export class UserService {
           .filter(Boolean)
           .join(' '),
         rang: updatedUser.role_id || 'Не указана',
-        subdivision: updatedUser.subdivision || 'Не указано',
+        // subdivision: updatedUser.subdivision || 'Не указано',
         address: updatedUser.email,
       };
     } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       throw new Error(`Failed to update user: ${error.message}`);
     }
   }
@@ -86,7 +87,7 @@ export class UserService {
       key: user.id,
       name: `${user.surname} ${user.name} ${user.middle_name || ''}`.trim(),
       rang: user.role_id?.toString() || 'Не указана',
-      subdivision: user.subdivision || 'Не указано',
+      subdivision: 'Не указано', //user.subdivision || 'Не указано'
       address: user.email,
     }));
   }

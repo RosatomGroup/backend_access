@@ -7,6 +7,6 @@ export class RequestController {
 
   @Get(':id')
   async getOwnRequests(@Param('id', ParseIntPipe) id: number) {
-    this.requestService.getOwnRequest(id);
+    await this.requestService.getOwnRequests(id);
   }
 }
