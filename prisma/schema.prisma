@@ -2,12 +2,11 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// prisma.seed = { default: "ts-node prisma/seed.ts" }
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-}
-prisma.seed = {
-  default: "ts-node prisma/seed.ts"
 }
 
 model access {
@@ -68,6 +67,7 @@ model user {
   password       String         @db.VarChar(100)
   name           String?        @db.VarChar(40)
   surname        String?        @db.VarChar(40)
+  subdivision    String?        @db.VarChar(80)
   middle_name    String?        @db.VarChar(40)
   service_number Int?           @unique
   role_id        Int?

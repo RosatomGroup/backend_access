@@ -17,9 +17,4 @@ export class AuthController {
     }
     return this.authService.login(user);
   }
-
-  // @Post('/logout')
-  // async logout(@Request() req) {
-  //     return req.logout();
-  // }
 }

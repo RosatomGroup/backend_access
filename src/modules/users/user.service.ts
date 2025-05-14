@@ -80,6 +80,8 @@ export class UserService {
     }
   }
 
+
+  
   async getUsersForManagement(): Promise<ManagementUserDto[]> {
     const users = await this.prisma.user.findMany();
 
@@ -91,6 +93,9 @@ export class UserService {
       address: user.email,
     }));
   }
+
+
+
 
   async createUser(createUserDto: CreateUserDto): Promise<ReplyCreateUserDto> {
     const existingUser = await this.findByEmail(createUserDto.email);
@@ -116,11 +121,18 @@ export class UserService {
     return userReplyDto;
   }
 
+
+
+
+
   async findByEmail(email: string) {
     return this.prisma.user.findUnique({
       where: { email },
     });
   }
+
+
+
 
   private async findById(id: number) {
     const user = await this.prisma.user.findUnique({
