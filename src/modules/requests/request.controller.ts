@@ -28,4 +28,19 @@ export class RequestController {
   ) {
     return this.requestService.updateRequestStatus(id, status);
   }
+
+  @Get('systems')
+  async getSystems() {
+    return this.requestService.getSystems();
+  }
+
+  @Get('roles')
+  async getRoles() {
+    return this.requestService.getRoles();
+  }
+
+  @Get('system/:systemId/roles')
+  async getRolesBySystem(@Param('systemId', ParseIntPipe) systemId: number) {
+    return this.requestService.getRolesBySystem(systemId);
+  }
 }

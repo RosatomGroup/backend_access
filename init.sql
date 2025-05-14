@@ -42,6 +42,21 @@ CREATE TABLE request
     FOREIGN KEY (role_id) REFERENCES role (id) ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
+-- ALTER TABLE request ADD COLUMN request_type VARCHAR(50) NOT NULL;
+DROP TABLE request;
+CREATE TABLE request
+(
+    id            SERIAL PRIMARY KEY,
+    status        VARCHAR(50) NOT NULL,
+    request_type  VARCHAR(50) NOT NULL,
+    create_date   TIMESTAMP    NOT NULL,
+    complete_date TIMESTAMP,
+    resource_id   INTEGER      NOT NULL,
+    role_id       INTEGER,
+    FOREIGN KEY (resource_id) REFERENCES resource (id) ON UPDATE CASCADE ON DELETE RESTRICT,
+    FOREIGN KEY (role_id) REFERENCES role (id) ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
 CREATE TABLE "user"
 (
     id             SERIAL PRIMARY KEY,

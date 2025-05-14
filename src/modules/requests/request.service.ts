@@ -1,177 +1,310 @@
-// import { OwnRequestDto } from './request.dto';
-// import { PrismaService } from '../prisma/prisma.service';
-
-// export class RequestService {
-//   constructor(private readonly prisma: PrismaService) {}
-
-//   async getOwnRequests(userId: number): Promise<OwnRequestDto[]> {
-//     const requestDb = await this.prisma.request.findMany({
-//       where: { id: userId },
-//       include: {
-//         resource: true,
-//         // role: true,
-//       },
-//     });
-
-//     return requestDb.map((request) => ({
-//       id: request.id,
-//       requester: request.status, //requester
-//       createDate: request.create_date,
-//       status: request.status,
-//       resourceName: request.resource.name,
-//       roleName: 'role_name',
-//     }));
-//   }
-// }
-
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateRequestDto, RequestDto, OwnRequestDto } from './request.dto';
+import { role, user, resource, request } from '@prisma/client';
+
+type RequestWithRelations = request & {
+  resource: resource;
+  role?: role | null;
+  user_request: Array<{
+    user: user;
+  }>;
+};
 
 @Injectable()
 export class RequestService {
   constructor(private readonly prisma: PrismaService) {}
 
+  /**
+   * Создает новую заявку в системе
+   * @param createRequestDto DTO с данными для создания заявки
+   * @returns Созданная заявка
+   * @throws NotFoundException если связанные сущности не найдены
+   */
   async createRequest(createRequestDto: CreateRequestDto): Promise<RequestDto> {
-    const user = await this.prisma.user.findUnique({
-      where: { id: createRequestDto.userId },
-    });
-
-    if (!user) {
-      throw new Error('User not found');
-    }
-
-    const resource = await this.prisma.resource.findUnique({
-      where: { id: createRequestDto.resourceId },
-    });
-
-    if (!resource) {
-      throw new Error('Resource not found');
-    }
-
-    let role;
-    if (createRequestDto.roleId) {
-      role = await this.prisma.role.findUnique({
-        where: { id: createRequestDto.roleId },
+    try {
+      // 1. Проверяем существование пользователя
+      const userRecord: user | null = await this.prisma.user.findUnique({
+        where: { id: createRequestDto.userId },
       });
-      if (!role) {
-        throw new Error('Role not found');
-      }
-    }
 
-    const requestData = {
-      status: 'в работе',
-      request_type: createRequestDto.requestSubject,
-      create_date: new Date(),
-      complete_date: new Date(),
-      resource: {
-        connect: { id: createRequestDto.resourceId }
-      },
-      user_request: {
-        create: {
-          user: {
-            connect: { id: createRequestDto.userId }
-          }
+      if (!userRecord) {
+        throw new NotFoundException(
+          `Пользователь с ID ${createRequestDto.userId} не найден`
+        );
+      }
+
+      // 2. Проверяем существование ресурса
+      const resourceRecord: resource | null = await this.prisma.resource.findUnique({
+        where: { id: createRequestDto.resourceId },
+      });
+
+      if (!resourceRecord) {
+        throw new NotFoundException(
+          `Ресурс с ID ${createRequestDto.resourceId} не найден`
+        );
+      }
+
+      // 3. Проверяем существование роли (если указана)
+      let roleRecord: role | null = null;
+      if (createRequestDto.roleId) {
+        roleRecord = await this.prisma.role.findUnique({
+          where: { id: createRequestDto.roleId },
+        });
+
+        if (!roleRecord) {
+          throw new NotFoundException(
+            `Роль с ID ${createRequestDto.roleId} не найдена`
+          );
         }
       }
-    };
 
-    if (createRequestDto.roleId) {
-      requestData['role'] = {
-        connect: { id: createRequestDto.roleId }
-      };
-    }
-
-    const request = await this.prisma.request.create({
-      data: requestData,
-      include: {
-        resource: true,
-        user_request: {
-          include: {
-            user: true
-          }
+      // 4. Создаем заявку
+      const createdRequest: RequestWithRelations = await this.prisma.request.create({
+        data: {
+          status: 'в работе',
+          request_type: createRequestDto.requestSubject,
+          create_date: new Date(),
+          complete_date: null,
+          resource_id: createRequestDto.resourceId,
+          role_id: createRequestDto.roleId || null,
+          user_request: {
+            create: {
+              user_id: createRequestDto.userId,
+            },
+          },
         },
-        role: true
-      }
-    });
-
-    return {
-      id: request.id,
-      name: `${user.surname} ${user.name} ${user.middle_name || ''}`.trim(),
-      requestSubject: request.request_type,
-      role: request.role?.description || 'Не указана',
-      status: request.status,
-      system: request.resource.name,
-      submissionTime: request.create_date.toISOString(),
-      email: createRequestDto.email
-    };
-  }
-
-  async getOwnRequests(userId: number): Promise<OwnRequestDto[]> {
-    const requests = await this.prisma.request.findMany({
-      where: {
-        user_request: {
-          some: {
-            user_id: userId
-          }
-        }
-      },
-      include: {
-        resource: true,
-        user_request: {
-          include: {
-            user: true
-          }
+        include: {
+          resource: true,
+          role: true,
+          user_request: {
+            include: {
+              user: true,
+            },
+          },
         },
-        role: true
-      }
-    });
+      });
 
-    return requests.map((request) => ({
-      id: request.id,
-      requester: `${request.user_request[0].user.surname} ${request.user_request[0].user.name}`,
-      createDate: request.create_date,
-      status: request.status,
-      resourceName: request.resource.name,
-      roleName: request.role?.description || 'Не указана'
-    }));
-  }
+      // 5. Формируем полное имя пользователя
+      const userFromRequest = createdRequest.user_request[0]?.user;
+      const userNameParts = [
+        userFromRequest?.surname,
+        userFromRequest?.name,
+        userFromRequest?.middle_name,
+      ].filter((part): part is string => !!part);
 
-  async getAllOutgoingRequests(): Promise<RequestDto[]> {
-    const requests = await this.prisma.request.findMany({
-      include: {
-        resource: true,
-        user_request: {
-          include: {
-            user: true
-          }
-        },
-        role: true
-      },
-      orderBy: {
-        create_date: 'desc'
-      }
-    });
+      const fullName = userNameParts.join(' ').trim() || 'Неизвестный пользователь';
 
-    return requests.map((request) => {
-      const user = request.user_request[0]?.user;
+      // 6. Формируем ответ
       return {
-        id: request.id,
-        name: user ? `${user.surname} ${user.name} ${user.middle_name || ''}`.trim() : 'Unknown',
-        requestSubject: request.request_type,
-        role: request.role?.description || 'Не указана',
-        status: request.status,
-        system: request.resource.name,
-        submissionTime: request.create_date.toISOString(),
-        email: user?.email || ''
+        id: createdRequest.id,
+        name: fullName,
+        requestSubject: createdRequest.request_type,
+        role: createdRequest.role?.description || 'Не указана',
+        status: createdRequest.status,
+        system: createdRequest.resource.name,
+        submissionTime: createdRequest.create_date.toISOString(),
+        email: createRequestDto.email,
       };
-    });
+    } catch (error) {
+      console.error('Ошибка при создании заявки:', error);
+      throw new Error(
+        error instanceof NotFoundException
+          ? error.message
+          : 'Не удалось создать заявку'
+      );
+    }
   }
 
-  async updateRequestStatus(id: number, status: string) {
-    return this.prisma.request.update({
-      where: { id },
-      data: { status }
-    });
+  /**
+   * Получает заявки конкретного пользователя
+   * @param userId ID пользователя
+   * @returns Массив заявок пользователя
+   */
+  async getOwnRequests(userId: number): Promise<OwnRequestDto[]> {
+    try {
+      const requests = await this.prisma.request.findMany({
+        where: {
+          user_request: {
+            some: {
+              user_id: userId,
+            },
+          },
+        },
+        include: {
+          resource: true,
+          role: true,
+          user_request: {
+            include: {
+              user: true,
+            },
+          },
+        },
+        orderBy: {
+          create_date: 'desc',
+        },
+      });
+
+      return requests.map((req) => {
+        const userData = req.user_request[0]?.user;
+        const requesterName = [
+          userData?.surname,
+          userData?.name,
+        ]
+          .filter((part): part is string => !!part)
+          .join(' ')
+          .trim();
+
+        return {
+          id: req.id,
+          requester: requesterName || 'Неизвестный пользователь',
+          createDate: req.create_date,
+          status: req.status,
+          resourceName: req.resource.name,
+          roleName: req.role?.description || 'Не указана',
+        };
+      });
+    } catch (error) {
+      console.error('Ошибка при получении заявок пользователя:', error);
+      throw new Error('Не удалось получить заявки пользователя');
+    }
+  }
+
+  /**
+   * Получает все исходящие заявки
+   * @returns Массив всех заявок
+   */
+  async getAllOutgoingRequests(): Promise<RequestDto[]> {
+    try {
+      const requests = await this.prisma.request.findMany({
+        include: {
+          resource: true,
+          role: true,
+          user_request: {
+            include: {
+              user: true,
+            },
+          },
+        },
+        orderBy: {
+          create_date: 'desc',
+        },
+      });
+
+      return requests.map((req) => {
+        const userData = req.user_request[0]?.user;
+        const userNameParts = [
+          userData?.surname,
+          userData?.name,
+          userData?.middle_name,
+        ].filter((part): part is string => !!part);
+
+        const fullName = userNameParts.join(' ').trim() || 'Неизвестный пользователь';
+
+        return {
+          id: req.id,
+          name: fullName,
+          requestSubject: req.request_type,
+          role: req.role?.description || 'Не указана',
+          status: req.status,
+          system: req.resource.name,
+          submissionTime: req.create_date.toISOString(),
+          email: userData?.email || '',
+        };
+      });
+    } catch (error) {
+      console.error('Ошибка при получении исходящих заявок:', error);
+      throw new Error('Не удалось получить исходящие заявки');
+    }
+  }
+
+  /**
+   * Обновляет статус заявки
+   * @param id ID заявки
+   * @param status Новый статус
+   */
+  async updateRequestStatus(id: number, status: string): Promise<void> {
+    try {
+      await this.prisma.request.update({
+        where: { id },
+        data: { status },
+      });
+    } catch (error) {
+      console.error('Ошибка при обновлении статуса заявки:', error);
+      throw new Error('Не удалось обновить статус заявки');
+    }
+  }
+
+  /**
+   * Получает список всех систем
+   * @returns Массив ресурсов (систем)
+   */
+  async getSystems(): Promise<resource[]> {
+    try {
+      return await this.prisma.resource.findMany({
+        orderBy: {
+          name: 'asc',
+        },
+      });
+    } catch (error) {
+      console.error('Ошибка при получении списка систем:', error);
+      throw new Error('Не удалось получить список систем');
+    }
+  }
+
+  /**
+   * Получает список всех ролей
+   * @returns Массив ролей с информацией о доступах
+   */
+  async getRoles() {
+    try {
+      return await this.prisma.role.findMany({
+        include: {
+          access: true,
+          resource_role: {
+            include: {
+              resource: true,
+            },
+          },
+        },
+        orderBy: {
+          name: 'asc',
+        },
+      });
+    } catch (error) {
+      console.error('Ошибка при получении списка ролей:', error);
+      throw new Error('Не удалось получить список ролей');
+    }
+  }
+
+  /**
+   * Получает роли для конкретной системы
+   * @param systemId ID системы
+   * @returns Массив ролей для указанной системы
+   */
+  async getRolesBySystem(systemId: number) {
+    try {
+      return await this.prisma.resource_role.findMany({
+        where: {
+          resources_id: systemId,
+        },
+        include: {
+          role: {
+            include: {
+              access: true,
+            },
+          },
+          resource: true,
+        },
+        orderBy: {
+          role: {
+            name: 'asc',
+          },
+        },
+      });
+    } catch (error) {
+      console.error('Ошибка при получении ролей для системы:', error);
+      throw new Error('Не удалось получить роли для системы');
+    }
   }
 }

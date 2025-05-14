@@ -41,3 +41,17 @@ export class OwnRequestDto {
   resourceName: string;
   roleName: string;
 }
+
+export class SystemDto {
+  id: number;
+  name: string;
+  description: string;
+}
+
+export class RoleDto {
+  id: number;
+  name: string;
+  description: string;
+  accessLevel: number;
+  systemName: string;
+}
