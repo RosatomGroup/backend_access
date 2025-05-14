@@ -1,5 +1,8 @@
+// prisma/schema.prisma
+
 generator client {
   provider = "prisma-client-js"
+  // output   = "app/generated/prisma/client" // Убедитесь, что путь корректен для вашего проекта
 }
 
 datasource db {
@@ -26,15 +29,19 @@ model request {
   id            Int            @id @default(autoincrement())
   status        String         @db.VarChar(255)
   create_date   DateTime       @db.Timestamp(6)
-  complete_date DateTime       @db.Timestamp(6)
+  complete_date DateTime?      // Сделано необязательным
   resource_id   Int
   resource      resource       @relation(fields: [resource_id], references: [id])
+  role_id       Int            // Добавлено для связи с ролью
+  role          role           @relation(fields: [role_id], references: [id]) // Добавлено для связи с ролью
   user_request  user_request[]
+  // Опциональное поле для хранения темы заявки, если вы решите его добавить
+  // request_subject String?      @db.VarChar(255)
 }
 
 model resource {
   id            Int             @id @default(autoincrement())
-  name          String          @db.VarChar(100)
+  name          String          @db.VarChar(100) // Предполагается, что имя ресурса (системы) уникально или используется findFirst
   description   String          @db.VarChar(255)
   request       request[]
   resource_role resource_role[]
@@ -57,17 +64,20 @@ model role {
   resource_role resource_role[]
   access        access          @relation(fields: [access_id], references: [id])
   user          user[]
+  request       request[]       // Добавлено для обратной связи с request
 }
 
 model user {
   id             Int            @id @default(autoincrement())
   email          String         @unique @db.VarChar(255)
-  password       String         @db.VarChar(100)
+  password       String         @db.VarChar(100) // Пароль должен хешироваться перед сохранением
   name           String?        @db.VarChar(40)
   surname        String?        @db.VarChar(40)
   middle_name    String?        @db.VarChar(40)
-  service_number Int?           @unique
-  role_id        Int?
+  // Поля из init.sql, которые могут понадобиться:
+  // subdivision    String?        @db.VarChar(80)
+  // service_number Int?           @unique
+  role_id        Int?           // Связь с основной ролью пользователя в системе (если есть)
   log            log[]
   role           role?          @relation(fields: [role_id], references: [id], onDelete: Restrict)
   user_request   user_request[]
