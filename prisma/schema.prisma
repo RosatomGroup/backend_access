@@ -1,8 +1,5 @@
-// prisma/schema.prisma
-
 generator client {
   provider = "prisma-client-js"
-  // output   = "app/generated/prisma/client" // Убедитесь, что путь корректен для вашего проекта
 }
 
 datasource db {
@@ -27,21 +24,20 @@ model log {
 
 model request {
   id            Int            @id @default(autoincrement())
-  status        String         @db.VarChar(255)
-  create_date   DateTime       @db.Timestamp(6)
-  complete_date DateTime?      // Сделано необязательным
+  status        String         @db.VarChar(50)
+  request_type  String         @db.VarChar(50)  // Добавлено новое поле
+  create_date   DateTime       @default(now()) @db.Timestamp(6)
+  complete_date DateTime?      @db.Timestamp(6) // Сделано необязательным
   resource_id   Int
+  role_id       Int?           // Добавлено новое поле (опциональное)
   resource      resource       @relation(fields: [resource_id], references: [id])
-  role_id       Int            // Добавлено для связи с ролью
-  role          role           @relation(fields: [role_id], references: [id]) // Добавлено для связи с ролью
+  role          role?          @relation(fields: [role_id], references: [id]) // Добавлено отношение
   user_request  user_request[]
-  // Опциональное поле для хранения темы заявки, если вы решите его добавить
-  // request_subject String?      @db.VarChar(255)
 }
 
 model resource {
   id            Int             @id @default(autoincrement())
-  name          String          @db.VarChar(100) // Предполагается, что имя ресурса (системы) уникально или используется findFirst
+  name          String          @db.VarChar(100)
   description   String          @db.VarChar(255)
   request       request[]
   resource_role resource_role[]
@@ -64,20 +60,18 @@ model role {
   resource_role resource_role[]
   access        access          @relation(fields: [access_id], references: [id])
   user          user[]
-  request       request[]       // Добавлено для обратной связи с request
+  request       request[]       // Добавлено новое отношение
 }
 
 model user {
   id             Int            @id @default(autoincrement())
   email          String         @unique @db.VarChar(255)
-  password       String         @db.VarChar(100) // Пароль должен хешироваться перед сохранением
+  password       String         @db.VarChar(100)
   name           String?        @db.VarChar(40)
   surname        String?        @db.VarChar(40)
   middle_name    String?        @db.VarChar(40)
-  // Поля из init.sql, которые могут понадобиться:
-  // subdivision    String?        @db.VarChar(80)
-  // service_number Int?           @unique
-  role_id        Int?           // Связь с основной ролью пользователя в системе (если есть)
+  service_number Int?           @unique
+  role_id        Int?
   log            log[]
   role           role?          @relation(fields: [role_id], references: [id], onDelete: Restrict)
   user_request   user_request[]
