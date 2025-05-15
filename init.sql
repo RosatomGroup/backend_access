@@ -56,6 +56,7 @@ CREATE TABLE "user"
     surname        VARCHAR(40),
     middle_name    VARCHAR(40),
     subdivision    VARCHAR(80),
+    rang           VARCHAR(80),
     service_number INTEGER UNIQUE,
     role_id        INTEGER,
     FOREIGN KEY (role_id) REFERENCES role (id) ON UPDATE CASCADE ON DELETE RESTRICT
