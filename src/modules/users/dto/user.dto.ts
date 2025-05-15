@@ -55,10 +55,26 @@ export class UpdateUserDto {
   password?: string;
 }
 
+export class ReplyUpdateUserDto {
+  name?: string;
+
+  surname?: string;
+
+  middle_name?: string;
+
+  service_number?: number;
+
+  subdivision?: string;
+
+  email?: string;
+
+  password?: string;
+}
+
 export class ManagementUserDto {
   key: number;
   name: string;
   rang: string;
   subdivision: string;
-  address: string;
+  email: string;
 }

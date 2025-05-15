@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   NotFoundException,
@@ -7,12 +8,15 @@ import {
   CreateUserDto,
   ManagementUserDto,
   ReplyCreateUserDto,
+  ReplyUpdateUserDto,
   UpdateUserDto,
 } from './dto/user.dto';
 
 import * as bcrypt from 'bcrypt';
-import { Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
+import {Prisma, user} from '../../../prisma/generated/client';
+
+import userUpdateInput = Prisma.userUpdateInput;
 
 @Injectable()
 export class UserService {
@@ -22,23 +26,50 @@ export class UserService {
     return this.prisma.user.findMany();
   }
 
-  async updateUser(id: number, updateUserDto: UpdateUserDto) {
+  async updateUser(
+    id: number,
+    updateUserDto: UpdateUserDto,
+  ): Promise<ReplyUpdateUserDto> {
+    if (!id || isNaN(id)) {
+      throw new BadRequestException('Invalid user ID');
+    }
+
     await this.findById(id);
 
     if (updateUserDto.email) {
-      const existingUser = await this.prisma.user.findFirst({
-        where: {
-          email: updateUserDto.email,
-          NOT: { id },
-        },
-      });
-
-      if (existingUser) {
-        throw new ConflictException('Email already in use by another user');
-      }
+      await this.validateEmailUniqueness(id, updateUserDto.email);
     }
 
-    const updateData: Prisma.userUpdateInput = {
+    const updateData: userUpdateInput = this.prepareUpdateData(updateUserDto);
+
+    const updatedUser = await this.prisma.user.update({
+      where: { id },
+      data: updateData,
+    });
+
+    return this.mapToReplyDto(updatedUser);
+  }
+
+  private async validateEmailUniqueness(
+    userId: number,
+    email: string,
+  ): Promise<void> {
+    const existingUser = await this.prisma.user.findFirst({
+      where: {
+        email,
+        NOT: { id: userId },
+      },
+    });
+
+    if (existingUser) {
+      throw new ConflictException('Email already in use by another user');
+    }
+  }
+
+  private prepareUpdateData(
+    updateUserDto: UpdateUserDto,
+  ): Prisma.userUpdateInput {
+    return {
       ...(updateUserDto.name && { name: updateUserDto.name }),
       ...(updateUserDto.surname && { surname: updateUserDto.surname }),
       ...(updateUserDto.middle_name && {
@@ -49,47 +80,42 @@ export class UserService {
       }),
       ...(updateUserDto.email && { email: updateUserDto.email }),
     };
+  }
 
-    // if (updateUserDto.password) {
-    //   updateData.password = await bcrypt.hash(updateUserDto.password, 10);
-    // }
+  private async findById(id: number) {
+    const user = await this.prisma.user.findUnique({
+      where: { id },
+    });
 
-    // if (updateUserDto.role_id) {
-    //   updateData.role = {
-    //     connect: { id: updateUserDto.role_id },
-    //   };
-    // }
-    try {
-      const updatedUser = await this.prisma.user.update({
-        where: { id },
-        data: updateData,
-      });
-
-      return {
-        key: updatedUser.id.toString(),
-        name: [updatedUser.surname, updatedUser.name, updatedUser.middle_name]
-          .filter(Boolean)
-          .join(' '),
-        rang: updatedUser.role_id || 'Не указана',
-        // subdivision: updatedUser.subdivision || 'Не указано',
-        address: updatedUser.email,
-      };
-    } catch (error) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      throw new Error(`Failed to update user: ${error.message}`);
+    if (!user) {
+      throw new NotFoundException(`User with ID ${id} not found`);
     }
+    return user;
+  }
+
+  private mapToReplyDto(user: user): ReplyUpdateUserDto {
+    return {
+      name: [user.surname, user.name, user.middle_name]
+        .filter(Boolean)
+        .join(' '),
+      subdivision: 'Не указана',
+      email: user.email,
+    };
   }
 
   async getUsersForManagement(): Promise<ManagementUserDto[]> {
     const users = await this.prisma.user.findMany();
+    return users.map((user) => this.mapUserToManagementDto(user));
+  }
 
-    return users.map((user) => ({
+  private mapUserToManagementDto(user: user): ManagementUserDto {
+    return {
       key: user.id,
       name: `${user.surname} ${user.name} ${user.middle_name || ''}`.trim(),
-      rang: user.role_id?.toString() || 'Не указана',
-      subdivision: 'Не указано', //user.subdivision || 'Не указано'
-      address: user.email,
-    }));
+      rang: user.rang,
+      subdivision: user.subdivision,
+      email: user.email,
+    };
   }
 
   async createUser(createUserDto: CreateUserDto): Promise<ReplyCreateUserDto> {
@@ -120,16 +146,5 @@ export class UserService {
     return this.prisma.user.findUnique({
       where: { email },
     });
-  }
-
-  private async findById(id: number) {
-    const user = await this.prisma.user.findUnique({
-      where: { id },
-    });
-
-    if (!user) {
-      throw new NotFoundException(`User with ID ${id} not found`);
-    }
-    return user;
   }
 }
