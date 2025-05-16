@@ -103,7 +103,7 @@ import {
       }
   
       try {
-        const updateData = this.prepareUpdateData(updateUserDto);
+        const updateData = await this.prepareUpdateData(updateUserDto);
         const updatedUser = await this.prisma.user.update({
           where: { id },
           data: updateData,
@@ -180,20 +180,20 @@ import {
       }
     }
   
-    private prepareUpdateData(updateUserDto: AdminUpdateUserDto): Prisma.userUpdateInput {
+    private async prepareUpdateData(updateUserDto: AdminUpdateUserDto): Promise<Prisma.userUpdateInput> {
       const updateData: Prisma.userUpdateInput = {
-        ...(updateUserDto.name && { name: updateUserDto.name }),
-        ...(updateUserDto.surname && { surname: updateUserDto.surname }),
-        ...(updateUserDto.middle_name && { middle_name: updateUserDto.middle_name }),
-        ...(updateUserDto.subdivision && { subdivision: updateUserDto.subdivision }),
-        ...(updateUserDto.email && { email: updateUserDto.email }),
-        ...(updateUserDto.role_id && { role_id: updateUserDto.role_id }),
+        ...(updateUserDto.name !== undefined && { name: updateUserDto.name }),
+        ...(updateUserDto.surname !== undefined && { surname: updateUserDto.surname }),
+        ...(updateUserDto.middle_name !== undefined && { middle_name: updateUserDto.middle_name }),
+        ...(updateUserDto.subdivision !== undefined && { subdivision: updateUserDto.subdivision }),
+        ...(updateUserDto.email !== undefined && { email: updateUserDto.email }),
+        ...(updateUserDto.role_id !== undefined && { role_id: updateUserDto.role_id }),
       };
-  
+    
       if (updateUserDto.password) {
-        updateData.password = bcrypt.hash(updateUserDto.password, this.SALT_ROUNDS);
+        updateData.password = await bcrypt.hash(updateUserDto.password, this.SALT_ROUNDS);
       }
-  
+    
       return updateData;
     }
   

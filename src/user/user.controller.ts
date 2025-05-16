@@ -11,7 +11,7 @@ import { UserProfileService } from './services/user-profile.service';
 import { CreateUserDto, UpdateUserDto, LoginDto } from './dto/user.dto';
 
 @Controller('auth')
-export class AuthController {
+export class UserController {
   constructor(
     private readonly authService: UserAuthService,
     private readonly userProfileService: UserProfileService,

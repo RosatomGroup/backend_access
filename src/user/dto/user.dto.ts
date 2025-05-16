@@ -23,6 +23,11 @@ export class CreateUserDto {
   password: string;
 }
 
+export class LoginDto {
+  email: string;
+  password: string;
+}
+
 export class ReplyCreateUserDto {
   id: number;
   email: string;
