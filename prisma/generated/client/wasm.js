@@ -132,16 +132,22 @@ exports.Prisma.LogScalarFieldEnum = {
 
 exports.Prisma.RequestScalarFieldEnum = {
   id: 'id',
+  name: 'name',
+  surname: 'surname',
+  middle_name: 'middle_name',
+  email: 'email',
   status: 'status',
   create_date: 'create_date',
   complete_date: 'complete_date',
-  resource_id: 'resource_id'
+  resource_id: 'resource_id',
+  role_id: 'role_id'
 };
 
 exports.Prisma.ResourceScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  description: 'description'
+  description: 'description',
+  link: 'link'
 };
 
 exports.Prisma.Resource_roleScalarFieldEnum = {
@@ -163,6 +169,8 @@ exports.Prisma.UserScalarFieldEnum = {
   name: 'name',
   surname: 'surname',
   middle_name: 'middle_name',
+  subdivision: 'subdivision',
+  rang: 'rang',
   service_number: 'service_number',
   role_id: 'role_id'
 };

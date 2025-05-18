@@ -9,7 +9,8 @@ CREATE TABLE resource
 (
     id          SERIAL PRIMARY KEY,
     name        VARCHAR(100) NOT NULL,
-    description VARCHAR(255) NOT NULL
+    description VARCHAR(255) NOT NULL,
+    link        VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE role
@@ -33,6 +34,10 @@ CREATE TABLE resource_role
 CREATE TABLE request
 (
     id            SERIAL PRIMARY KEY,
+    name          VARCHAR(40)  NOT NULL,
+    surname       VARCHAR(40)  NOT NULL,
+    middle_name   VARCHAR(40)  NOT NULL,
+    email         VARCHAR(255) NOT NULL,
     status        VARCHAR(255) NOT NULL,
     create_date   TIMESTAMP    NOT NULL,
     complete_date TIMESTAMP    NOT NULL,
@@ -51,6 +56,7 @@ CREATE TABLE "user"
     surname        VARCHAR(40),
     middle_name    VARCHAR(40),
     subdivision    VARCHAR(80),
+    rang           VARCHAR(80),
     service_number INTEGER UNIQUE,
     role_id        INTEGER,
     FOREIGN KEY (role_id) REFERENCES role (id) ON UPDATE CASCADE ON DELETE RESTRICT
