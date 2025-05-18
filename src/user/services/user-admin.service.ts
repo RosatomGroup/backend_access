@@ -11,10 +11,9 @@ import {
     CreateUserDto,
     ManagementUserDto,
     ReplyCreateUserDto,
-    UpdateUserDto,
     AdminUpdateUserDto,
-    AdminCreateUserDto 
   } from '../dto/user.dto';
+  // import { UpdateUserDto } from '../dto/update-user.dto'
   import * as bcrypt from 'bcrypt';
   
   @Injectable()

@@ -8,7 +8,8 @@ import {
 } from '@nestjs/common';
 import { UserAuthService } from './services/user-auth.service';
 import { UserProfileService } from './services/user-profile.service';
-import { CreateUserDto, UpdateUserDto, LoginDto } from './dto/user.dto';
+import { CreateUserDto, LoginDto } from './dto/user.dto';
+import { UpdateUserDto, } from './dto/update-user.dto';
 
 @Controller('auth')
 export class UserController {
