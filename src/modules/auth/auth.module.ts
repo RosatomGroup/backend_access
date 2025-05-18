@@ -7,6 +7,8 @@ import { UserService } from '../users/user.service';
 import { AuthController } from './auth.controller';
 import { JwtStrategy } from './jwt.strategy';
 import { AuthService } from './auth.service';
+import { PasswordResetModule } from '../password-reset/password-reset.module';
+import { MailModule } from '../mail/mail.module';
 
 @Module({
   imports: [
@@ -15,6 +17,8 @@ import { AuthService } from './auth.service';
       secret: jwtConstants.secret,
       signOptions: { expiresIn: '60s' },
     }),
+    PasswordResetModule,
+    MailModule,
   ],
   providers: [AuthService, JwtStrategy, UserService, PrismaService],
   controllers: [AuthController],

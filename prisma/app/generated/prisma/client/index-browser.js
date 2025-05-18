@@ -172,6 +172,14 @@ exports.Prisma.User_requestScalarFieldEnum = {
   request_id: 'request_id'
 };
 
+exports.Prisma.PasswordResetTokenScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  token: 'token',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -196,7 +204,8 @@ exports.Prisma.ModelName = {
   resource_role: 'resource_role',
   role: 'role',
   user: 'user',
-  user_request: 'user_request'
+  user_request: 'user_request',
+  PasswordResetToken: 'PasswordResetToken'
 };
 
 /**

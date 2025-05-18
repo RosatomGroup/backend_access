@@ -9,6 +9,10 @@ import { UserService } from './modules/users/user.service';
 import { RegisterController } from './modules/register/register.controller';
 import { RegisterService } from './modules/register/register.service';
 import { RegisterModule } from './modules/register/register.module';
+import { PasswordResetModule } from './modules/password-reset/password-reset.module';
+import { PasswordResetController } from './modules/password-reset/password-reset.controller';
+import { PasswordResetService } from './modules/password-reset/password-reset.service';
+import { MailModule } from './modules/mail/mail.module';
 
 @Module({
   imports: [
@@ -19,8 +23,10 @@ import { RegisterModule } from './modules/register/register.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    PasswordResetModule,
+    MailModule,
   ],
-  controllers: [AppController, RegisterController],
-  providers: [AppService, UserService, RegisterService],
+  controllers: [AppController, RegisterController, PasswordResetController],
+  providers: [AppService, UserService, RegisterService, PasswordResetService],
 })
 export class AppModule {}

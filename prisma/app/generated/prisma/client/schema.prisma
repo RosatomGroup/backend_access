@@ -82,3 +82,13 @@ model user_request {
 
   @@id([user_id, request_id])
 }
+
+model PasswordResetToken {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([email])
+}

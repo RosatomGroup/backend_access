@@ -5,9 +5,6 @@ import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class RegisterService {
-  // create() {
-  //   throw new Error('Method not implemented.');
-  // }
   constructor(private readonly prisma: PrismaService) {}
 
   async registerUser(dto: RegisterDto) {
