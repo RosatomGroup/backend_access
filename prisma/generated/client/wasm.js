@@ -140,7 +140,8 @@ exports.Prisma.RequestScalarFieldEnum = {
   create_date: 'create_date',
   complete_date: 'complete_date',
   resource_id: 'resource_id',
-  role_id: 'role_id'
+  role_id: 'role_id',
+  request_type: 'request_type'
 };
 
 exports.Prisma.ResourceScalarFieldEnum = {

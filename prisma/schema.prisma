@@ -34,6 +34,7 @@ model request {
   complete_date DateTime       @db.Timestamp(6)
   resource_id   Int
   role_id       Int
+  request_type  String         @db.VarChar(50)
   resource      resource       @relation(fields: [resource_id], references: [id])
   role          role           @relation(fields: [role_id], references: [id])
   user_request  user_request[]

@@ -38,7 +38,7 @@ export class UserService {
       }
     }
 
-    const updateData: Prisma.userUpdateInput = {
+    const updateData: any = {
       ...(updateUserDto.name && { name: updateUserDto.name }),
       ...(updateUserDto.surname && { surname: updateUserDto.surname }),
       ...(updateUserDto.middle_name && {

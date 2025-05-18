@@ -3896,6 +3896,7 @@ export namespace Prisma {
     complete_date: Date | null
     resource_id: number | null
     role_id: number | null
+    request_type: string | null
   }
 
   export type RequestMaxAggregateOutputType = {
@@ -3909,6 +3910,7 @@ export namespace Prisma {
     complete_date: Date | null
     resource_id: number | null
     role_id: number | null
+    request_type: string | null
   }
 
   export type RequestCountAggregateOutputType = {
@@ -3922,6 +3924,7 @@ export namespace Prisma {
     complete_date: number
     resource_id: number
     role_id: number
+    request_type: number
     _all: number
   }
 
@@ -3949,6 +3952,7 @@ export namespace Prisma {
     complete_date?: true
     resource_id?: true
     role_id?: true
+    request_type?: true
   }
 
   export type RequestMaxAggregateInputType = {
@@ -3962,6 +3966,7 @@ export namespace Prisma {
     complete_date?: true
     resource_id?: true
     role_id?: true
+    request_type?: true
   }
 
   export type RequestCountAggregateInputType = {
@@ -3975,6 +3980,7 @@ export namespace Prisma {
     complete_date?: true
     resource_id?: true
     role_id?: true
+    request_type?: true
     _all?: true
   }
 
@@ -4075,6 +4081,7 @@ export namespace Prisma {
     complete_date: Date
     resource_id: number
     role_id: number
+    request_type: string
     _count: RequestCountAggregateOutputType | null
     _avg: RequestAvgAggregateOutputType | null
     _sum: RequestSumAggregateOutputType | null
@@ -4107,6 +4114,7 @@ export namespace Prisma {
     complete_date?: boolean
     resource_id?: boolean
     role_id?: boolean
+    request_type?: boolean
     resource?: boolean | resourceDefaultArgs<ExtArgs>
     role?: boolean | roleDefaultArgs<ExtArgs>
     user_request?: boolean | request$user_requestArgs<ExtArgs>
@@ -4124,6 +4132,7 @@ export namespace Prisma {
     complete_date?: boolean
     resource_id?: boolean
     role_id?: boolean
+    request_type?: boolean
     resource?: boolean | resourceDefaultArgs<ExtArgs>
     role?: boolean | roleDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["request"]>
@@ -4139,6 +4148,7 @@ export namespace Prisma {
     complete_date?: boolean
     resource_id?: boolean
     role_id?: boolean
+    request_type?: boolean
     resource?: boolean | resourceDefaultArgs<ExtArgs>
     role?: boolean | roleDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["request"]>
@@ -4154,9 +4164,10 @@ export namespace Prisma {
     complete_date?: boolean
     resource_id?: boolean
     role_id?: boolean
+    request_type?: boolean
   }
 
-  export type requestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "surname" | "middle_name" | "email" | "status" | "create_date" | "complete_date" | "resource_id" | "role_id", ExtArgs["result"]["request"]>
+  export type requestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "surname" | "middle_name" | "email" | "status" | "create_date" | "complete_date" | "resource_id" | "role_id" | "request_type", ExtArgs["result"]["request"]>
   export type requestInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     resource?: boolean | resourceDefaultArgs<ExtArgs>
     role?: boolean | roleDefaultArgs<ExtArgs>
@@ -4190,6 +4201,7 @@ export namespace Prisma {
       complete_date: Date
       resource_id: number
       role_id: number
+      request_type: string
     }, ExtArgs["result"]["request"]>
     composites: {}
   }
@@ -4626,6 +4638,7 @@ export namespace Prisma {
     readonly complete_date: FieldRef<"request", 'DateTime'>
     readonly resource_id: FieldRef<"request", 'Int'>
     readonly role_id: FieldRef<"request", 'Int'>
+    readonly request_type: FieldRef<"request", 'String'>
   }
     
 
@@ -10767,7 +10780,8 @@ export namespace Prisma {
     create_date: 'create_date',
     complete_date: 'complete_date',
     resource_id: 'resource_id',
-    role_id: 'role_id'
+    role_id: 'role_id',
+    request_type: 'request_type'
   };
 
   export type RequestScalarFieldEnum = (typeof RequestScalarFieldEnum)[keyof typeof RequestScalarFieldEnum]
@@ -11026,6 +11040,7 @@ export namespace Prisma {
     complete_date?: DateTimeFilter<"request"> | Date | string
     resource_id?: IntFilter<"request"> | number
     role_id?: IntFilter<"request"> | number
+    request_type?: StringFilter<"request"> | string
     resource?: XOR<ResourceScalarRelationFilter, resourceWhereInput>
     role?: XOR<RoleScalarRelationFilter, roleWhereInput>
     user_request?: User_requestListRelationFilter
@@ -11042,6 +11057,7 @@ export namespace Prisma {
     complete_date?: SortOrder
     resource_id?: SortOrder
     role_id?: SortOrder
+    request_type?: SortOrder
     resource?: resourceOrderByWithRelationInput
     role?: roleOrderByWithRelationInput
     user_request?: user_requestOrderByRelationAggregateInput
@@ -11061,6 +11077,7 @@ export namespace Prisma {
     complete_date?: DateTimeFilter<"request"> | Date | string
     resource_id?: IntFilter<"request"> | number
     role_id?: IntFilter<"request"> | number
+    request_type?: StringFilter<"request"> | string
     resource?: XOR<ResourceScalarRelationFilter, resourceWhereInput>
     role?: XOR<RoleScalarRelationFilter, roleWhereInput>
     user_request?: User_requestListRelationFilter
@@ -11077,6 +11094,7 @@ export namespace Prisma {
     complete_date?: SortOrder
     resource_id?: SortOrder
     role_id?: SortOrder
+    request_type?: SortOrder
     _count?: requestCountOrderByAggregateInput
     _avg?: requestAvgOrderByAggregateInput
     _max?: requestMaxOrderByAggregateInput
@@ -11098,6 +11116,7 @@ export namespace Prisma {
     complete_date?: DateTimeWithAggregatesFilter<"request"> | Date | string
     resource_id?: IntWithAggregatesFilter<"request"> | number
     role_id?: IntWithAggregatesFilter<"request"> | number
+    request_type?: StringWithAggregatesFilter<"request"> | string
   }
 
   export type resourceWhereInput = {
@@ -11492,6 +11511,7 @@ export namespace Prisma {
     status: string
     create_date: Date | string
     complete_date: Date | string
+    request_type: string
     resource: resourceCreateNestedOneWithoutRequestInput
     role: roleCreateNestedOneWithoutRequestInput
     user_request?: user_requestCreateNestedManyWithoutRequestInput
@@ -11508,6 +11528,7 @@ export namespace Prisma {
     complete_date: Date | string
     resource_id: number
     role_id: number
+    request_type: string
     user_request?: user_requestUncheckedCreateNestedManyWithoutRequestInput
   }
 
@@ -11519,6 +11540,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     create_date?: DateTimeFieldUpdateOperationsInput | Date | string
     complete_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    request_type?: StringFieldUpdateOperationsInput | string
     resource?: resourceUpdateOneRequiredWithoutRequestNestedInput
     role?: roleUpdateOneRequiredWithoutRequestNestedInput
     user_request?: user_requestUpdateManyWithoutRequestNestedInput
@@ -11535,6 +11557,7 @@ export namespace Prisma {
     complete_date?: DateTimeFieldUpdateOperationsInput | Date | string
     resource_id?: IntFieldUpdateOperationsInput | number
     role_id?: IntFieldUpdateOperationsInput | number
+    request_type?: StringFieldUpdateOperationsInput | string
     user_request?: user_requestUncheckedUpdateManyWithoutRequestNestedInput
   }
 
@@ -11549,6 +11572,7 @@ export namespace Prisma {
     complete_date: Date | string
     resource_id: number
     role_id: number
+    request_type: string
   }
 
   export type requestUpdateManyMutationInput = {
@@ -11559,6 +11583,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     create_date?: DateTimeFieldUpdateOperationsInput | Date | string
     complete_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    request_type?: StringFieldUpdateOperationsInput | string
   }
 
   export type requestUncheckedUpdateManyInput = {
@@ -11572,6 +11597,7 @@ export namespace Prisma {
     complete_date?: DateTimeFieldUpdateOperationsInput | Date | string
     resource_id?: IntFieldUpdateOperationsInput | number
     role_id?: IntFieldUpdateOperationsInput | number
+    request_type?: StringFieldUpdateOperationsInput | string
   }
 
   export type resourceCreateInput = {
@@ -12076,6 +12102,7 @@ export namespace Prisma {
     complete_date?: SortOrder
     resource_id?: SortOrder
     role_id?: SortOrder
+    request_type?: SortOrder
   }
 
   export type requestAvgOrderByAggregateInput = {
@@ -12095,6 +12122,7 @@ export namespace Prisma {
     complete_date?: SortOrder
     resource_id?: SortOrder
     role_id?: SortOrder
+    request_type?: SortOrder
   }
 
   export type requestMinOrderByAggregateInput = {
@@ -12108,6 +12136,7 @@ export namespace Prisma {
     complete_date?: SortOrder
     resource_id?: SortOrder
     role_id?: SortOrder
+    request_type?: SortOrder
   }
 
   export type requestSumOrderByAggregateInput = {
@@ -13335,6 +13364,7 @@ export namespace Prisma {
     status: string
     create_date: Date | string
     complete_date: Date | string
+    request_type: string
     role: roleCreateNestedOneWithoutRequestInput
     user_request?: user_requestCreateNestedManyWithoutRequestInput
   }
@@ -13349,6 +13379,7 @@ export namespace Prisma {
     create_date: Date | string
     complete_date: Date | string
     role_id: number
+    request_type: string
     user_request?: user_requestUncheckedCreateNestedManyWithoutRequestInput
   }
 
@@ -13410,6 +13441,7 @@ export namespace Prisma {
     complete_date?: DateTimeFilter<"request"> | Date | string
     resource_id?: IntFilter<"request"> | number
     role_id?: IntFilter<"request"> | number
+    request_type?: StringFilter<"request"> | string
   }
 
   export type resource_roleUpsertWithWhereUniqueWithoutResourceInput = {
@@ -13540,6 +13572,7 @@ export namespace Prisma {
     status: string
     create_date: Date | string
     complete_date: Date | string
+    request_type: string
     resource: resourceCreateNestedOneWithoutRequestInput
     user_request?: user_requestCreateNestedManyWithoutRequestInput
   }
@@ -13554,6 +13587,7 @@ export namespace Prisma {
     create_date: Date | string
     complete_date: Date | string
     resource_id: number
+    request_type: string
     user_request?: user_requestUncheckedCreateNestedManyWithoutRequestInput
   }
 
@@ -13863,6 +13897,7 @@ export namespace Prisma {
     status: string
     create_date: Date | string
     complete_date: Date | string
+    request_type: string
     resource: resourceCreateNestedOneWithoutRequestInput
     role: roleCreateNestedOneWithoutRequestInput
   }
@@ -13878,6 +13913,7 @@ export namespace Prisma {
     complete_date: Date | string
     resource_id: number
     role_id: number
+    request_type: string
   }
 
   export type requestCreateOrConnectWithoutUser_requestInput = {
@@ -13936,6 +13972,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     create_date?: DateTimeFieldUpdateOperationsInput | Date | string
     complete_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    request_type?: StringFieldUpdateOperationsInput | string
     resource?: resourceUpdateOneRequiredWithoutRequestNestedInput
     role?: roleUpdateOneRequiredWithoutRequestNestedInput
   }
@@ -13951,6 +13988,7 @@ export namespace Prisma {
     complete_date?: DateTimeFieldUpdateOperationsInput | Date | string
     resource_id?: IntFieldUpdateOperationsInput | number
     role_id?: IntFieldUpdateOperationsInput | number
+    request_type?: StringFieldUpdateOperationsInput | string
   }
 
   export type userUpsertWithoutUser_requestInput = {
@@ -14046,6 +14084,7 @@ export namespace Prisma {
     create_date: Date | string
     complete_date: Date | string
     role_id: number
+    request_type: string
   }
 
   export type resource_roleCreateManyResourceInput = {
@@ -14060,6 +14099,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     create_date?: DateTimeFieldUpdateOperationsInput | Date | string
     complete_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    request_type?: StringFieldUpdateOperationsInput | string
     role?: roleUpdateOneRequiredWithoutRequestNestedInput
     user_request?: user_requestUpdateManyWithoutRequestNestedInput
   }
@@ -14074,6 +14114,7 @@ export namespace Prisma {
     create_date?: DateTimeFieldUpdateOperationsInput | Date | string
     complete_date?: DateTimeFieldUpdateOperationsInput | Date | string
     role_id?: IntFieldUpdateOperationsInput | number
+    request_type?: StringFieldUpdateOperationsInput | string
     user_request?: user_requestUncheckedUpdateManyWithoutRequestNestedInput
   }
 
@@ -14087,6 +14128,7 @@ export namespace Prisma {
     create_date?: DateTimeFieldUpdateOperationsInput | Date | string
     complete_date?: DateTimeFieldUpdateOperationsInput | Date | string
     role_id?: IntFieldUpdateOperationsInput | number
+    request_type?: StringFieldUpdateOperationsInput | string
   }
 
   export type resource_roleUpdateWithoutResourceInput = {
@@ -14111,6 +14153,7 @@ export namespace Prisma {
     create_date: Date | string
     complete_date: Date | string
     resource_id: number
+    request_type: string
   }
 
   export type resource_roleCreateManyRoleInput = {
@@ -14137,6 +14180,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     create_date?: DateTimeFieldUpdateOperationsInput | Date | string
     complete_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    request_type?: StringFieldUpdateOperationsInput | string
     resource?: resourceUpdateOneRequiredWithoutRequestNestedInput
     user_request?: user_requestUpdateManyWithoutRequestNestedInput
   }
@@ -14151,6 +14195,7 @@ export namespace Prisma {
     create_date?: DateTimeFieldUpdateOperationsInput | Date | string
     complete_date?: DateTimeFieldUpdateOperationsInput | Date | string
     resource_id?: IntFieldUpdateOperationsInput | number
+    request_type?: StringFieldUpdateOperationsInput | string
     user_request?: user_requestUncheckedUpdateManyWithoutRequestNestedInput
   }
 
@@ -14164,6 +14209,7 @@ export namespace Prisma {
     create_date?: DateTimeFieldUpdateOperationsInput | Date | string
     complete_date?: DateTimeFieldUpdateOperationsInput | Date | string
     resource_id?: IntFieldUpdateOperationsInput | number
+    request_type?: StringFieldUpdateOperationsInput | string
   }
 
   export type resource_roleUpdateWithoutRoleInput = {
