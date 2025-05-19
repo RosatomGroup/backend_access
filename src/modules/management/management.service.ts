@@ -1,7 +1,17 @@
 import { Injectable } from '@nestjs/common';
-import { ManagementUserDto } from '../users/dto/user.dto';
 import { PrismaService } from '../prisma/prisma.service';
-import { user } from '../../../prisma/generated/client';
+import { Prisma, resource, user } from '../../../prisma/generated/client';
+import {
+  ManagementResourceDto,
+  ManagementRoleDto,
+  ManagementUserDto,
+} from './dto/management.dto';
+
+type roleWithResource = Prisma.roleGetPayload<{
+  include: {
+    resource: true;
+  };
+}>;
 
 @Injectable()
 export class ManagementService {
@@ -19,6 +29,43 @@ export class ManagementService {
       rang: user.rang,
       subdivision: user.subdivision,
       email: user.email,
+    };
+  }
+
+  async getRoles(): Promise<ManagementRoleDto[]> {
+    const roles = await this.prisma.role.findMany({
+      include: {
+        resource: true,
+      },
+    });
+    return roles.map((role: roleWithResource) =>
+      this.mapRoleToManagementDto(role),
+    );
+  }
+
+  private mapRoleToManagementDto(role: roleWithResource): ManagementRoleDto {
+    return {
+      name: role.name,
+      description: role.description,
+      systemName: role.resource.name,
+      owner: role.resource.owner,
+    };
+  }
+
+  async getResources(): Promise<ManagementResourceDto[]> {
+    const resources = await this.prisma.resource.findMany();
+    return resources.map((resource) =>
+      this.mapResourceToManagementDto(resource),
+    );
+  }
+
+  private mapResourceToManagementDto(
+    resource: resource,
+  ): ManagementResourceDto {
+    return {
+      name: resource.name,
+      description: resource.description,
+      owner: resource.owner,
     };
   }
 }

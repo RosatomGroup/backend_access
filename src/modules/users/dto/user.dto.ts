@@ -54,11 +54,3 @@ export class UpdateUserDto {
   @Length(6, 30)
   password?: string;
 }
-
-export class ManagementUserDto {
-  key: number;
-  name: string;
-  rang: string;
-  subdivision: string;
-  address: string;
-}
