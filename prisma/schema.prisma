@@ -40,32 +40,25 @@ model request {
 }
 
 model resource {
-  id            Int             @id @default(autoincrement())
-  name          String          @db.VarChar(100)
-  description   String          @db.VarChar(255)
-  link          String          @db.VarChar(255)
-  request       request[]
-  resource_role resource_role[]
-}
-
-model resource_role {
-  role_id      Int
-  resources_id Int
-  resource     resource @relation(fields: [resources_id], references: [id])
-  role         role     @relation(fields: [role_id], references: [id])
-
-  @@id([role_id, resources_id])
+  id          Int       @id @default(autoincrement())
+  name        String    @db.VarChar(100)
+  description String    @db.VarChar(255)
+  link        String    @db.VarChar(255)
+  owner       String    @db.VarChar(255)
+  request     request[]
+  role        role[]
 }
 
 model role {
-  id            Int             @id @default(autoincrement())
-  name          String          @unique @db.VarChar(100)
-  description   String          @db.VarChar(255)
-  access_id     Int
-  request       request[]
-  resource_role resource_role[]
-  access        access          @relation(fields: [access_id], references: [id])
-  user          user[]
+  id          Int       @id @default(autoincrement())
+  name        String    @unique @db.VarChar(100)
+  description String    @db.VarChar(255)
+  access_id   Int
+  resource_id Int
+  request     request[]
+  access      access    @relation(fields: [access_id], references: [id])
+  resource    resource  @relation(fields: [resource_id], references: [id])
+  user        user[]
 }
 
 model user {

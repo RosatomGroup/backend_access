@@ -34,11 +34,6 @@ export type request = $Result.DefaultSelection<Prisma.$requestPayload>
  */
 export type resource = $Result.DefaultSelection<Prisma.$resourcePayload>
 /**
- * Model resource_role
- * 
- */
-export type resource_role = $Result.DefaultSelection<Prisma.$resource_rolePayload>
-/**
  * Model role
  * 
  */
@@ -218,16 +213,6 @@ export class PrismaClient<
     * ```
     */
   get resource(): Prisma.resourceDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.resource_role`: Exposes CRUD operations for the **resource_role** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Resource_roles
-    * const resource_roles = await prisma.resource_role.findMany()
-    * ```
-    */
-  get resource_role(): Prisma.resource_roleDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.role`: Exposes CRUD operations for the **role** model.
@@ -702,7 +687,6 @@ export namespace Prisma {
     log: 'log',
     request: 'request',
     resource: 'resource',
-    resource_role: 'resource_role',
     role: 'role',
     user: 'user',
     user_request: 'user_request'
@@ -724,7 +708,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "access" | "log" | "request" | "resource" | "resource_role" | "role" | "user" | "user_request"
+      modelProps: "access" | "log" | "request" | "resource" | "role" | "user" | "user_request"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1021,80 +1005,6 @@ export namespace Prisma {
           count: {
             args: Prisma.resourceCountArgs<ExtArgs>
             result: $Utils.Optional<ResourceCountAggregateOutputType> | number
-          }
-        }
-      }
-      resource_role: {
-        payload: Prisma.$resource_rolePayload<ExtArgs>
-        fields: Prisma.resource_roleFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.resource_roleFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$resource_rolePayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.resource_roleFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$resource_rolePayload>
-          }
-          findFirst: {
-            args: Prisma.resource_roleFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$resource_rolePayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.resource_roleFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$resource_rolePayload>
-          }
-          findMany: {
-            args: Prisma.resource_roleFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$resource_rolePayload>[]
-          }
-          create: {
-            args: Prisma.resource_roleCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$resource_rolePayload>
-          }
-          createMany: {
-            args: Prisma.resource_roleCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.resource_roleCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$resource_rolePayload>[]
-          }
-          delete: {
-            args: Prisma.resource_roleDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$resource_rolePayload>
-          }
-          update: {
-            args: Prisma.resource_roleUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$resource_rolePayload>
-          }
-          deleteMany: {
-            args: Prisma.resource_roleDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.resource_roleUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.resource_roleUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$resource_rolePayload>[]
-          }
-          upsert: {
-            args: Prisma.resource_roleUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$resource_rolePayload>
-          }
-          aggregate: {
-            args: Prisma.Resource_roleAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateResource_role>
-          }
-          groupBy: {
-            args: Prisma.resource_roleGroupByArgs<ExtArgs>
-            result: $Utils.Optional<Resource_roleGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.resource_roleCountArgs<ExtArgs>
-            result: $Utils.Optional<Resource_roleCountAggregateOutputType> | number
           }
         }
       }
@@ -1408,7 +1318,6 @@ export namespace Prisma {
     log?: logOmit
     request?: requestOmit
     resource?: resourceOmit
-    resource_role?: resource_roleOmit
     role?: roleOmit
     user?: userOmit
     user_request?: user_requestOmit
@@ -1569,12 +1478,12 @@ export namespace Prisma {
 
   export type ResourceCountOutputType = {
     request: number
-    resource_role: number
+    role: number
   }
 
   export type ResourceCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     request?: boolean | ResourceCountOutputTypeCountRequestArgs
-    resource_role?: boolean | ResourceCountOutputTypeCountResource_roleArgs
+    role?: boolean | ResourceCountOutputTypeCountRoleArgs
   }
 
   // Custom InputTypes
@@ -1598,8 +1507,8 @@ export namespace Prisma {
   /**
    * ResourceCountOutputType without action
    */
-  export type ResourceCountOutputTypeCountResource_roleArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: resource_roleWhereInput
+  export type ResourceCountOutputTypeCountRoleArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: roleWhereInput
   }
 
 
@@ -1609,13 +1518,11 @@ export namespace Prisma {
 
   export type RoleCountOutputType = {
     request: number
-    resource_role: number
     user: number
   }
 
   export type RoleCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     request?: boolean | RoleCountOutputTypeCountRequestArgs
-    resource_role?: boolean | RoleCountOutputTypeCountResource_roleArgs
     user?: boolean | RoleCountOutputTypeCountUserArgs
   }
 
@@ -1635,13 +1542,6 @@ export namespace Prisma {
    */
   export type RoleCountOutputTypeCountRequestArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: requestWhereInput
-  }
-
-  /**
-   * RoleCountOutputType without action
-   */
-  export type RoleCountOutputTypeCountResource_roleArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: resource_roleWhereInput
   }
 
   /**
@@ -5089,6 +4989,7 @@ export namespace Prisma {
     name: string | null
     description: string | null
     link: string | null
+    owner: string | null
   }
 
   export type ResourceMaxAggregateOutputType = {
@@ -5096,6 +4997,7 @@ export namespace Prisma {
     name: string | null
     description: string | null
     link: string | null
+    owner: string | null
   }
 
   export type ResourceCountAggregateOutputType = {
@@ -5103,6 +5005,7 @@ export namespace Prisma {
     name: number
     description: number
     link: number
+    owner: number
     _all: number
   }
 
@@ -5120,6 +5023,7 @@ export namespace Prisma {
     name?: true
     description?: true
     link?: true
+    owner?: true
   }
 
   export type ResourceMaxAggregateInputType = {
@@ -5127,6 +5031,7 @@ export namespace Prisma {
     name?: true
     description?: true
     link?: true
+    owner?: true
   }
 
   export type ResourceCountAggregateInputType = {
@@ -5134,6 +5039,7 @@ export namespace Prisma {
     name?: true
     description?: true
     link?: true
+    owner?: true
     _all?: true
   }
 
@@ -5228,6 +5134,7 @@ export namespace Prisma {
     name: string
     description: string
     link: string
+    owner: string
     _count: ResourceCountAggregateOutputType | null
     _avg: ResourceAvgAggregateOutputType | null
     _sum: ResourceSumAggregateOutputType | null
@@ -5254,8 +5161,9 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     link?: boolean
+    owner?: boolean
     request?: boolean | resource$requestArgs<ExtArgs>
-    resource_role?: boolean | resource$resource_roleArgs<ExtArgs>
+    role?: boolean | resource$roleArgs<ExtArgs>
     _count?: boolean | ResourceCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["resource"]>
 
@@ -5264,6 +5172,7 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     link?: boolean
+    owner?: boolean
   }, ExtArgs["result"]["resource"]>
 
   export type resourceSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -5271,6 +5180,7 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     link?: boolean
+    owner?: boolean
   }, ExtArgs["result"]["resource"]>
 
   export type resourceSelectScalar = {
@@ -5278,12 +5188,13 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     link?: boolean
+    owner?: boolean
   }
 
-  export type resourceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "link", ExtArgs["result"]["resource"]>
+  export type resourceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "link" | "owner", ExtArgs["result"]["resource"]>
   export type resourceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     request?: boolean | resource$requestArgs<ExtArgs>
-    resource_role?: boolean | resource$resource_roleArgs<ExtArgs>
+    role?: boolean | resource$roleArgs<ExtArgs>
     _count?: boolean | ResourceCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type resourceIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -5293,13 +5204,14 @@ export namespace Prisma {
     name: "resource"
     objects: {
       request: Prisma.$requestPayload<ExtArgs>[]
-      resource_role: Prisma.$resource_rolePayload<ExtArgs>[]
+      role: Prisma.$rolePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       name: string
       description: string
       link: string
+      owner: string
     }, ExtArgs["result"]["resource"]>
     composites: {}
   }
@@ -5695,7 +5607,7 @@ export namespace Prisma {
   export interface Prisma__resourceClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     request<T extends resource$requestArgs<ExtArgs> = {}>(args?: Subset<T, resource$requestArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$requestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    resource_role<T extends resource$resource_roleArgs<ExtArgs> = {}>(args?: Subset<T, resource$resource_roleArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$resource_rolePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    role<T extends resource$roleArgs<ExtArgs> = {}>(args?: Subset<T, resource$roleArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$rolePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5729,6 +5641,7 @@ export namespace Prisma {
     readonly name: FieldRef<"resource", 'String'>
     readonly description: FieldRef<"resource", 'String'>
     readonly link: FieldRef<"resource", 'String'>
+    readonly owner: FieldRef<"resource", 'String'>
   }
     
 
@@ -6141,27 +6054,27 @@ export namespace Prisma {
   }
 
   /**
-   * resource.resource_role
+   * resource.role
    */
-  export type resource$resource_roleArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type resource$roleArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the resource_role
+     * Select specific fields to fetch from the role
      */
-    select?: resource_roleSelect<ExtArgs> | null
+    select?: roleSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the resource_role
+     * Omit specific fields from the role
      */
-    omit?: resource_roleOmit<ExtArgs> | null
+    omit?: roleOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: resource_roleInclude<ExtArgs> | null
-    where?: resource_roleWhereInput
-    orderBy?: resource_roleOrderByWithRelationInput | resource_roleOrderByWithRelationInput[]
-    cursor?: resource_roleWhereUniqueInput
+    include?: roleInclude<ExtArgs> | null
+    where?: roleWhereInput
+    orderBy?: roleOrderByWithRelationInput | roleOrderByWithRelationInput[]
+    cursor?: roleWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: Resource_roleScalarFieldEnum | Resource_roleScalarFieldEnum[]
+    distinct?: RoleScalarFieldEnum | RoleScalarFieldEnum[]
   }
 
   /**
@@ -6184,1071 +6097,6 @@ export namespace Prisma {
 
 
   /**
-   * Model resource_role
-   */
-
-  export type AggregateResource_role = {
-    _count: Resource_roleCountAggregateOutputType | null
-    _avg: Resource_roleAvgAggregateOutputType | null
-    _sum: Resource_roleSumAggregateOutputType | null
-    _min: Resource_roleMinAggregateOutputType | null
-    _max: Resource_roleMaxAggregateOutputType | null
-  }
-
-  export type Resource_roleAvgAggregateOutputType = {
-    role_id: number | null
-    resources_id: number | null
-  }
-
-  export type Resource_roleSumAggregateOutputType = {
-    role_id: number | null
-    resources_id: number | null
-  }
-
-  export type Resource_roleMinAggregateOutputType = {
-    role_id: number | null
-    resources_id: number | null
-  }
-
-  export type Resource_roleMaxAggregateOutputType = {
-    role_id: number | null
-    resources_id: number | null
-  }
-
-  export type Resource_roleCountAggregateOutputType = {
-    role_id: number
-    resources_id: number
-    _all: number
-  }
-
-
-  export type Resource_roleAvgAggregateInputType = {
-    role_id?: true
-    resources_id?: true
-  }
-
-  export type Resource_roleSumAggregateInputType = {
-    role_id?: true
-    resources_id?: true
-  }
-
-  export type Resource_roleMinAggregateInputType = {
-    role_id?: true
-    resources_id?: true
-  }
-
-  export type Resource_roleMaxAggregateInputType = {
-    role_id?: true
-    resources_id?: true
-  }
-
-  export type Resource_roleCountAggregateInputType = {
-    role_id?: true
-    resources_id?: true
-    _all?: true
-  }
-
-  export type Resource_roleAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which resource_role to aggregate.
-     */
-    where?: resource_roleWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of resource_roles to fetch.
-     */
-    orderBy?: resource_roleOrderByWithRelationInput | resource_roleOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: resource_roleWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` resource_roles from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` resource_roles.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned resource_roles
-    **/
-    _count?: true | Resource_roleCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: Resource_roleAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: Resource_roleSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: Resource_roleMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: Resource_roleMaxAggregateInputType
-  }
-
-  export type GetResource_roleAggregateType<T extends Resource_roleAggregateArgs> = {
-        [P in keyof T & keyof AggregateResource_role]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateResource_role[P]>
-      : GetScalarType<T[P], AggregateResource_role[P]>
-  }
-
-
-
-
-  export type resource_roleGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: resource_roleWhereInput
-    orderBy?: resource_roleOrderByWithAggregationInput | resource_roleOrderByWithAggregationInput[]
-    by: Resource_roleScalarFieldEnum[] | Resource_roleScalarFieldEnum
-    having?: resource_roleScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: Resource_roleCountAggregateInputType | true
-    _avg?: Resource_roleAvgAggregateInputType
-    _sum?: Resource_roleSumAggregateInputType
-    _min?: Resource_roleMinAggregateInputType
-    _max?: Resource_roleMaxAggregateInputType
-  }
-
-  export type Resource_roleGroupByOutputType = {
-    role_id: number
-    resources_id: number
-    _count: Resource_roleCountAggregateOutputType | null
-    _avg: Resource_roleAvgAggregateOutputType | null
-    _sum: Resource_roleSumAggregateOutputType | null
-    _min: Resource_roleMinAggregateOutputType | null
-    _max: Resource_roleMaxAggregateOutputType | null
-  }
-
-  type GetResource_roleGroupByPayload<T extends resource_roleGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<Resource_roleGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof Resource_roleGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], Resource_roleGroupByOutputType[P]>
-            : GetScalarType<T[P], Resource_roleGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type resource_roleSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    role_id?: boolean
-    resources_id?: boolean
-    resource?: boolean | resourceDefaultArgs<ExtArgs>
-    role?: boolean | roleDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["resource_role"]>
-
-  export type resource_roleSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    role_id?: boolean
-    resources_id?: boolean
-    resource?: boolean | resourceDefaultArgs<ExtArgs>
-    role?: boolean | roleDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["resource_role"]>
-
-  export type resource_roleSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    role_id?: boolean
-    resources_id?: boolean
-    resource?: boolean | resourceDefaultArgs<ExtArgs>
-    role?: boolean | roleDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["resource_role"]>
-
-  export type resource_roleSelectScalar = {
-    role_id?: boolean
-    resources_id?: boolean
-  }
-
-  export type resource_roleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"role_id" | "resources_id", ExtArgs["result"]["resource_role"]>
-  export type resource_roleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    resource?: boolean | resourceDefaultArgs<ExtArgs>
-    role?: boolean | roleDefaultArgs<ExtArgs>
-  }
-  export type resource_roleIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    resource?: boolean | resourceDefaultArgs<ExtArgs>
-    role?: boolean | roleDefaultArgs<ExtArgs>
-  }
-  export type resource_roleIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    resource?: boolean | resourceDefaultArgs<ExtArgs>
-    role?: boolean | roleDefaultArgs<ExtArgs>
-  }
-
-  export type $resource_rolePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "resource_role"
-    objects: {
-      resource: Prisma.$resourcePayload<ExtArgs>
-      role: Prisma.$rolePayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      role_id: number
-      resources_id: number
-    }, ExtArgs["result"]["resource_role"]>
-    composites: {}
-  }
-
-  type resource_roleGetPayload<S extends boolean | null | undefined | resource_roleDefaultArgs> = $Result.GetResult<Prisma.$resource_rolePayload, S>
-
-  type resource_roleCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<resource_roleFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: Resource_roleCountAggregateInputType | true
-    }
-
-  export interface resource_roleDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['resource_role'], meta: { name: 'resource_role' } }
-    /**
-     * Find zero or one Resource_role that matches the filter.
-     * @param {resource_roleFindUniqueArgs} args - Arguments to find a Resource_role
-     * @example
-     * // Get one Resource_role
-     * const resource_role = await prisma.resource_role.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends resource_roleFindUniqueArgs>(args: SelectSubset<T, resource_roleFindUniqueArgs<ExtArgs>>): Prisma__resource_roleClient<$Result.GetResult<Prisma.$resource_rolePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one Resource_role that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {resource_roleFindUniqueOrThrowArgs} args - Arguments to find a Resource_role
-     * @example
-     * // Get one Resource_role
-     * const resource_role = await prisma.resource_role.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends resource_roleFindUniqueOrThrowArgs>(args: SelectSubset<T, resource_roleFindUniqueOrThrowArgs<ExtArgs>>): Prisma__resource_roleClient<$Result.GetResult<Prisma.$resource_rolePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Resource_role that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {resource_roleFindFirstArgs} args - Arguments to find a Resource_role
-     * @example
-     * // Get one Resource_role
-     * const resource_role = await prisma.resource_role.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends resource_roleFindFirstArgs>(args?: SelectSubset<T, resource_roleFindFirstArgs<ExtArgs>>): Prisma__resource_roleClient<$Result.GetResult<Prisma.$resource_rolePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Resource_role that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {resource_roleFindFirstOrThrowArgs} args - Arguments to find a Resource_role
-     * @example
-     * // Get one Resource_role
-     * const resource_role = await prisma.resource_role.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends resource_roleFindFirstOrThrowArgs>(args?: SelectSubset<T, resource_roleFindFirstOrThrowArgs<ExtArgs>>): Prisma__resource_roleClient<$Result.GetResult<Prisma.$resource_rolePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more Resource_roles that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {resource_roleFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Resource_roles
-     * const resource_roles = await prisma.resource_role.findMany()
-     * 
-     * // Get first 10 Resource_roles
-     * const resource_roles = await prisma.resource_role.findMany({ take: 10 })
-     * 
-     * // Only select the `role_id`
-     * const resource_roleWithRole_idOnly = await prisma.resource_role.findMany({ select: { role_id: true } })
-     * 
-     */
-    findMany<T extends resource_roleFindManyArgs>(args?: SelectSubset<T, resource_roleFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$resource_rolePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a Resource_role.
-     * @param {resource_roleCreateArgs} args - Arguments to create a Resource_role.
-     * @example
-     * // Create one Resource_role
-     * const Resource_role = await prisma.resource_role.create({
-     *   data: {
-     *     // ... data to create a Resource_role
-     *   }
-     * })
-     * 
-     */
-    create<T extends resource_roleCreateArgs>(args: SelectSubset<T, resource_roleCreateArgs<ExtArgs>>): Prisma__resource_roleClient<$Result.GetResult<Prisma.$resource_rolePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many Resource_roles.
-     * @param {resource_roleCreateManyArgs} args - Arguments to create many Resource_roles.
-     * @example
-     * // Create many Resource_roles
-     * const resource_role = await prisma.resource_role.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends resource_roleCreateManyArgs>(args?: SelectSubset<T, resource_roleCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many Resource_roles and returns the data saved in the database.
-     * @param {resource_roleCreateManyAndReturnArgs} args - Arguments to create many Resource_roles.
-     * @example
-     * // Create many Resource_roles
-     * const resource_role = await prisma.resource_role.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many Resource_roles and only return the `role_id`
-     * const resource_roleWithRole_idOnly = await prisma.resource_role.createManyAndReturn({
-     *   select: { role_id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends resource_roleCreateManyAndReturnArgs>(args?: SelectSubset<T, resource_roleCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$resource_rolePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a Resource_role.
-     * @param {resource_roleDeleteArgs} args - Arguments to delete one Resource_role.
-     * @example
-     * // Delete one Resource_role
-     * const Resource_role = await prisma.resource_role.delete({
-     *   where: {
-     *     // ... filter to delete one Resource_role
-     *   }
-     * })
-     * 
-     */
-    delete<T extends resource_roleDeleteArgs>(args: SelectSubset<T, resource_roleDeleteArgs<ExtArgs>>): Prisma__resource_roleClient<$Result.GetResult<Prisma.$resource_rolePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one Resource_role.
-     * @param {resource_roleUpdateArgs} args - Arguments to update one Resource_role.
-     * @example
-     * // Update one Resource_role
-     * const resource_role = await prisma.resource_role.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends resource_roleUpdateArgs>(args: SelectSubset<T, resource_roleUpdateArgs<ExtArgs>>): Prisma__resource_roleClient<$Result.GetResult<Prisma.$resource_rolePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more Resource_roles.
-     * @param {resource_roleDeleteManyArgs} args - Arguments to filter Resource_roles to delete.
-     * @example
-     * // Delete a few Resource_roles
-     * const { count } = await prisma.resource_role.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends resource_roleDeleteManyArgs>(args?: SelectSubset<T, resource_roleDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Resource_roles.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {resource_roleUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Resource_roles
-     * const resource_role = await prisma.resource_role.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends resource_roleUpdateManyArgs>(args: SelectSubset<T, resource_roleUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Resource_roles and returns the data updated in the database.
-     * @param {resource_roleUpdateManyAndReturnArgs} args - Arguments to update many Resource_roles.
-     * @example
-     * // Update many Resource_roles
-     * const resource_role = await prisma.resource_role.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more Resource_roles and only return the `role_id`
-     * const resource_roleWithRole_idOnly = await prisma.resource_role.updateManyAndReturn({
-     *   select: { role_id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends resource_roleUpdateManyAndReturnArgs>(args: SelectSubset<T, resource_roleUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$resource_rolePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one Resource_role.
-     * @param {resource_roleUpsertArgs} args - Arguments to update or create a Resource_role.
-     * @example
-     * // Update or create a Resource_role
-     * const resource_role = await prisma.resource_role.upsert({
-     *   create: {
-     *     // ... data to create a Resource_role
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the Resource_role we want to update
-     *   }
-     * })
-     */
-    upsert<T extends resource_roleUpsertArgs>(args: SelectSubset<T, resource_roleUpsertArgs<ExtArgs>>): Prisma__resource_roleClient<$Result.GetResult<Prisma.$resource_rolePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of Resource_roles.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {resource_roleCountArgs} args - Arguments to filter Resource_roles to count.
-     * @example
-     * // Count the number of Resource_roles
-     * const count = await prisma.resource_role.count({
-     *   where: {
-     *     // ... the filter for the Resource_roles we want to count
-     *   }
-     * })
-    **/
-    count<T extends resource_roleCountArgs>(
-      args?: Subset<T, resource_roleCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], Resource_roleCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a Resource_role.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {Resource_roleAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends Resource_roleAggregateArgs>(args: Subset<T, Resource_roleAggregateArgs>): Prisma.PrismaPromise<GetResource_roleAggregateType<T>>
-
-    /**
-     * Group by Resource_role.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {resource_roleGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends resource_roleGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: resource_roleGroupByArgs['orderBy'] }
-        : { orderBy?: resource_roleGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, resource_roleGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetResource_roleGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the resource_role model
-   */
-  readonly fields: resource_roleFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for resource_role.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__resource_roleClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    resource<T extends resourceDefaultArgs<ExtArgs> = {}>(args?: Subset<T, resourceDefaultArgs<ExtArgs>>): Prisma__resourceClient<$Result.GetResult<Prisma.$resourcePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    role<T extends roleDefaultArgs<ExtArgs> = {}>(args?: Subset<T, roleDefaultArgs<ExtArgs>>): Prisma__roleClient<$Result.GetResult<Prisma.$rolePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the resource_role model
-   */
-  interface resource_roleFieldRefs {
-    readonly role_id: FieldRef<"resource_role", 'Int'>
-    readonly resources_id: FieldRef<"resource_role", 'Int'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * resource_role findUnique
-   */
-  export type resource_roleFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the resource_role
-     */
-    select?: resource_roleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the resource_role
-     */
-    omit?: resource_roleOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: resource_roleInclude<ExtArgs> | null
-    /**
-     * Filter, which resource_role to fetch.
-     */
-    where: resource_roleWhereUniqueInput
-  }
-
-  /**
-   * resource_role findUniqueOrThrow
-   */
-  export type resource_roleFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the resource_role
-     */
-    select?: resource_roleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the resource_role
-     */
-    omit?: resource_roleOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: resource_roleInclude<ExtArgs> | null
-    /**
-     * Filter, which resource_role to fetch.
-     */
-    where: resource_roleWhereUniqueInput
-  }
-
-  /**
-   * resource_role findFirst
-   */
-  export type resource_roleFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the resource_role
-     */
-    select?: resource_roleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the resource_role
-     */
-    omit?: resource_roleOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: resource_roleInclude<ExtArgs> | null
-    /**
-     * Filter, which resource_role to fetch.
-     */
-    where?: resource_roleWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of resource_roles to fetch.
-     */
-    orderBy?: resource_roleOrderByWithRelationInput | resource_roleOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for resource_roles.
-     */
-    cursor?: resource_roleWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` resource_roles from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` resource_roles.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of resource_roles.
-     */
-    distinct?: Resource_roleScalarFieldEnum | Resource_roleScalarFieldEnum[]
-  }
-
-  /**
-   * resource_role findFirstOrThrow
-   */
-  export type resource_roleFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the resource_role
-     */
-    select?: resource_roleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the resource_role
-     */
-    omit?: resource_roleOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: resource_roleInclude<ExtArgs> | null
-    /**
-     * Filter, which resource_role to fetch.
-     */
-    where?: resource_roleWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of resource_roles to fetch.
-     */
-    orderBy?: resource_roleOrderByWithRelationInput | resource_roleOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for resource_roles.
-     */
-    cursor?: resource_roleWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` resource_roles from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` resource_roles.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of resource_roles.
-     */
-    distinct?: Resource_roleScalarFieldEnum | Resource_roleScalarFieldEnum[]
-  }
-
-  /**
-   * resource_role findMany
-   */
-  export type resource_roleFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the resource_role
-     */
-    select?: resource_roleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the resource_role
-     */
-    omit?: resource_roleOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: resource_roleInclude<ExtArgs> | null
-    /**
-     * Filter, which resource_roles to fetch.
-     */
-    where?: resource_roleWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of resource_roles to fetch.
-     */
-    orderBy?: resource_roleOrderByWithRelationInput | resource_roleOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing resource_roles.
-     */
-    cursor?: resource_roleWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` resource_roles from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` resource_roles.
-     */
-    skip?: number
-    distinct?: Resource_roleScalarFieldEnum | Resource_roleScalarFieldEnum[]
-  }
-
-  /**
-   * resource_role create
-   */
-  export type resource_roleCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the resource_role
-     */
-    select?: resource_roleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the resource_role
-     */
-    omit?: resource_roleOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: resource_roleInclude<ExtArgs> | null
-    /**
-     * The data needed to create a resource_role.
-     */
-    data: XOR<resource_roleCreateInput, resource_roleUncheckedCreateInput>
-  }
-
-  /**
-   * resource_role createMany
-   */
-  export type resource_roleCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many resource_roles.
-     */
-    data: resource_roleCreateManyInput | resource_roleCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * resource_role createManyAndReturn
-   */
-  export type resource_roleCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the resource_role
-     */
-    select?: resource_roleSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the resource_role
-     */
-    omit?: resource_roleOmit<ExtArgs> | null
-    /**
-     * The data used to create many resource_roles.
-     */
-    data: resource_roleCreateManyInput | resource_roleCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: resource_roleIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * resource_role update
-   */
-  export type resource_roleUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the resource_role
-     */
-    select?: resource_roleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the resource_role
-     */
-    omit?: resource_roleOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: resource_roleInclude<ExtArgs> | null
-    /**
-     * The data needed to update a resource_role.
-     */
-    data: XOR<resource_roleUpdateInput, resource_roleUncheckedUpdateInput>
-    /**
-     * Choose, which resource_role to update.
-     */
-    where: resource_roleWhereUniqueInput
-  }
-
-  /**
-   * resource_role updateMany
-   */
-  export type resource_roleUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update resource_roles.
-     */
-    data: XOR<resource_roleUpdateManyMutationInput, resource_roleUncheckedUpdateManyInput>
-    /**
-     * Filter which resource_roles to update
-     */
-    where?: resource_roleWhereInput
-    /**
-     * Limit how many resource_roles to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * resource_role updateManyAndReturn
-   */
-  export type resource_roleUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the resource_role
-     */
-    select?: resource_roleSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the resource_role
-     */
-    omit?: resource_roleOmit<ExtArgs> | null
-    /**
-     * The data used to update resource_roles.
-     */
-    data: XOR<resource_roleUpdateManyMutationInput, resource_roleUncheckedUpdateManyInput>
-    /**
-     * Filter which resource_roles to update
-     */
-    where?: resource_roleWhereInput
-    /**
-     * Limit how many resource_roles to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: resource_roleIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * resource_role upsert
-   */
-  export type resource_roleUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the resource_role
-     */
-    select?: resource_roleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the resource_role
-     */
-    omit?: resource_roleOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: resource_roleInclude<ExtArgs> | null
-    /**
-     * The filter to search for the resource_role to update in case it exists.
-     */
-    where: resource_roleWhereUniqueInput
-    /**
-     * In case the resource_role found by the `where` argument doesn't exist, create a new resource_role with this data.
-     */
-    create: XOR<resource_roleCreateInput, resource_roleUncheckedCreateInput>
-    /**
-     * In case the resource_role was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<resource_roleUpdateInput, resource_roleUncheckedUpdateInput>
-  }
-
-  /**
-   * resource_role delete
-   */
-  export type resource_roleDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the resource_role
-     */
-    select?: resource_roleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the resource_role
-     */
-    omit?: resource_roleOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: resource_roleInclude<ExtArgs> | null
-    /**
-     * Filter which resource_role to delete.
-     */
-    where: resource_roleWhereUniqueInput
-  }
-
-  /**
-   * resource_role deleteMany
-   */
-  export type resource_roleDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which resource_roles to delete
-     */
-    where?: resource_roleWhereInput
-    /**
-     * Limit how many resource_roles to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * resource_role without action
-   */
-  export type resource_roleDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the resource_role
-     */
-    select?: resource_roleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the resource_role
-     */
-    omit?: resource_roleOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: resource_roleInclude<ExtArgs> | null
-  }
-
-
-  /**
    * Model role
    */
 
@@ -7263,11 +6111,13 @@ export namespace Prisma {
   export type RoleAvgAggregateOutputType = {
     id: number | null
     access_id: number | null
+    resource_id: number | null
   }
 
   export type RoleSumAggregateOutputType = {
     id: number | null
     access_id: number | null
+    resource_id: number | null
   }
 
   export type RoleMinAggregateOutputType = {
@@ -7275,6 +6125,7 @@ export namespace Prisma {
     name: string | null
     description: string | null
     access_id: number | null
+    resource_id: number | null
   }
 
   export type RoleMaxAggregateOutputType = {
@@ -7282,6 +6133,7 @@ export namespace Prisma {
     name: string | null
     description: string | null
     access_id: number | null
+    resource_id: number | null
   }
 
   export type RoleCountAggregateOutputType = {
@@ -7289,6 +6141,7 @@ export namespace Prisma {
     name: number
     description: number
     access_id: number
+    resource_id: number
     _all: number
   }
 
@@ -7296,11 +6149,13 @@ export namespace Prisma {
   export type RoleAvgAggregateInputType = {
     id?: true
     access_id?: true
+    resource_id?: true
   }
 
   export type RoleSumAggregateInputType = {
     id?: true
     access_id?: true
+    resource_id?: true
   }
 
   export type RoleMinAggregateInputType = {
@@ -7308,6 +6163,7 @@ export namespace Prisma {
     name?: true
     description?: true
     access_id?: true
+    resource_id?: true
   }
 
   export type RoleMaxAggregateInputType = {
@@ -7315,6 +6171,7 @@ export namespace Prisma {
     name?: true
     description?: true
     access_id?: true
+    resource_id?: true
   }
 
   export type RoleCountAggregateInputType = {
@@ -7322,6 +6179,7 @@ export namespace Prisma {
     name?: true
     description?: true
     access_id?: true
+    resource_id?: true
     _all?: true
   }
 
@@ -7416,6 +6274,7 @@ export namespace Prisma {
     name: string
     description: string
     access_id: number
+    resource_id: number
     _count: RoleCountAggregateOutputType | null
     _avg: RoleAvgAggregateOutputType | null
     _sum: RoleSumAggregateOutputType | null
@@ -7442,9 +6301,10 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     access_id?: boolean
+    resource_id?: boolean
     request?: boolean | role$requestArgs<ExtArgs>
-    resource_role?: boolean | role$resource_roleArgs<ExtArgs>
     access?: boolean | accessDefaultArgs<ExtArgs>
+    resource?: boolean | resourceDefaultArgs<ExtArgs>
     user?: boolean | role$userArgs<ExtArgs>
     _count?: boolean | RoleCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["role"]>
@@ -7454,7 +6314,9 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     access_id?: boolean
+    resource_id?: boolean
     access?: boolean | accessDefaultArgs<ExtArgs>
+    resource?: boolean | resourceDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["role"]>
 
   export type roleSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -7462,7 +6324,9 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     access_id?: boolean
+    resource_id?: boolean
     access?: boolean | accessDefaultArgs<ExtArgs>
+    resource?: boolean | resourceDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["role"]>
 
   export type roleSelectScalar = {
@@ -7470,29 +6334,32 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     access_id?: boolean
+    resource_id?: boolean
   }
 
-  export type roleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "access_id", ExtArgs["result"]["role"]>
+  export type roleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "access_id" | "resource_id", ExtArgs["result"]["role"]>
   export type roleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     request?: boolean | role$requestArgs<ExtArgs>
-    resource_role?: boolean | role$resource_roleArgs<ExtArgs>
     access?: boolean | accessDefaultArgs<ExtArgs>
+    resource?: boolean | resourceDefaultArgs<ExtArgs>
     user?: boolean | role$userArgs<ExtArgs>
     _count?: boolean | RoleCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type roleIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     access?: boolean | accessDefaultArgs<ExtArgs>
+    resource?: boolean | resourceDefaultArgs<ExtArgs>
   }
   export type roleIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     access?: boolean | accessDefaultArgs<ExtArgs>
+    resource?: boolean | resourceDefaultArgs<ExtArgs>
   }
 
   export type $rolePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "role"
     objects: {
       request: Prisma.$requestPayload<ExtArgs>[]
-      resource_role: Prisma.$resource_rolePayload<ExtArgs>[]
       access: Prisma.$accessPayload<ExtArgs>
+      resource: Prisma.$resourcePayload<ExtArgs>
       user: Prisma.$userPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -7500,6 +6367,7 @@ export namespace Prisma {
       name: string
       description: string
       access_id: number
+      resource_id: number
     }, ExtArgs["result"]["role"]>
     composites: {}
   }
@@ -7895,8 +6763,8 @@ export namespace Prisma {
   export interface Prisma__roleClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     request<T extends role$requestArgs<ExtArgs> = {}>(args?: Subset<T, role$requestArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$requestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    resource_role<T extends role$resource_roleArgs<ExtArgs> = {}>(args?: Subset<T, role$resource_roleArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$resource_rolePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     access<T extends accessDefaultArgs<ExtArgs> = {}>(args?: Subset<T, accessDefaultArgs<ExtArgs>>): Prisma__accessClient<$Result.GetResult<Prisma.$accessPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    resource<T extends resourceDefaultArgs<ExtArgs> = {}>(args?: Subset<T, resourceDefaultArgs<ExtArgs>>): Prisma__resourceClient<$Result.GetResult<Prisma.$resourcePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     user<T extends role$userArgs<ExtArgs> = {}>(args?: Subset<T, role$userArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$userPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -7931,6 +6799,7 @@ export namespace Prisma {
     readonly name: FieldRef<"role", 'String'>
     readonly description: FieldRef<"role", 'String'>
     readonly access_id: FieldRef<"role", 'Int'>
+    readonly resource_id: FieldRef<"role", 'Int'>
   }
     
 
@@ -8348,30 +7217,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: RequestScalarFieldEnum | RequestScalarFieldEnum[]
-  }
-
-  /**
-   * role.resource_role
-   */
-  export type role$resource_roleArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the resource_role
-     */
-    select?: resource_roleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the resource_role
-     */
-    omit?: resource_roleOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: resource_roleInclude<ExtArgs> | null
-    where?: resource_roleWhereInput
-    orderBy?: resource_roleOrderByWithRelationInput | resource_roleOrderByWithRelationInput[]
-    cursor?: resource_roleWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: Resource_roleScalarFieldEnum | Resource_roleScalarFieldEnum[]
   }
 
   /**
@@ -10777,25 +9622,19 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     description: 'description',
-    link: 'link'
+    link: 'link',
+    owner: 'owner'
   };
 
   export type ResourceScalarFieldEnum = (typeof ResourceScalarFieldEnum)[keyof typeof ResourceScalarFieldEnum]
-
-
-  export const Resource_roleScalarFieldEnum: {
-    role_id: 'role_id',
-    resources_id: 'resources_id'
-  };
-
-  export type Resource_roleScalarFieldEnum = (typeof Resource_roleScalarFieldEnum)[keyof typeof Resource_roleScalarFieldEnum]
 
 
   export const RoleScalarFieldEnum: {
     id: 'id',
     name: 'name',
     description: 'description',
-    access_id: 'access_id'
+    access_id: 'access_id',
+    resource_id: 'resource_id'
   };
 
   export type RoleScalarFieldEnum = (typeof RoleScalarFieldEnum)[keyof typeof RoleScalarFieldEnum]
@@ -11108,8 +9947,9 @@ export namespace Prisma {
     name?: StringFilter<"resource"> | string
     description?: StringFilter<"resource"> | string
     link?: StringFilter<"resource"> | string
+    owner?: StringFilter<"resource"> | string
     request?: RequestListRelationFilter
-    resource_role?: Resource_roleListRelationFilter
+    role?: RoleListRelationFilter
   }
 
   export type resourceOrderByWithRelationInput = {
@@ -11117,8 +9957,9 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     link?: SortOrder
+    owner?: SortOrder
     request?: requestOrderByRelationAggregateInput
-    resource_role?: resource_roleOrderByRelationAggregateInput
+    role?: roleOrderByRelationAggregateInput
   }
 
   export type resourceWhereUniqueInput = Prisma.AtLeast<{
@@ -11129,8 +9970,9 @@ export namespace Prisma {
     name?: StringFilter<"resource"> | string
     description?: StringFilter<"resource"> | string
     link?: StringFilter<"resource"> | string
+    owner?: StringFilter<"resource"> | string
     request?: RequestListRelationFilter
-    resource_role?: Resource_roleListRelationFilter
+    role?: RoleListRelationFilter
   }, "id">
 
   export type resourceOrderByWithAggregationInput = {
@@ -11138,6 +9980,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     link?: SortOrder
+    owner?: SortOrder
     _count?: resourceCountOrderByAggregateInput
     _avg?: resourceAvgOrderByAggregateInput
     _max?: resourceMaxOrderByAggregateInput
@@ -11153,52 +9996,7 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"resource"> | string
     description?: StringWithAggregatesFilter<"resource"> | string
     link?: StringWithAggregatesFilter<"resource"> | string
-  }
-
-  export type resource_roleWhereInput = {
-    AND?: resource_roleWhereInput | resource_roleWhereInput[]
-    OR?: resource_roleWhereInput[]
-    NOT?: resource_roleWhereInput | resource_roleWhereInput[]
-    role_id?: IntFilter<"resource_role"> | number
-    resources_id?: IntFilter<"resource_role"> | number
-    resource?: XOR<ResourceScalarRelationFilter, resourceWhereInput>
-    role?: XOR<RoleScalarRelationFilter, roleWhereInput>
-  }
-
-  export type resource_roleOrderByWithRelationInput = {
-    role_id?: SortOrder
-    resources_id?: SortOrder
-    resource?: resourceOrderByWithRelationInput
-    role?: roleOrderByWithRelationInput
-  }
-
-  export type resource_roleWhereUniqueInput = Prisma.AtLeast<{
-    role_id_resources_id?: resource_roleRole_idResources_idCompoundUniqueInput
-    AND?: resource_roleWhereInput | resource_roleWhereInput[]
-    OR?: resource_roleWhereInput[]
-    NOT?: resource_roleWhereInput | resource_roleWhereInput[]
-    role_id?: IntFilter<"resource_role"> | number
-    resources_id?: IntFilter<"resource_role"> | number
-    resource?: XOR<ResourceScalarRelationFilter, resourceWhereInput>
-    role?: XOR<RoleScalarRelationFilter, roleWhereInput>
-  }, "role_id_resources_id">
-
-  export type resource_roleOrderByWithAggregationInput = {
-    role_id?: SortOrder
-    resources_id?: SortOrder
-    _count?: resource_roleCountOrderByAggregateInput
-    _avg?: resource_roleAvgOrderByAggregateInput
-    _max?: resource_roleMaxOrderByAggregateInput
-    _min?: resource_roleMinOrderByAggregateInput
-    _sum?: resource_roleSumOrderByAggregateInput
-  }
-
-  export type resource_roleScalarWhereWithAggregatesInput = {
-    AND?: resource_roleScalarWhereWithAggregatesInput | resource_roleScalarWhereWithAggregatesInput[]
-    OR?: resource_roleScalarWhereWithAggregatesInput[]
-    NOT?: resource_roleScalarWhereWithAggregatesInput | resource_roleScalarWhereWithAggregatesInput[]
-    role_id?: IntWithAggregatesFilter<"resource_role"> | number
-    resources_id?: IntWithAggregatesFilter<"resource_role"> | number
+    owner?: StringWithAggregatesFilter<"resource"> | string
   }
 
   export type roleWhereInput = {
@@ -11209,9 +10007,10 @@ export namespace Prisma {
     name?: StringFilter<"role"> | string
     description?: StringFilter<"role"> | string
     access_id?: IntFilter<"role"> | number
+    resource_id?: IntFilter<"role"> | number
     request?: RequestListRelationFilter
-    resource_role?: Resource_roleListRelationFilter
     access?: XOR<AccessScalarRelationFilter, accessWhereInput>
+    resource?: XOR<ResourceScalarRelationFilter, resourceWhereInput>
     user?: UserListRelationFilter
   }
 
@@ -11220,9 +10019,10 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     access_id?: SortOrder
+    resource_id?: SortOrder
     request?: requestOrderByRelationAggregateInput
-    resource_role?: resource_roleOrderByRelationAggregateInput
     access?: accessOrderByWithRelationInput
+    resource?: resourceOrderByWithRelationInput
     user?: userOrderByRelationAggregateInput
   }
 
@@ -11234,9 +10034,10 @@ export namespace Prisma {
     NOT?: roleWhereInput | roleWhereInput[]
     description?: StringFilter<"role"> | string
     access_id?: IntFilter<"role"> | number
+    resource_id?: IntFilter<"role"> | number
     request?: RequestListRelationFilter
-    resource_role?: Resource_roleListRelationFilter
     access?: XOR<AccessScalarRelationFilter, accessWhereInput>
+    resource?: XOR<ResourceScalarRelationFilter, resourceWhereInput>
     user?: UserListRelationFilter
   }, "id" | "name">
 
@@ -11245,6 +10046,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     access_id?: SortOrder
+    resource_id?: SortOrder
     _count?: roleCountOrderByAggregateInput
     _avg?: roleAvgOrderByAggregateInput
     _max?: roleMaxOrderByAggregateInput
@@ -11260,6 +10062,7 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"role"> | string
     description?: StringWithAggregatesFilter<"role"> | string
     access_id?: IntWithAggregatesFilter<"role"> | number
+    resource_id?: IntWithAggregatesFilter<"role"> | number
   }
 
   export type userWhereInput = {
@@ -11578,8 +10381,9 @@ export namespace Prisma {
     name: string
     description: string
     link: string
+    owner: string
     request?: requestCreateNestedManyWithoutResourceInput
-    resource_role?: resource_roleCreateNestedManyWithoutResourceInput
+    role?: roleCreateNestedManyWithoutResourceInput
   }
 
   export type resourceUncheckedCreateInput = {
@@ -11587,16 +10391,18 @@ export namespace Prisma {
     name: string
     description: string
     link: string
+    owner: string
     request?: requestUncheckedCreateNestedManyWithoutResourceInput
-    resource_role?: resource_roleUncheckedCreateNestedManyWithoutResourceInput
+    role?: roleUncheckedCreateNestedManyWithoutResourceInput
   }
 
   export type resourceUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     link?: StringFieldUpdateOperationsInput | string
+    owner?: StringFieldUpdateOperationsInput | string
     request?: requestUpdateManyWithoutResourceNestedInput
-    resource_role?: resource_roleUpdateManyWithoutResourceNestedInput
+    role?: roleUpdateManyWithoutResourceNestedInput
   }
 
   export type resourceUncheckedUpdateInput = {
@@ -11604,8 +10410,9 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     link?: StringFieldUpdateOperationsInput | string
+    owner?: StringFieldUpdateOperationsInput | string
     request?: requestUncheckedUpdateManyWithoutResourceNestedInput
-    resource_role?: resource_roleUncheckedUpdateManyWithoutResourceNestedInput
+    role?: roleUncheckedUpdateManyWithoutResourceNestedInput
   }
 
   export type resourceCreateManyInput = {
@@ -11613,12 +10420,14 @@ export namespace Prisma {
     name: string
     description: string
     link: string
+    owner: string
   }
 
   export type resourceUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     link?: StringFieldUpdateOperationsInput | string
+    owner?: StringFieldUpdateOperationsInput | string
   }
 
   export type resourceUncheckedUpdateManyInput = {
@@ -11626,48 +10435,15 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     link?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type resource_roleCreateInput = {
-    resource: resourceCreateNestedOneWithoutResource_roleInput
-    role: roleCreateNestedOneWithoutResource_roleInput
-  }
-
-  export type resource_roleUncheckedCreateInput = {
-    role_id: number
-    resources_id: number
-  }
-
-  export type resource_roleUpdateInput = {
-    resource?: resourceUpdateOneRequiredWithoutResource_roleNestedInput
-    role?: roleUpdateOneRequiredWithoutResource_roleNestedInput
-  }
-
-  export type resource_roleUncheckedUpdateInput = {
-    role_id?: IntFieldUpdateOperationsInput | number
-    resources_id?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type resource_roleCreateManyInput = {
-    role_id: number
-    resources_id: number
-  }
-
-  export type resource_roleUpdateManyMutationInput = {
-
-  }
-
-  export type resource_roleUncheckedUpdateManyInput = {
-    role_id?: IntFieldUpdateOperationsInput | number
-    resources_id?: IntFieldUpdateOperationsInput | number
+    owner?: StringFieldUpdateOperationsInput | string
   }
 
   export type roleCreateInput = {
     name: string
     description: string
     request?: requestCreateNestedManyWithoutRoleInput
-    resource_role?: resource_roleCreateNestedManyWithoutRoleInput
     access: accessCreateNestedOneWithoutRoleInput
+    resource: resourceCreateNestedOneWithoutRoleInput
     user?: userCreateNestedManyWithoutRoleInput
   }
 
@@ -11676,8 +10452,8 @@ export namespace Prisma {
     name: string
     description: string
     access_id: number
+    resource_id: number
     request?: requestUncheckedCreateNestedManyWithoutRoleInput
-    resource_role?: resource_roleUncheckedCreateNestedManyWithoutRoleInput
     user?: userUncheckedCreateNestedManyWithoutRoleInput
   }
 
@@ -11685,8 +10461,8 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     request?: requestUpdateManyWithoutRoleNestedInput
-    resource_role?: resource_roleUpdateManyWithoutRoleNestedInput
     access?: accessUpdateOneRequiredWithoutRoleNestedInput
+    resource?: resourceUpdateOneRequiredWithoutRoleNestedInput
     user?: userUpdateManyWithoutRoleNestedInput
   }
 
@@ -11695,8 +10471,8 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     access_id?: IntFieldUpdateOperationsInput | number
+    resource_id?: IntFieldUpdateOperationsInput | number
     request?: requestUncheckedUpdateManyWithoutRoleNestedInput
-    resource_role?: resource_roleUncheckedUpdateManyWithoutRoleNestedInput
     user?: userUncheckedUpdateManyWithoutRoleNestedInput
   }
 
@@ -11705,6 +10481,7 @@ export namespace Prisma {
     name: string
     description: string
     access_id: number
+    resource_id: number
   }
 
   export type roleUpdateManyMutationInput = {
@@ -11717,6 +10494,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     access_id?: IntFieldUpdateOperationsInput | number
+    resource_id?: IntFieldUpdateOperationsInput | number
   }
 
   export type userCreateInput = {
@@ -12122,17 +10900,7 @@ export namespace Prisma {
     none?: requestWhereInput
   }
 
-  export type Resource_roleListRelationFilter = {
-    every?: resource_roleWhereInput
-    some?: resource_roleWhereInput
-    none?: resource_roleWhereInput
-  }
-
   export type requestOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type resource_roleOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -12141,6 +10909,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     link?: SortOrder
+    owner?: SortOrder
   }
 
   export type resourceAvgOrderByAggregateInput = {
@@ -12152,6 +10921,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     link?: SortOrder
+    owner?: SortOrder
   }
 
   export type resourceMinOrderByAggregateInput = {
@@ -12159,40 +10929,11 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     link?: SortOrder
+    owner?: SortOrder
   }
 
   export type resourceSumOrderByAggregateInput = {
     id?: SortOrder
-  }
-
-  export type resource_roleRole_idResources_idCompoundUniqueInput = {
-    role_id: number
-    resources_id: number
-  }
-
-  export type resource_roleCountOrderByAggregateInput = {
-    role_id?: SortOrder
-    resources_id?: SortOrder
-  }
-
-  export type resource_roleAvgOrderByAggregateInput = {
-    role_id?: SortOrder
-    resources_id?: SortOrder
-  }
-
-  export type resource_roleMaxOrderByAggregateInput = {
-    role_id?: SortOrder
-    resources_id?: SortOrder
-  }
-
-  export type resource_roleMinOrderByAggregateInput = {
-    role_id?: SortOrder
-    resources_id?: SortOrder
-  }
-
-  export type resource_roleSumOrderByAggregateInput = {
-    role_id?: SortOrder
-    resources_id?: SortOrder
   }
 
   export type AccessScalarRelationFilter = {
@@ -12215,11 +10956,13 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     access_id?: SortOrder
+    resource_id?: SortOrder
   }
 
   export type roleAvgOrderByAggregateInput = {
     id?: SortOrder
     access_id?: SortOrder
+    resource_id?: SortOrder
   }
 
   export type roleMaxOrderByAggregateInput = {
@@ -12227,6 +10970,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     access_id?: SortOrder
+    resource_id?: SortOrder
   }
 
   export type roleMinOrderByAggregateInput = {
@@ -12234,11 +10978,13 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     access_id?: SortOrder
+    resource_id?: SortOrder
   }
 
   export type roleSumOrderByAggregateInput = {
     id?: SortOrder
     access_id?: SortOrder
+    resource_id?: SortOrder
   }
 
   export type IntNullableFilter<$PrismaModel = never> = {
@@ -12522,11 +11268,11 @@ export namespace Prisma {
     connect?: requestWhereUniqueInput | requestWhereUniqueInput[]
   }
 
-  export type resource_roleCreateNestedManyWithoutResourceInput = {
-    create?: XOR<resource_roleCreateWithoutResourceInput, resource_roleUncheckedCreateWithoutResourceInput> | resource_roleCreateWithoutResourceInput[] | resource_roleUncheckedCreateWithoutResourceInput[]
-    connectOrCreate?: resource_roleCreateOrConnectWithoutResourceInput | resource_roleCreateOrConnectWithoutResourceInput[]
-    createMany?: resource_roleCreateManyResourceInputEnvelope
-    connect?: resource_roleWhereUniqueInput | resource_roleWhereUniqueInput[]
+  export type roleCreateNestedManyWithoutResourceInput = {
+    create?: XOR<roleCreateWithoutResourceInput, roleUncheckedCreateWithoutResourceInput> | roleCreateWithoutResourceInput[] | roleUncheckedCreateWithoutResourceInput[]
+    connectOrCreate?: roleCreateOrConnectWithoutResourceInput | roleCreateOrConnectWithoutResourceInput[]
+    createMany?: roleCreateManyResourceInputEnvelope
+    connect?: roleWhereUniqueInput | roleWhereUniqueInput[]
   }
 
   export type requestUncheckedCreateNestedManyWithoutResourceInput = {
@@ -12536,11 +11282,11 @@ export namespace Prisma {
     connect?: requestWhereUniqueInput | requestWhereUniqueInput[]
   }
 
-  export type resource_roleUncheckedCreateNestedManyWithoutResourceInput = {
-    create?: XOR<resource_roleCreateWithoutResourceInput, resource_roleUncheckedCreateWithoutResourceInput> | resource_roleCreateWithoutResourceInput[] | resource_roleUncheckedCreateWithoutResourceInput[]
-    connectOrCreate?: resource_roleCreateOrConnectWithoutResourceInput | resource_roleCreateOrConnectWithoutResourceInput[]
-    createMany?: resource_roleCreateManyResourceInputEnvelope
-    connect?: resource_roleWhereUniqueInput | resource_roleWhereUniqueInput[]
+  export type roleUncheckedCreateNestedManyWithoutResourceInput = {
+    create?: XOR<roleCreateWithoutResourceInput, roleUncheckedCreateWithoutResourceInput> | roleCreateWithoutResourceInput[] | roleUncheckedCreateWithoutResourceInput[]
+    connectOrCreate?: roleCreateOrConnectWithoutResourceInput | roleCreateOrConnectWithoutResourceInput[]
+    createMany?: roleCreateManyResourceInputEnvelope
+    connect?: roleWhereUniqueInput | roleWhereUniqueInput[]
   }
 
   export type requestUpdateManyWithoutResourceNestedInput = {
@@ -12557,18 +11303,18 @@ export namespace Prisma {
     deleteMany?: requestScalarWhereInput | requestScalarWhereInput[]
   }
 
-  export type resource_roleUpdateManyWithoutResourceNestedInput = {
-    create?: XOR<resource_roleCreateWithoutResourceInput, resource_roleUncheckedCreateWithoutResourceInput> | resource_roleCreateWithoutResourceInput[] | resource_roleUncheckedCreateWithoutResourceInput[]
-    connectOrCreate?: resource_roleCreateOrConnectWithoutResourceInput | resource_roleCreateOrConnectWithoutResourceInput[]
-    upsert?: resource_roleUpsertWithWhereUniqueWithoutResourceInput | resource_roleUpsertWithWhereUniqueWithoutResourceInput[]
-    createMany?: resource_roleCreateManyResourceInputEnvelope
-    set?: resource_roleWhereUniqueInput | resource_roleWhereUniqueInput[]
-    disconnect?: resource_roleWhereUniqueInput | resource_roleWhereUniqueInput[]
-    delete?: resource_roleWhereUniqueInput | resource_roleWhereUniqueInput[]
-    connect?: resource_roleWhereUniqueInput | resource_roleWhereUniqueInput[]
-    update?: resource_roleUpdateWithWhereUniqueWithoutResourceInput | resource_roleUpdateWithWhereUniqueWithoutResourceInput[]
-    updateMany?: resource_roleUpdateManyWithWhereWithoutResourceInput | resource_roleUpdateManyWithWhereWithoutResourceInput[]
-    deleteMany?: resource_roleScalarWhereInput | resource_roleScalarWhereInput[]
+  export type roleUpdateManyWithoutResourceNestedInput = {
+    create?: XOR<roleCreateWithoutResourceInput, roleUncheckedCreateWithoutResourceInput> | roleCreateWithoutResourceInput[] | roleUncheckedCreateWithoutResourceInput[]
+    connectOrCreate?: roleCreateOrConnectWithoutResourceInput | roleCreateOrConnectWithoutResourceInput[]
+    upsert?: roleUpsertWithWhereUniqueWithoutResourceInput | roleUpsertWithWhereUniqueWithoutResourceInput[]
+    createMany?: roleCreateManyResourceInputEnvelope
+    set?: roleWhereUniqueInput | roleWhereUniqueInput[]
+    disconnect?: roleWhereUniqueInput | roleWhereUniqueInput[]
+    delete?: roleWhereUniqueInput | roleWhereUniqueInput[]
+    connect?: roleWhereUniqueInput | roleWhereUniqueInput[]
+    update?: roleUpdateWithWhereUniqueWithoutResourceInput | roleUpdateWithWhereUniqueWithoutResourceInput[]
+    updateMany?: roleUpdateManyWithWhereWithoutResourceInput | roleUpdateManyWithWhereWithoutResourceInput[]
+    deleteMany?: roleScalarWhereInput | roleScalarWhereInput[]
   }
 
   export type requestUncheckedUpdateManyWithoutResourceNestedInput = {
@@ -12585,46 +11331,18 @@ export namespace Prisma {
     deleteMany?: requestScalarWhereInput | requestScalarWhereInput[]
   }
 
-  export type resource_roleUncheckedUpdateManyWithoutResourceNestedInput = {
-    create?: XOR<resource_roleCreateWithoutResourceInput, resource_roleUncheckedCreateWithoutResourceInput> | resource_roleCreateWithoutResourceInput[] | resource_roleUncheckedCreateWithoutResourceInput[]
-    connectOrCreate?: resource_roleCreateOrConnectWithoutResourceInput | resource_roleCreateOrConnectWithoutResourceInput[]
-    upsert?: resource_roleUpsertWithWhereUniqueWithoutResourceInput | resource_roleUpsertWithWhereUniqueWithoutResourceInput[]
-    createMany?: resource_roleCreateManyResourceInputEnvelope
-    set?: resource_roleWhereUniqueInput | resource_roleWhereUniqueInput[]
-    disconnect?: resource_roleWhereUniqueInput | resource_roleWhereUniqueInput[]
-    delete?: resource_roleWhereUniqueInput | resource_roleWhereUniqueInput[]
-    connect?: resource_roleWhereUniqueInput | resource_roleWhereUniqueInput[]
-    update?: resource_roleUpdateWithWhereUniqueWithoutResourceInput | resource_roleUpdateWithWhereUniqueWithoutResourceInput[]
-    updateMany?: resource_roleUpdateManyWithWhereWithoutResourceInput | resource_roleUpdateManyWithWhereWithoutResourceInput[]
-    deleteMany?: resource_roleScalarWhereInput | resource_roleScalarWhereInput[]
-  }
-
-  export type resourceCreateNestedOneWithoutResource_roleInput = {
-    create?: XOR<resourceCreateWithoutResource_roleInput, resourceUncheckedCreateWithoutResource_roleInput>
-    connectOrCreate?: resourceCreateOrConnectWithoutResource_roleInput
-    connect?: resourceWhereUniqueInput
-  }
-
-  export type roleCreateNestedOneWithoutResource_roleInput = {
-    create?: XOR<roleCreateWithoutResource_roleInput, roleUncheckedCreateWithoutResource_roleInput>
-    connectOrCreate?: roleCreateOrConnectWithoutResource_roleInput
-    connect?: roleWhereUniqueInput
-  }
-
-  export type resourceUpdateOneRequiredWithoutResource_roleNestedInput = {
-    create?: XOR<resourceCreateWithoutResource_roleInput, resourceUncheckedCreateWithoutResource_roleInput>
-    connectOrCreate?: resourceCreateOrConnectWithoutResource_roleInput
-    upsert?: resourceUpsertWithoutResource_roleInput
-    connect?: resourceWhereUniqueInput
-    update?: XOR<XOR<resourceUpdateToOneWithWhereWithoutResource_roleInput, resourceUpdateWithoutResource_roleInput>, resourceUncheckedUpdateWithoutResource_roleInput>
-  }
-
-  export type roleUpdateOneRequiredWithoutResource_roleNestedInput = {
-    create?: XOR<roleCreateWithoutResource_roleInput, roleUncheckedCreateWithoutResource_roleInput>
-    connectOrCreate?: roleCreateOrConnectWithoutResource_roleInput
-    upsert?: roleUpsertWithoutResource_roleInput
-    connect?: roleWhereUniqueInput
-    update?: XOR<XOR<roleUpdateToOneWithWhereWithoutResource_roleInput, roleUpdateWithoutResource_roleInput>, roleUncheckedUpdateWithoutResource_roleInput>
+  export type roleUncheckedUpdateManyWithoutResourceNestedInput = {
+    create?: XOR<roleCreateWithoutResourceInput, roleUncheckedCreateWithoutResourceInput> | roleCreateWithoutResourceInput[] | roleUncheckedCreateWithoutResourceInput[]
+    connectOrCreate?: roleCreateOrConnectWithoutResourceInput | roleCreateOrConnectWithoutResourceInput[]
+    upsert?: roleUpsertWithWhereUniqueWithoutResourceInput | roleUpsertWithWhereUniqueWithoutResourceInput[]
+    createMany?: roleCreateManyResourceInputEnvelope
+    set?: roleWhereUniqueInput | roleWhereUniqueInput[]
+    disconnect?: roleWhereUniqueInput | roleWhereUniqueInput[]
+    delete?: roleWhereUniqueInput | roleWhereUniqueInput[]
+    connect?: roleWhereUniqueInput | roleWhereUniqueInput[]
+    update?: roleUpdateWithWhereUniqueWithoutResourceInput | roleUpdateWithWhereUniqueWithoutResourceInput[]
+    updateMany?: roleUpdateManyWithWhereWithoutResourceInput | roleUpdateManyWithWhereWithoutResourceInput[]
+    deleteMany?: roleScalarWhereInput | roleScalarWhereInput[]
   }
 
   export type requestCreateNestedManyWithoutRoleInput = {
@@ -12634,17 +11352,16 @@ export namespace Prisma {
     connect?: requestWhereUniqueInput | requestWhereUniqueInput[]
   }
 
-  export type resource_roleCreateNestedManyWithoutRoleInput = {
-    create?: XOR<resource_roleCreateWithoutRoleInput, resource_roleUncheckedCreateWithoutRoleInput> | resource_roleCreateWithoutRoleInput[] | resource_roleUncheckedCreateWithoutRoleInput[]
-    connectOrCreate?: resource_roleCreateOrConnectWithoutRoleInput | resource_roleCreateOrConnectWithoutRoleInput[]
-    createMany?: resource_roleCreateManyRoleInputEnvelope
-    connect?: resource_roleWhereUniqueInput | resource_roleWhereUniqueInput[]
-  }
-
   export type accessCreateNestedOneWithoutRoleInput = {
     create?: XOR<accessCreateWithoutRoleInput, accessUncheckedCreateWithoutRoleInput>
     connectOrCreate?: accessCreateOrConnectWithoutRoleInput
     connect?: accessWhereUniqueInput
+  }
+
+  export type resourceCreateNestedOneWithoutRoleInput = {
+    create?: XOR<resourceCreateWithoutRoleInput, resourceUncheckedCreateWithoutRoleInput>
+    connectOrCreate?: resourceCreateOrConnectWithoutRoleInput
+    connect?: resourceWhereUniqueInput
   }
 
   export type userCreateNestedManyWithoutRoleInput = {
@@ -12659,13 +11376,6 @@ export namespace Prisma {
     connectOrCreate?: requestCreateOrConnectWithoutRoleInput | requestCreateOrConnectWithoutRoleInput[]
     createMany?: requestCreateManyRoleInputEnvelope
     connect?: requestWhereUniqueInput | requestWhereUniqueInput[]
-  }
-
-  export type resource_roleUncheckedCreateNestedManyWithoutRoleInput = {
-    create?: XOR<resource_roleCreateWithoutRoleInput, resource_roleUncheckedCreateWithoutRoleInput> | resource_roleCreateWithoutRoleInput[] | resource_roleUncheckedCreateWithoutRoleInput[]
-    connectOrCreate?: resource_roleCreateOrConnectWithoutRoleInput | resource_roleCreateOrConnectWithoutRoleInput[]
-    createMany?: resource_roleCreateManyRoleInputEnvelope
-    connect?: resource_roleWhereUniqueInput | resource_roleWhereUniqueInput[]
   }
 
   export type userUncheckedCreateNestedManyWithoutRoleInput = {
@@ -12689,26 +11399,20 @@ export namespace Prisma {
     deleteMany?: requestScalarWhereInput | requestScalarWhereInput[]
   }
 
-  export type resource_roleUpdateManyWithoutRoleNestedInput = {
-    create?: XOR<resource_roleCreateWithoutRoleInput, resource_roleUncheckedCreateWithoutRoleInput> | resource_roleCreateWithoutRoleInput[] | resource_roleUncheckedCreateWithoutRoleInput[]
-    connectOrCreate?: resource_roleCreateOrConnectWithoutRoleInput | resource_roleCreateOrConnectWithoutRoleInput[]
-    upsert?: resource_roleUpsertWithWhereUniqueWithoutRoleInput | resource_roleUpsertWithWhereUniqueWithoutRoleInput[]
-    createMany?: resource_roleCreateManyRoleInputEnvelope
-    set?: resource_roleWhereUniqueInput | resource_roleWhereUniqueInput[]
-    disconnect?: resource_roleWhereUniqueInput | resource_roleWhereUniqueInput[]
-    delete?: resource_roleWhereUniqueInput | resource_roleWhereUniqueInput[]
-    connect?: resource_roleWhereUniqueInput | resource_roleWhereUniqueInput[]
-    update?: resource_roleUpdateWithWhereUniqueWithoutRoleInput | resource_roleUpdateWithWhereUniqueWithoutRoleInput[]
-    updateMany?: resource_roleUpdateManyWithWhereWithoutRoleInput | resource_roleUpdateManyWithWhereWithoutRoleInput[]
-    deleteMany?: resource_roleScalarWhereInput | resource_roleScalarWhereInput[]
-  }
-
   export type accessUpdateOneRequiredWithoutRoleNestedInput = {
     create?: XOR<accessCreateWithoutRoleInput, accessUncheckedCreateWithoutRoleInput>
     connectOrCreate?: accessCreateOrConnectWithoutRoleInput
     upsert?: accessUpsertWithoutRoleInput
     connect?: accessWhereUniqueInput
     update?: XOR<XOR<accessUpdateToOneWithWhereWithoutRoleInput, accessUpdateWithoutRoleInput>, accessUncheckedUpdateWithoutRoleInput>
+  }
+
+  export type resourceUpdateOneRequiredWithoutRoleNestedInput = {
+    create?: XOR<resourceCreateWithoutRoleInput, resourceUncheckedCreateWithoutRoleInput>
+    connectOrCreate?: resourceCreateOrConnectWithoutRoleInput
+    upsert?: resourceUpsertWithoutRoleInput
+    connect?: resourceWhereUniqueInput
+    update?: XOR<XOR<resourceUpdateToOneWithWhereWithoutRoleInput, resourceUpdateWithoutRoleInput>, resourceUncheckedUpdateWithoutRoleInput>
   }
 
   export type userUpdateManyWithoutRoleNestedInput = {
@@ -12737,20 +11441,6 @@ export namespace Prisma {
     update?: requestUpdateWithWhereUniqueWithoutRoleInput | requestUpdateWithWhereUniqueWithoutRoleInput[]
     updateMany?: requestUpdateManyWithWhereWithoutRoleInput | requestUpdateManyWithWhereWithoutRoleInput[]
     deleteMany?: requestScalarWhereInput | requestScalarWhereInput[]
-  }
-
-  export type resource_roleUncheckedUpdateManyWithoutRoleNestedInput = {
-    create?: XOR<resource_roleCreateWithoutRoleInput, resource_roleUncheckedCreateWithoutRoleInput> | resource_roleCreateWithoutRoleInput[] | resource_roleUncheckedCreateWithoutRoleInput[]
-    connectOrCreate?: resource_roleCreateOrConnectWithoutRoleInput | resource_roleCreateOrConnectWithoutRoleInput[]
-    upsert?: resource_roleUpsertWithWhereUniqueWithoutRoleInput | resource_roleUpsertWithWhereUniqueWithoutRoleInput[]
-    createMany?: resource_roleCreateManyRoleInputEnvelope
-    set?: resource_roleWhereUniqueInput | resource_roleWhereUniqueInput[]
-    disconnect?: resource_roleWhereUniqueInput | resource_roleWhereUniqueInput[]
-    delete?: resource_roleWhereUniqueInput | resource_roleWhereUniqueInput[]
-    connect?: resource_roleWhereUniqueInput | resource_roleWhereUniqueInput[]
-    update?: resource_roleUpdateWithWhereUniqueWithoutRoleInput | resource_roleUpdateWithWhereUniqueWithoutRoleInput[]
-    updateMany?: resource_roleUpdateManyWithWhereWithoutRoleInput | resource_roleUpdateManyWithWhereWithoutRoleInput[]
-    deleteMany?: resource_roleScalarWhereInput | resource_roleScalarWhereInput[]
   }
 
   export type userUncheckedUpdateManyWithoutRoleNestedInput = {
@@ -13070,7 +11760,7 @@ export namespace Prisma {
     name: string
     description: string
     request?: requestCreateNestedManyWithoutRoleInput
-    resource_role?: resource_roleCreateNestedManyWithoutRoleInput
+    resource: resourceCreateNestedOneWithoutRoleInput
     user?: userCreateNestedManyWithoutRoleInput
   }
 
@@ -13078,8 +11768,8 @@ export namespace Prisma {
     id?: number
     name: string
     description: string
+    resource_id: number
     request?: requestUncheckedCreateNestedManyWithoutRoleInput
-    resource_role?: resource_roleUncheckedCreateNestedManyWithoutRoleInput
     user?: userUncheckedCreateNestedManyWithoutRoleInput
   }
 
@@ -13117,6 +11807,7 @@ export namespace Prisma {
     name?: StringFilter<"role"> | string
     description?: StringFilter<"role"> | string
     access_id?: IntFilter<"role"> | number
+    resource_id?: IntFilter<"role"> | number
   }
 
   export type userCreateWithoutLogInput = {
@@ -13193,7 +11884,8 @@ export namespace Prisma {
     name: string
     description: string
     link: string
-    resource_role?: resource_roleCreateNestedManyWithoutResourceInput
+    owner: string
+    role?: roleCreateNestedManyWithoutResourceInput
   }
 
   export type resourceUncheckedCreateWithoutRequestInput = {
@@ -13201,7 +11893,8 @@ export namespace Prisma {
     name: string
     description: string
     link: string
-    resource_role?: resource_roleUncheckedCreateNestedManyWithoutResourceInput
+    owner: string
+    role?: roleUncheckedCreateNestedManyWithoutResourceInput
   }
 
   export type resourceCreateOrConnectWithoutRequestInput = {
@@ -13212,8 +11905,8 @@ export namespace Prisma {
   export type roleCreateWithoutRequestInput = {
     name: string
     description: string
-    resource_role?: resource_roleCreateNestedManyWithoutRoleInput
     access: accessCreateNestedOneWithoutRoleInput
+    resource: resourceCreateNestedOneWithoutRoleInput
     user?: userCreateNestedManyWithoutRoleInput
   }
 
@@ -13222,7 +11915,7 @@ export namespace Prisma {
     name: string
     description: string
     access_id: number
-    resource_role?: resource_roleUncheckedCreateNestedManyWithoutRoleInput
+    resource_id: number
     user?: userUncheckedCreateNestedManyWithoutRoleInput
   }
 
@@ -13264,7 +11957,8 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     link?: StringFieldUpdateOperationsInput | string
-    resource_role?: resource_roleUpdateManyWithoutResourceNestedInput
+    owner?: StringFieldUpdateOperationsInput | string
+    role?: roleUpdateManyWithoutResourceNestedInput
   }
 
   export type resourceUncheckedUpdateWithoutRequestInput = {
@@ -13272,7 +11966,8 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     link?: StringFieldUpdateOperationsInput | string
-    resource_role?: resource_roleUncheckedUpdateManyWithoutResourceNestedInput
+    owner?: StringFieldUpdateOperationsInput | string
+    role?: roleUncheckedUpdateManyWithoutResourceNestedInput
   }
 
   export type roleUpsertWithoutRequestInput = {
@@ -13289,8 +11984,8 @@ export namespace Prisma {
   export type roleUpdateWithoutRequestInput = {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    resource_role?: resource_roleUpdateManyWithoutRoleNestedInput
     access?: accessUpdateOneRequiredWithoutRoleNestedInput
+    resource?: resourceUpdateOneRequiredWithoutRoleNestedInput
     user?: userUpdateManyWithoutRoleNestedInput
   }
 
@@ -13299,7 +11994,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     access_id?: IntFieldUpdateOperationsInput | number
-    resource_role?: resource_roleUncheckedUpdateManyWithoutRoleNestedInput
+    resource_id?: IntFieldUpdateOperationsInput | number
     user?: userUncheckedUpdateManyWithoutRoleNestedInput
   }
 
@@ -13362,21 +12057,30 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type resource_roleCreateWithoutResourceInput = {
-    role: roleCreateNestedOneWithoutResource_roleInput
+  export type roleCreateWithoutResourceInput = {
+    name: string
+    description: string
+    request?: requestCreateNestedManyWithoutRoleInput
+    access: accessCreateNestedOneWithoutRoleInput
+    user?: userCreateNestedManyWithoutRoleInput
   }
 
-  export type resource_roleUncheckedCreateWithoutResourceInput = {
-    role_id: number
+  export type roleUncheckedCreateWithoutResourceInput = {
+    id?: number
+    name: string
+    description: string
+    access_id: number
+    request?: requestUncheckedCreateNestedManyWithoutRoleInput
+    user?: userUncheckedCreateNestedManyWithoutRoleInput
   }
 
-  export type resource_roleCreateOrConnectWithoutResourceInput = {
-    where: resource_roleWhereUniqueInput
-    create: XOR<resource_roleCreateWithoutResourceInput, resource_roleUncheckedCreateWithoutResourceInput>
+  export type roleCreateOrConnectWithoutResourceInput = {
+    where: roleWhereUniqueInput
+    create: XOR<roleCreateWithoutResourceInput, roleUncheckedCreateWithoutResourceInput>
   }
 
-  export type resource_roleCreateManyResourceInputEnvelope = {
-    data: resource_roleCreateManyResourceInput | resource_roleCreateManyResourceInput[]
+  export type roleCreateManyResourceInputEnvelope = {
+    data: roleCreateManyResourceInput | roleCreateManyResourceInput[]
     skipDuplicates?: boolean
   }
 
@@ -13412,124 +12116,20 @@ export namespace Prisma {
     role_id?: IntFilter<"request"> | number
   }
 
-  export type resource_roleUpsertWithWhereUniqueWithoutResourceInput = {
-    where: resource_roleWhereUniqueInput
-    update: XOR<resource_roleUpdateWithoutResourceInput, resource_roleUncheckedUpdateWithoutResourceInput>
-    create: XOR<resource_roleCreateWithoutResourceInput, resource_roleUncheckedCreateWithoutResourceInput>
-  }
-
-  export type resource_roleUpdateWithWhereUniqueWithoutResourceInput = {
-    where: resource_roleWhereUniqueInput
-    data: XOR<resource_roleUpdateWithoutResourceInput, resource_roleUncheckedUpdateWithoutResourceInput>
-  }
-
-  export type resource_roleUpdateManyWithWhereWithoutResourceInput = {
-    where: resource_roleScalarWhereInput
-    data: XOR<resource_roleUpdateManyMutationInput, resource_roleUncheckedUpdateManyWithoutResourceInput>
-  }
-
-  export type resource_roleScalarWhereInput = {
-    AND?: resource_roleScalarWhereInput | resource_roleScalarWhereInput[]
-    OR?: resource_roleScalarWhereInput[]
-    NOT?: resource_roleScalarWhereInput | resource_roleScalarWhereInput[]
-    role_id?: IntFilter<"resource_role"> | number
-    resources_id?: IntFilter<"resource_role"> | number
-  }
-
-  export type resourceCreateWithoutResource_roleInput = {
-    name: string
-    description: string
-    link: string
-    request?: requestCreateNestedManyWithoutResourceInput
-  }
-
-  export type resourceUncheckedCreateWithoutResource_roleInput = {
-    id?: number
-    name: string
-    description: string
-    link: string
-    request?: requestUncheckedCreateNestedManyWithoutResourceInput
-  }
-
-  export type resourceCreateOrConnectWithoutResource_roleInput = {
-    where: resourceWhereUniqueInput
-    create: XOR<resourceCreateWithoutResource_roleInput, resourceUncheckedCreateWithoutResource_roleInput>
-  }
-
-  export type roleCreateWithoutResource_roleInput = {
-    name: string
-    description: string
-    request?: requestCreateNestedManyWithoutRoleInput
-    access: accessCreateNestedOneWithoutRoleInput
-    user?: userCreateNestedManyWithoutRoleInput
-  }
-
-  export type roleUncheckedCreateWithoutResource_roleInput = {
-    id?: number
-    name: string
-    description: string
-    access_id: number
-    request?: requestUncheckedCreateNestedManyWithoutRoleInput
-    user?: userUncheckedCreateNestedManyWithoutRoleInput
-  }
-
-  export type roleCreateOrConnectWithoutResource_roleInput = {
+  export type roleUpsertWithWhereUniqueWithoutResourceInput = {
     where: roleWhereUniqueInput
-    create: XOR<roleCreateWithoutResource_roleInput, roleUncheckedCreateWithoutResource_roleInput>
+    update: XOR<roleUpdateWithoutResourceInput, roleUncheckedUpdateWithoutResourceInput>
+    create: XOR<roleCreateWithoutResourceInput, roleUncheckedCreateWithoutResourceInput>
   }
 
-  export type resourceUpsertWithoutResource_roleInput = {
-    update: XOR<resourceUpdateWithoutResource_roleInput, resourceUncheckedUpdateWithoutResource_roleInput>
-    create: XOR<resourceCreateWithoutResource_roleInput, resourceUncheckedCreateWithoutResource_roleInput>
-    where?: resourceWhereInput
+  export type roleUpdateWithWhereUniqueWithoutResourceInput = {
+    where: roleWhereUniqueInput
+    data: XOR<roleUpdateWithoutResourceInput, roleUncheckedUpdateWithoutResourceInput>
   }
 
-  export type resourceUpdateToOneWithWhereWithoutResource_roleInput = {
-    where?: resourceWhereInput
-    data: XOR<resourceUpdateWithoutResource_roleInput, resourceUncheckedUpdateWithoutResource_roleInput>
-  }
-
-  export type resourceUpdateWithoutResource_roleInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    link?: StringFieldUpdateOperationsInput | string
-    request?: requestUpdateManyWithoutResourceNestedInput
-  }
-
-  export type resourceUncheckedUpdateWithoutResource_roleInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    link?: StringFieldUpdateOperationsInput | string
-    request?: requestUncheckedUpdateManyWithoutResourceNestedInput
-  }
-
-  export type roleUpsertWithoutResource_roleInput = {
-    update: XOR<roleUpdateWithoutResource_roleInput, roleUncheckedUpdateWithoutResource_roleInput>
-    create: XOR<roleCreateWithoutResource_roleInput, roleUncheckedCreateWithoutResource_roleInput>
-    where?: roleWhereInput
-  }
-
-  export type roleUpdateToOneWithWhereWithoutResource_roleInput = {
-    where?: roleWhereInput
-    data: XOR<roleUpdateWithoutResource_roleInput, roleUncheckedUpdateWithoutResource_roleInput>
-  }
-
-  export type roleUpdateWithoutResource_roleInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    request?: requestUpdateManyWithoutRoleNestedInput
-    access?: accessUpdateOneRequiredWithoutRoleNestedInput
-    user?: userUpdateManyWithoutRoleNestedInput
-  }
-
-  export type roleUncheckedUpdateWithoutResource_roleInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    access_id?: IntFieldUpdateOperationsInput | number
-    request?: requestUncheckedUpdateManyWithoutRoleNestedInput
-    user?: userUncheckedUpdateManyWithoutRoleNestedInput
+  export type roleUpdateManyWithWhereWithoutResourceInput = {
+    where: roleScalarWhereInput
+    data: XOR<roleUpdateManyMutationInput, roleUncheckedUpdateManyWithoutResourceInput>
   }
 
   export type requestCreateWithoutRoleInput = {
@@ -13567,24 +12167,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type resource_roleCreateWithoutRoleInput = {
-    resource: resourceCreateNestedOneWithoutResource_roleInput
-  }
-
-  export type resource_roleUncheckedCreateWithoutRoleInput = {
-    resources_id: number
-  }
-
-  export type resource_roleCreateOrConnectWithoutRoleInput = {
-    where: resource_roleWhereUniqueInput
-    create: XOR<resource_roleCreateWithoutRoleInput, resource_roleUncheckedCreateWithoutRoleInput>
-  }
-
-  export type resource_roleCreateManyRoleInputEnvelope = {
-    data: resource_roleCreateManyRoleInput | resource_roleCreateManyRoleInput[]
-    skipDuplicates?: boolean
-  }
-
   export type accessCreateWithoutRoleInput = {
     level: number
     description?: string | null
@@ -13599,6 +12181,28 @@ export namespace Prisma {
   export type accessCreateOrConnectWithoutRoleInput = {
     where: accessWhereUniqueInput
     create: XOR<accessCreateWithoutRoleInput, accessUncheckedCreateWithoutRoleInput>
+  }
+
+  export type resourceCreateWithoutRoleInput = {
+    name: string
+    description: string
+    link: string
+    owner: string
+    request?: requestCreateNestedManyWithoutResourceInput
+  }
+
+  export type resourceUncheckedCreateWithoutRoleInput = {
+    id?: number
+    name: string
+    description: string
+    link: string
+    owner: string
+    request?: requestUncheckedCreateNestedManyWithoutResourceInput
+  }
+
+  export type resourceCreateOrConnectWithoutRoleInput = {
+    where: resourceWhereUniqueInput
+    create: XOR<resourceCreateWithoutRoleInput, resourceUncheckedCreateWithoutRoleInput>
   }
 
   export type userCreateWithoutRoleInput = {
@@ -13654,22 +12258,6 @@ export namespace Prisma {
     data: XOR<requestUpdateManyMutationInput, requestUncheckedUpdateManyWithoutRoleInput>
   }
 
-  export type resource_roleUpsertWithWhereUniqueWithoutRoleInput = {
-    where: resource_roleWhereUniqueInput
-    update: XOR<resource_roleUpdateWithoutRoleInput, resource_roleUncheckedUpdateWithoutRoleInput>
-    create: XOR<resource_roleCreateWithoutRoleInput, resource_roleUncheckedCreateWithoutRoleInput>
-  }
-
-  export type resource_roleUpdateWithWhereUniqueWithoutRoleInput = {
-    where: resource_roleWhereUniqueInput
-    data: XOR<resource_roleUpdateWithoutRoleInput, resource_roleUncheckedUpdateWithoutRoleInput>
-  }
-
-  export type resource_roleUpdateManyWithWhereWithoutRoleInput = {
-    where: resource_roleScalarWhereInput
-    data: XOR<resource_roleUpdateManyMutationInput, resource_roleUncheckedUpdateManyWithoutRoleInput>
-  }
-
   export type accessUpsertWithoutRoleInput = {
     update: XOR<accessUpdateWithoutRoleInput, accessUncheckedUpdateWithoutRoleInput>
     create: XOR<accessCreateWithoutRoleInput, accessUncheckedCreateWithoutRoleInput>
@@ -13690,6 +12278,34 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     level?: IntFieldUpdateOperationsInput | number
     description?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type resourceUpsertWithoutRoleInput = {
+    update: XOR<resourceUpdateWithoutRoleInput, resourceUncheckedUpdateWithoutRoleInput>
+    create: XOR<resourceCreateWithoutRoleInput, resourceUncheckedCreateWithoutRoleInput>
+    where?: resourceWhereInput
+  }
+
+  export type resourceUpdateToOneWithWhereWithoutRoleInput = {
+    where?: resourceWhereInput
+    data: XOR<resourceUpdateWithoutRoleInput, resourceUncheckedUpdateWithoutRoleInput>
+  }
+
+  export type resourceUpdateWithoutRoleInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    link?: StringFieldUpdateOperationsInput | string
+    owner?: StringFieldUpdateOperationsInput | string
+    request?: requestUpdateManyWithoutResourceNestedInput
+  }
+
+  export type resourceUncheckedUpdateWithoutRoleInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    link?: StringFieldUpdateOperationsInput | string
+    owner?: StringFieldUpdateOperationsInput | string
+    request?: requestUncheckedUpdateManyWithoutResourceNestedInput
   }
 
   export type userUpsertWithWhereUniqueWithoutRoleInput = {
@@ -13749,8 +12365,8 @@ export namespace Prisma {
     name: string
     description: string
     request?: requestCreateNestedManyWithoutRoleInput
-    resource_role?: resource_roleCreateNestedManyWithoutRoleInput
     access: accessCreateNestedOneWithoutRoleInput
+    resource: resourceCreateNestedOneWithoutRoleInput
   }
 
   export type roleUncheckedCreateWithoutUserInput = {
@@ -13758,8 +12374,8 @@ export namespace Prisma {
     name: string
     description: string
     access_id: number
+    resource_id: number
     request?: requestUncheckedCreateNestedManyWithoutRoleInput
-    resource_role?: resource_roleUncheckedCreateNestedManyWithoutRoleInput
   }
 
   export type roleCreateOrConnectWithoutUserInput = {
@@ -13826,8 +12442,8 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     request?: requestUpdateManyWithoutRoleNestedInput
-    resource_role?: resource_roleUpdateManyWithoutRoleNestedInput
     access?: accessUpdateOneRequiredWithoutRoleNestedInput
+    resource?: resourceUpdateOneRequiredWithoutRoleNestedInput
   }
 
   export type roleUncheckedUpdateWithoutUserInput = {
@@ -13835,8 +12451,8 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     access_id?: IntFieldUpdateOperationsInput | number
+    resource_id?: IntFieldUpdateOperationsInput | number
     request?: requestUncheckedUpdateManyWithoutRoleNestedInput
-    resource_role?: resource_roleUncheckedUpdateManyWithoutRoleNestedInput
   }
 
   export type user_requestUpsertWithWhereUniqueWithoutUserInput = {
@@ -13995,13 +12611,14 @@ export namespace Prisma {
     id?: number
     name: string
     description: string
+    resource_id: number
   }
 
   export type roleUpdateWithoutAccessInput = {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     request?: requestUpdateManyWithoutRoleNestedInput
-    resource_role?: resource_roleUpdateManyWithoutRoleNestedInput
+    resource?: resourceUpdateOneRequiredWithoutRoleNestedInput
     user?: userUpdateManyWithoutRoleNestedInput
   }
 
@@ -14009,8 +12626,8 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    resource_id?: IntFieldUpdateOperationsInput | number
     request?: requestUncheckedUpdateManyWithoutRoleNestedInput
-    resource_role?: resource_roleUncheckedUpdateManyWithoutRoleNestedInput
     user?: userUncheckedUpdateManyWithoutRoleNestedInput
   }
 
@@ -14018,6 +12635,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    resource_id?: IntFieldUpdateOperationsInput | number
   }
 
   export type user_requestCreateManyRequestInput = {
@@ -14048,8 +12666,11 @@ export namespace Prisma {
     role_id: number
   }
 
-  export type resource_roleCreateManyResourceInput = {
-    role_id: number
+  export type roleCreateManyResourceInput = {
+    id?: number
+    name: string
+    description: string
+    access_id: number
   }
 
   export type requestUpdateWithoutResourceInput = {
@@ -14089,16 +12710,28 @@ export namespace Prisma {
     role_id?: IntFieldUpdateOperationsInput | number
   }
 
-  export type resource_roleUpdateWithoutResourceInput = {
-    role?: roleUpdateOneRequiredWithoutResource_roleNestedInput
+  export type roleUpdateWithoutResourceInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    request?: requestUpdateManyWithoutRoleNestedInput
+    access?: accessUpdateOneRequiredWithoutRoleNestedInput
+    user?: userUpdateManyWithoutRoleNestedInput
   }
 
-  export type resource_roleUncheckedUpdateWithoutResourceInput = {
-    role_id?: IntFieldUpdateOperationsInput | number
+  export type roleUncheckedUpdateWithoutResourceInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    access_id?: IntFieldUpdateOperationsInput | number
+    request?: requestUncheckedUpdateManyWithoutRoleNestedInput
+    user?: userUncheckedUpdateManyWithoutRoleNestedInput
   }
 
-  export type resource_roleUncheckedUpdateManyWithoutResourceInput = {
-    role_id?: IntFieldUpdateOperationsInput | number
+  export type roleUncheckedUpdateManyWithoutResourceInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    access_id?: IntFieldUpdateOperationsInput | number
   }
 
   export type requestCreateManyRoleInput = {
@@ -14111,10 +12744,6 @@ export namespace Prisma {
     create_date: Date | string
     complete_date: Date | string
     resource_id: number
-  }
-
-  export type resource_roleCreateManyRoleInput = {
-    resources_id: number
   }
 
   export type userCreateManyRoleInput = {
@@ -14164,18 +12793,6 @@ export namespace Prisma {
     create_date?: DateTimeFieldUpdateOperationsInput | Date | string
     complete_date?: DateTimeFieldUpdateOperationsInput | Date | string
     resource_id?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type resource_roleUpdateWithoutRoleInput = {
-    resource?: resourceUpdateOneRequiredWithoutResource_roleNestedInput
-  }
-
-  export type resource_roleUncheckedUpdateWithoutRoleInput = {
-    resources_id?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type resource_roleUncheckedUpdateManyWithoutRoleInput = {
-    resources_id?: IntFieldUpdateOperationsInput | number
   }
 
   export type userUpdateWithoutRoleInput = {
