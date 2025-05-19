@@ -24,6 +24,11 @@ CREATE TABLE "request" (
     "create_date" TIMESTAMP(6) NOT NULL,
     "complete_date" TIMESTAMP(6) NOT NULL,
     "resource_id" INTEGER NOT NULL,
+    "email" VARCHAR(255) NOT NULL,
+    "middle_name" VARCHAR(40) NOT NULL,
+    "name" VARCHAR(40) NOT NULL,
+    "role_id" INTEGER NOT NULL,
+    "surname" VARCHAR(40) NOT NULL,
 
     CONSTRAINT "request_pkey" PRIMARY KEY ("id")
 );
@@ -33,6 +38,7 @@ CREATE TABLE "resource" (
     "id" SERIAL NOT NULL,
     "name" VARCHAR(100) NOT NULL,
     "description" VARCHAR(255) NOT NULL,
+    "link" VARCHAR(255) NOT NULL,
 
     CONSTRAINT "resource_pkey" PRIMARY KEY ("id")
 );
@@ -65,6 +71,8 @@ CREATE TABLE "user" (
     "middle_name" VARCHAR(40),
     "service_number" INTEGER,
     "role_id" INTEGER,
+    "subdivision" VARCHAR(80),
+    "rang" VARCHAR(80),
 
     CONSTRAINT "user_pkey" PRIMARY KEY ("id")
 );
@@ -75,16 +83,6 @@ CREATE TABLE "user_request" (
     "request_id" INTEGER NOT NULL,
 
     CONSTRAINT "user_request_pkey" PRIMARY KEY ("user_id","request_id")
-);
-
--- CreateTable
-CREATE TABLE "Post" (
-    "id" SERIAL NOT NULL,
-    "title" TEXT NOT NULL,
-    "content" TEXT,
-    "published" BOOLEAN NOT NULL DEFAULT false,
-
-    CONSTRAINT "Post_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -104,6 +102,9 @@ ALTER TABLE "log" ADD CONSTRAINT "log_account_id_fkey" FOREIGN KEY ("account_id"
 
 -- AddForeignKey
 ALTER TABLE "request" ADD CONSTRAINT "request_resource_id_fkey" FOREIGN KEY ("resource_id") REFERENCES "resource"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "request" ADD CONSTRAINT "request_role_id_fkey" FOREIGN KEY ("role_id") REFERENCES "role"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "resource_role" ADD CONSTRAINT "resource_role_resources_id_fkey" FOREIGN KEY ("resources_id") REFERENCES "resource"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

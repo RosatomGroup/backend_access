@@ -28,7 +28,7 @@ export class UserAuthService {
         const existingUser = await this.findByEmail(createUserDto.email);
 
         if (existingUser) {
-            throw new ConflictException('User with this email already exists');
+            throw new ConflictException('Пользователь с таким email уже существует');
         }
         const hashedPassword: string = await bcrypt.hash(
             createUserDto.password,
