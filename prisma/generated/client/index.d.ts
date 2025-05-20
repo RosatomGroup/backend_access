@@ -12145,7 +12145,6 @@ export namespace Prisma {
     complete_date?: DateTimeFilter<"request"> | Date | string
     resource_id?: IntFilter<"request"> | number
     role_id?: IntFilter<"request"> | number
-    request_type?: StringFilter<"request"> | string
   }
 
   export type roleUpsertWithWhereUniqueWithoutResourceInput = {
@@ -12786,7 +12785,6 @@ export namespace Prisma {
     create_date: Date | string
     complete_date: Date | string
     resource_id: number
-    request_type: string
   }
 
   export type userCreateManyRoleInput = {
@@ -12838,7 +12836,6 @@ export namespace Prisma {
     create_date?: DateTimeFieldUpdateOperationsInput | Date | string
     complete_date?: DateTimeFieldUpdateOperationsInput | Date | string
     resource_id?: IntFieldUpdateOperationsInput | number
-    request_type?: StringFieldUpdateOperationsInput | string
   }
 
   export type userUpdateWithoutRoleInput = {
