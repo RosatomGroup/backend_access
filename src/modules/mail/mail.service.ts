@@ -1,12 +1,17 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
 import { Transporter } from 'nodemailer';
+import { UserService } from '../users/user.service';
 
 @Injectable()
 export class MailService {
   private transporter: Transporter;
 
-  constructor() {
+  constructor(private readonly usersService: UserService) {
     const { EMAIL_USER, EMAIL_PASSWORD, FRONTEND_URL } = process.env;
 
     if (!EMAIL_USER || !EMAIL_PASSWORD || !FRONTEND_URL) {
@@ -31,6 +36,12 @@ export class MailService {
 
   async sendPasswordResetEmail(email: string, token: string): Promise<void> {
     try {
+      const userExists = await this.usersService.findByEmail(email);
+      if (!userExists) {
+        throw new NotFoundException(
+          'Пользователь с таким email не зарегистрирован',
+        );
+      }
       const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${encodeURIComponent(token)}`;
 
       await this.transporter.sendMail({
@@ -45,7 +56,10 @@ export class MailService {
         `,
       });
     } catch (error) {
-      console.error('Failed to send email:', error.message || error);
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+
       throw new InternalServerErrorException(
         'Failed to send password reset email',
       );

@@ -82,6 +82,8 @@ model user {
   log            log[]
   role           role?          @relation(fields: [role_id], references: [id], onDelete: Restrict)
   user_request   user_request[]
+  accessTokens   AccessToken[]
+  refreshTokens  RefreshToken[]
 }
 
 model user_request {
@@ -101,4 +103,26 @@ model PasswordResetToken {
   createdAt DateTime @default(now())
 
   @@index([email])
+}
+
+model AccessToken {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique @db.VarChar(512)
+  userId    Int
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      user     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model RefreshToken {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique @db.VarChar(512)
+  userId    Int
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      user     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }

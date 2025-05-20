@@ -13,18 +13,22 @@ import { PasswordResetModule } from './modules/password-reset/password-reset.mod
 import { PasswordResetController } from './modules/password-reset/password-reset.controller';
 import { PasswordResetService } from './modules/password-reset/password-reset.service';
 import { MailModule } from './modules/mail/mail.module';
+import { JwtModule } from '@nestjs/jwt';
+import { TokenModule } from './modules/token/token.module';
 
 @Module({
   imports: [
     PrismaModule,
     UserModule,
     AuthModule,
+    TokenModule,
     RegisterModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
     PasswordResetModule,
     MailModule,
+    JwtModule,
   ],
   controllers: [AppController, RegisterController, PasswordResetController],
   providers: [AppService, UserService, RegisterService, PasswordResetService],

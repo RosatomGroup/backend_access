@@ -16,7 +16,7 @@ export class PasswordResetService {
       data: {
         email,
         token,
-        expiresAt: new Date(Date.now() + 3600000), // 1 час
+        expiresAt: new Date(Date.now() + 3600000),
       },
     });
 
@@ -33,7 +33,7 @@ export class PasswordResetService {
       data: {
         email,
         token,
-        expiresAt: new Date(Date.now() + 3600000), // +1 час
+        expiresAt: new Date(Date.now() + 3600000),
       },
     });
 

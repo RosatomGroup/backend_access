@@ -9,6 +9,8 @@ import { JwtStrategy } from './jwt.strategy';
 import { AuthService } from './auth.service';
 import { PasswordResetModule } from '../password-reset/password-reset.module';
 import { MailModule } from '../mail/mail.module';
+import { RegisterModule } from '../register/register.module';
+import { TokenModule } from '../token/token.module';
 
 @Module({
   imports: [
@@ -19,8 +21,11 @@ import { MailModule } from '../mail/mail.module';
     }),
     PasswordResetModule,
     MailModule,
+    RegisterModule,
+    TokenModule,
   ],
   providers: [AuthService, JwtStrategy, UserService, PrismaService],
   controllers: [AuthController],
+  exports: [RegisterModule, TokenModule],
 })
 export class AuthModule {}

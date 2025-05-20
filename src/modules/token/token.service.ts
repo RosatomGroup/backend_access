@@ -1,41 +1,41 @@
 import { Injectable } from '@nestjs/common';
-import { RegisterDto } from './dto/create-register.dto';
-import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { TokenService } from '../token/token.service';
 
 @Injectable()
-export class RegisterService {
+export class TokenService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
-    private readonly tokenService: TokenService,
   ) {}
 
-  async registerUser(dto: RegisterDto) {
-    const hashedPassword = await bcrypt.hash(dto.password, 10);
+  async refreshTokens(refreshToken: string) {
+    try {
+      const payload = this.jwtService.verify(refreshToken, {
+        secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
+      });
 
-    const user = await this.prisma.user.create({
-      data: {
-        surname: dto.surname,
-        name: dto.name,
-        middle_name: dto.middle_name,
-        email: dto.email,
-        password: hashedPassword,
-      },
-    });
+      const tokenExists = await this.prisma.refreshToken.findFirst({
+        where: { token: refreshToken, userId: payload.userId },
+      });
 
-    const tokens = await this.tokenService.generateTokens(user.id, user.email);
+      if (!tokenExists) {
+        throw new Error('Invalid refresh token');
+      }
 
-    return {
-      user,
-      ...tokens,
-    };
+      await this.prisma.refreshToken.delete({
+        where: { id: tokenExists.id },
+      });
+
+      return this.generateTokens(payload.userId, payload.email);
+    } catch (error) {
+      throw new Error('Invalid refresh token');
+    }
   }
-  private async generateTokens(userId: number, email: string) {
+
+  async generateTokens(userId: number, email: string) {
     const accessToken = this.jwtService.sign(
       { userId, email },
       {
