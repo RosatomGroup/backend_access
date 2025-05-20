@@ -1,4 +1,15 @@
-import { IsEmail, IsEnum, IsInt, IsOptional, IsString } from 'class-validator';
+import { IsEmail, IsEnum, IsInt, IsString } from 'class-validator';
+
+export enum RequestType {
+  GRANT_ACCESS = 'grant_access',
+  REVOKE_ACCESS = 'revoke_access',
+}
+
+export enum RequestStatus {
+  PENDING = 'pending',
+  APPROVED = 'approved',
+  REJECTED = 'rejected',
+}
 
 export class CreateRequestDto {
   @IsString()
@@ -8,8 +19,7 @@ export class CreateRequestDto {
   surname: string;
 
   @IsString()
-  @IsOptional()
-  middle_name?: string;
+  middle_name: string;
 
   @IsEmail()
   email: string;
@@ -20,17 +30,16 @@ export class CreateRequestDto {
   @IsInt()
   role_id: number;
 
-  @IsEnum(['grant_access', 'revoke_access'])
-  request_type: string;
+  @IsEnum(RequestType)
+  request_type: RequestType;
 
   @IsInt()
-  @IsOptional()
-  user_id?: number; // Для привязки к пользователю
+  user_id?: number;
 }
 
 export class UpdateRequestStatusDto {
-  @IsEnum(['approved', 'rejected', 'pending'])
-  status: 'approved' | 'rejected' | 'pending';
+  @IsEnum(RequestStatus)
+  status: RequestStatus;
 }
 
 export class RequestDto {
@@ -39,8 +48,8 @@ export class RequestDto {
   surname: string;
   middle_name: string;
   email: string;
-  request_type: string;
-  status: string;
+  request_type: RequestType;
+  status: RequestStatus;
   create_date: Date;
   complete_date?: Date;
   resource_id: number;

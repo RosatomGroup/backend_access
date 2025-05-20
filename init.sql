@@ -135,7 +135,7 @@ INSERT INTO "user" (id, email, password, name, surname, middle_name, subdivision
 -- Для request с id=2, middle_name изменено с NULL на ''
 INSERT INTO request (id, name, surname, middle_name, email, status, create_date, complete_date, resource_id, role_id, request_type) VALUES
   (1, 'Иванов', 'Иван', 'Иванович', 'ivan@example.com', 'pending', NOW(), '1970-01-01 00:00:00', 1, 1, 'grant_access'),
-  (2, 'Петров', 'Петр', '', 'petr@example.com', 'approved', NOW() - INTERVAL '1 day', NOW(), 2, 2, 'revoke_access'); -- <-- Изменено NULL на ''
+  (2, 'Петров', 'Петр', 'Сергеевич', 'petr@example.com', 'approved', NOW() - INTERVAL '1 day', NOW(), 2, 2, 'revoke_access'); -- <-- Изменено NULL на ''
 
 -- Привязка заявок к пользователям
 INSERT INTO user_request (user_id, request_id) VALUES

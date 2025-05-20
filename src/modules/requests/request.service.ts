@@ -1,6 +1,7 @@
 import {
   Injectable,
   NotFoundException,
+  ConflictException,
   InternalServerErrorException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
@@ -10,6 +11,8 @@ import {
   ResourceDto,
   RoleDto,
   UpdateRequestStatusDto,
+  RequestType,
+  RequestStatus,
 } from './request.dto';
 
 @Injectable()
@@ -35,15 +38,38 @@ export class RequestService {
         );
       }
 
+      // Проверка на существующую заявку
+      const existingRequest = await this.prisma.request.findFirst({
+        where: {
+          email: createRequestDto.email,
+          resource_id: createRequestDto.resource_id,
+          role_id: createRequestDto.role_id,
+          request_type: createRequestDto.request_type,
+          status: {
+            not: RequestStatus.REJECTED, // Игнорируем отклоненные заявки
+          },
+        },
+      });
+
+      if (existingRequest) {
+        const actionType =
+          createRequestDto.request_type === RequestType.GRANT_ACCESS
+            ? 'на выдачу доступа'
+            : 'на отзыв доступа';
+        throw new ConflictException(
+          `Заявка ${actionType} для этого email, системы и роли уже существует (статус: ${existingRequest.status})`,
+        );
+      }
+
       // Создание заявки
       const createdRequest = await this.prisma.request.create({
         data: {
           name: createRequestDto.name,
           surname: createRequestDto.surname,
-          middle_name: createRequestDto.middle_name || '',
+          middle_name: createRequestDto.middle_name,
           email: createRequestDto.email,
           request_type: createRequestDto.request_type,
-          status: 'pending',
+          status: RequestStatus.PENDING,
           create_date: new Date(),
           complete_date: new Date(0), // Дата-заглушка
           resource: { connect: { id: createRequestDto.resource_id } },
@@ -66,7 +92,7 @@ export class RequestService {
         await this.prisma.log.create({
           data: {
             account_id: createRequestDto.user_id,
-            action: `Created request #${createdRequest.id}`,
+            action: `Created ${createRequestDto.request_type} request #${createdRequest.id}`,
             action_time: new Date(),
           },
         });
@@ -74,7 +100,12 @@ export class RequestService {
 
       return this.mapToRequestDto(createdRequest);
     } catch (error) {
-      if (error instanceof NotFoundException) throw error;
+      if (
+        error instanceof NotFoundException ||
+        error instanceof ConflictException
+      ) {
+        throw error;
+      }
       throw new InternalServerErrorException(
         `Failed to create request: ${error.message}`,
       );
@@ -115,7 +146,7 @@ export class RequestService {
     try {
       const updateData = {
         status: updateStatusDto.status,
-        ...(updateStatusDto.status !== 'pending' && {
+        ...(updateStatusDto.status !== RequestStatus.PENDING && {
           complete_date: new Date(),
         }),
       };
@@ -182,7 +213,7 @@ export class RequestService {
       id: request.id,
       name: request.name,
       surname: request.surname,
-      middle_name: request.middle_name || undefined,
+      middle_name: request.middle_name,
       email: request.email,
       request_type: request.request_type,
       status: request.status,
