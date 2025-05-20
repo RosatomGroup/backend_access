@@ -1,5 +1,3 @@
-// 
-
 import { IsEmail, IsEnum, IsInt, IsOptional, IsString } from 'class-validator';
 
 export class CreateRequestDto {
@@ -39,7 +37,7 @@ export class RequestDto {
   id: number;
   name: string;
   surname: string;
-  middle_name?: string;
+  middle_name: string;
   email: string;
   request_type: string;
   status: string;

@@ -188,7 +188,9 @@ export class RequestService {
       status: request.status,
       create_date: request.create_date,
       complete_date:
-        request.complete_date?.getTime() > 0 ? request.complete_date : undefined,
+        request.complete_date?.getTime() > 0
+          ? request.complete_date
+          : undefined,
       resource_id: request.resource_id,
       role_id: request.role_id,
       resource_name: request.resource?.name || '',

@@ -9,7 +9,11 @@ import {
   Request,
 } from '@nestjs/common';
 import { RequestService } from './request.service';
-import { CreateRequestDto, RequestDto, UpdateRequestStatusDto } from './request.dto';
+import {
+  CreateRequestDto,
+  RequestDto,
+  UpdateRequestStatusDto,
+} from './request.dto';
 
 @Controller('requests')
 export class RequestController {

@@ -3,16 +3,11 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './modules/auth/auth.module';
 import { UserModule } from './modules/users/user.module';
-import { RequestModule } from './modules/requests/request.module'; // Добавьте этот импорт
+import { RequestModule } from './modules/requests/request.module';
 import { PrismaModule } from './modules/prisma/prisma.module';
 
 @Module({
-  imports: [
-    PrismaModule,
-    AuthModule,
-    UserModule,
-    RequestModule, // Добавьте эту строку
-  ],
+  imports: [PrismaModule, AuthModule, UserModule, RequestModule],
   controllers: [AppController],
   providers: [AppService],
 })
