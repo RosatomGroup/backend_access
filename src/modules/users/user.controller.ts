@@ -4,13 +4,22 @@ import {
   Get,
   Param,
   ParseIntPipe,
+  ForbiddenException,
   Post,
-  Put,
+  Patch,
+  UseGuards,
+  UnauthorizedException,
 } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { UserRole } from '../auth/enums/user-role.enum';
 import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
 import { UserService } from './user.service';
+import { CurrentUser } from '../auth/decorators/current-user.decorator';
 
 @Controller('users')
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -19,19 +28,60 @@ export class UserController {
     return this.userService.createUser(createUserDto);
   }
 
-  @Put(':id')
-  async updateUser(
-    @Param('id', ParseIntPipe) id: number,
+
+  // @Patch(':id/role')
+  // @Roles(UserRole.ADMIN) // Только админы могут менять роли
+  // async updateUserRole(
+  //   @Param('id', ParseIntPipe) userId: number,
+  //   @Body('role') newRole: UserRole,
+  // ) {
+  //   return this.userService.updateUserRole(userId, newRole);
+  // }
+
+
+  @Patch(':id/role')
+  @Roles(UserRole.ADMIN)
+  async updateUserRole(
+    @CurrentUser() currentUser: { id: number, role: UserRole },
+    @Param('id', ParseIntPipe) targetUserId: number,
+    @Body('role') newRole: UserRole,
+  ) {
+    // Дополнительная проверка, что нельзя изменить свою роль
+    if (currentUser.id === targetUserId) {
+      throw new ForbiddenException('You cannot change your own role');
+    }
+
+    return this.userService.updateUserRole(targetUserId, newRole);
+  }
+  
+
+  // @UseGuards(JwtAuthGuard)
+  @Patch(':id')
+  async partialUpdateUser(
+    @CurrentUser() currentUser: { id: number; role?: UserRole },
+    @Param('id', ParseIntPipe) targetUserId: number,
     @Body() updateUserDto: UpdateUserDto,
   ) {
-    return this.userService.updateUser(id, updateUserDto);
+    if (!currentUser) {
+      throw new UnauthorizedException('User not authenticated');
+    }
+
+    if (currentUser.id !== targetUserId && currentUser.role !== UserRole.ADMIN) {
+      throw new ForbiddenException('You can only update your own profile');
+    }
+
+    return this.userService.updateUser(targetUserId, updateUserDto);
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ADMIN)
   @Get()
   async getAll() {
     return this.userService.getAllUsers();
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ADMIN, UserRole.MANAGER)
   @Get('management')
   async getUsersForManagement() {
     return this.userService.getUsersForManagement();

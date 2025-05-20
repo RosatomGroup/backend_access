@@ -77,11 +77,17 @@ model user {
   middle_name    String?        @db.VarChar(40)
   subdivision    String?        @db.VarChar(80)
   rang           String?        @db.VarChar(80)
+  role_user      UserRole       @default(USER)
   service_number Int?           @unique
   role_id        Int?
   log            log[]
   role           role?          @relation(fields: [role_id], references: [id], onDelete: Restrict)
   user_request   user_request[]
+}
+
+enum UserRole {
+  USER
+  ADMIN
 }
 
 model user_request {

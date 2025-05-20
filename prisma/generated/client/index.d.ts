@@ -55,6 +55,23 @@ export type user = $Result.DefaultSelection<Prisma.$userPayload>
 export type user_request = $Result.DefaultSelection<Prisma.$user_requestPayload>
 
 /**
+ * Enums
+ */
+export namespace $Enums {
+  export const UserRole: {
+  USER: 'USER',
+  ADMIN: 'ADMIN'
+};
+
+export type UserRole = (typeof UserRole)[keyof typeof UserRole]
+
+}
+
+export type UserRole = $Enums.UserRole
+
+export const UserRole: typeof $Enums.UserRole
+
+/**
  * ##  Prisma Client ʲˢ
  *
  * Type-safe database client for TypeScript & Node.js
@@ -316,8 +333,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 6.6.0
-   * Query Engine version: f676762280b54cd07c770017ed3711ddde35f37a
+   * Prisma Client JS version: 6.8.2
+   * Query Engine version: 2060c79ba17c6bb9f5823312b6f6b7f4a845738e
    */
   export type PrismaVersion = {
     client: string
@@ -8450,6 +8467,7 @@ export namespace Prisma {
     middle_name: string | null
     subdivision: string | null
     rang: string | null
+    role_user: $Enums.UserRole | null
     service_number: number | null
     role_id: number | null
   }
@@ -8463,6 +8481,7 @@ export namespace Prisma {
     middle_name: string | null
     subdivision: string | null
     rang: string | null
+    role_user: $Enums.UserRole | null
     service_number: number | null
     role_id: number | null
   }
@@ -8476,6 +8495,7 @@ export namespace Prisma {
     middle_name: number
     subdivision: number
     rang: number
+    role_user: number
     service_number: number
     role_id: number
     _all: number
@@ -8503,6 +8523,7 @@ export namespace Prisma {
     middle_name?: true
     subdivision?: true
     rang?: true
+    role_user?: true
     service_number?: true
     role_id?: true
   }
@@ -8516,6 +8537,7 @@ export namespace Prisma {
     middle_name?: true
     subdivision?: true
     rang?: true
+    role_user?: true
     service_number?: true
     role_id?: true
   }
@@ -8529,6 +8551,7 @@ export namespace Prisma {
     middle_name?: true
     subdivision?: true
     rang?: true
+    role_user?: true
     service_number?: true
     role_id?: true
     _all?: true
@@ -8629,6 +8652,7 @@ export namespace Prisma {
     middle_name: string | null
     subdivision: string | null
     rang: string | null
+    role_user: $Enums.UserRole
     service_number: number | null
     role_id: number | null
     _count: UserCountAggregateOutputType | null
@@ -8661,6 +8685,7 @@ export namespace Prisma {
     middle_name?: boolean
     subdivision?: boolean
     rang?: boolean
+    role_user?: boolean
     service_number?: boolean
     role_id?: boolean
     log?: boolean | user$logArgs<ExtArgs>
@@ -8678,6 +8703,7 @@ export namespace Prisma {
     middle_name?: boolean
     subdivision?: boolean
     rang?: boolean
+    role_user?: boolean
     service_number?: boolean
     role_id?: boolean
     role?: boolean | user$roleArgs<ExtArgs>
@@ -8692,6 +8718,7 @@ export namespace Prisma {
     middle_name?: boolean
     subdivision?: boolean
     rang?: boolean
+    role_user?: boolean
     service_number?: boolean
     role_id?: boolean
     role?: boolean | user$roleArgs<ExtArgs>
@@ -8706,11 +8733,12 @@ export namespace Prisma {
     middle_name?: boolean
     subdivision?: boolean
     rang?: boolean
+    role_user?: boolean
     service_number?: boolean
     role_id?: boolean
   }
 
-  export type userOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "name" | "surname" | "middle_name" | "subdivision" | "rang" | "service_number" | "role_id", ExtArgs["result"]["user"]>
+  export type userOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "name" | "surname" | "middle_name" | "subdivision" | "rang" | "role_user" | "service_number" | "role_id", ExtArgs["result"]["user"]>
   export type userInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     log?: boolean | user$logArgs<ExtArgs>
     role?: boolean | user$roleArgs<ExtArgs>
@@ -8740,6 +8768,7 @@ export namespace Prisma {
       middle_name: string | null
       subdivision: string | null
       rang: string | null
+      role_user: $Enums.UserRole
       service_number: number | null
       role_id: number | null
     }, ExtArgs["result"]["user"]>
@@ -9176,6 +9205,7 @@ export namespace Prisma {
     readonly middle_name: FieldRef<"user", 'String'>
     readonly subdivision: FieldRef<"user", 'String'>
     readonly rang: FieldRef<"user", 'String'>
+    readonly role_user: FieldRef<"user", 'UserRole'>
     readonly service_number: FieldRef<"user", 'Int'>
     readonly role_id: FieldRef<"user", 'Int'>
   }
@@ -10810,6 +10840,7 @@ export namespace Prisma {
     middle_name: 'middle_name',
     subdivision: 'subdivision',
     rang: 'rang',
+    role_user: 'role_user',
     service_number: 'service_number',
     role_id: 'role_id'
   };
@@ -10893,6 +10924,20 @@ export namespace Prisma {
    * Reference to a field of type 'DateTime[]'
    */
   export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'UserRole'
+   */
+  export type EnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole'>
+    
+
+
+  /**
+   * Reference to a field of type 'UserRole[]'
+   */
+  export type ListEnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole[]'>
     
 
 
@@ -11274,6 +11319,7 @@ export namespace Prisma {
     middle_name?: StringNullableFilter<"user"> | string | null
     subdivision?: StringNullableFilter<"user"> | string | null
     rang?: StringNullableFilter<"user"> | string | null
+    role_user?: EnumUserRoleFilter<"user"> | $Enums.UserRole
     service_number?: IntNullableFilter<"user"> | number | null
     role_id?: IntNullableFilter<"user"> | number | null
     log?: LogListRelationFilter
@@ -11290,6 +11336,7 @@ export namespace Prisma {
     middle_name?: SortOrderInput | SortOrder
     subdivision?: SortOrderInput | SortOrder
     rang?: SortOrderInput | SortOrder
+    role_user?: SortOrder
     service_number?: SortOrderInput | SortOrder
     role_id?: SortOrderInput | SortOrder
     log?: logOrderByRelationAggregateInput
@@ -11310,6 +11357,7 @@ export namespace Prisma {
     middle_name?: StringNullableFilter<"user"> | string | null
     subdivision?: StringNullableFilter<"user"> | string | null
     rang?: StringNullableFilter<"user"> | string | null
+    role_user?: EnumUserRoleFilter<"user"> | $Enums.UserRole
     role_id?: IntNullableFilter<"user"> | number | null
     log?: LogListRelationFilter
     role?: XOR<RoleNullableScalarRelationFilter, roleWhereInput> | null
@@ -11325,6 +11373,7 @@ export namespace Prisma {
     middle_name?: SortOrderInput | SortOrder
     subdivision?: SortOrderInput | SortOrder
     rang?: SortOrderInput | SortOrder
+    role_user?: SortOrder
     service_number?: SortOrderInput | SortOrder
     role_id?: SortOrderInput | SortOrder
     _count?: userCountOrderByAggregateInput
@@ -11346,6 +11395,7 @@ export namespace Prisma {
     middle_name?: StringNullableWithAggregatesFilter<"user"> | string | null
     subdivision?: StringNullableWithAggregatesFilter<"user"> | string | null
     rang?: StringNullableWithAggregatesFilter<"user"> | string | null
+    role_user?: EnumUserRoleWithAggregatesFilter<"user"> | $Enums.UserRole
     service_number?: IntNullableWithAggregatesFilter<"user"> | number | null
     role_id?: IntNullableWithAggregatesFilter<"user"> | number | null
   }
@@ -11727,6 +11777,7 @@ export namespace Prisma {
     middle_name?: string | null
     subdivision?: string | null
     rang?: string | null
+    role_user?: $Enums.UserRole
     service_number?: number | null
     log?: logCreateNestedManyWithoutUserInput
     role?: roleCreateNestedOneWithoutUserInput
@@ -11742,6 +11793,7 @@ export namespace Prisma {
     middle_name?: string | null
     subdivision?: string | null
     rang?: string | null
+    role_user?: $Enums.UserRole
     service_number?: number | null
     role_id?: number | null
     log?: logUncheckedCreateNestedManyWithoutUserInput
@@ -11756,6 +11808,7 @@ export namespace Prisma {
     middle_name?: NullableStringFieldUpdateOperationsInput | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
+    role_user?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     service_number?: NullableIntFieldUpdateOperationsInput | number | null
     log?: logUpdateManyWithoutUserNestedInput
     role?: roleUpdateOneWithoutUserNestedInput
@@ -11771,6 +11824,7 @@ export namespace Prisma {
     middle_name?: NullableStringFieldUpdateOperationsInput | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
+    role_user?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     service_number?: NullableIntFieldUpdateOperationsInput | number | null
     role_id?: NullableIntFieldUpdateOperationsInput | number | null
     log?: logUncheckedUpdateManyWithoutUserNestedInput
@@ -11786,6 +11840,7 @@ export namespace Prisma {
     middle_name?: string | null
     subdivision?: string | null
     rang?: string | null
+    role_user?: $Enums.UserRole
     service_number?: number | null
     role_id?: number | null
   }
@@ -11798,6 +11853,7 @@ export namespace Prisma {
     middle_name?: NullableStringFieldUpdateOperationsInput | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
+    role_user?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     service_number?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
@@ -11810,6 +11866,7 @@ export namespace Prisma {
     middle_name?: NullableStringFieldUpdateOperationsInput | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
+    role_user?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     service_number?: NullableIntFieldUpdateOperationsInput | number | null
     role_id?: NullableIntFieldUpdateOperationsInput | number | null
   }
@@ -12241,6 +12298,13 @@ export namespace Prisma {
     access_id?: SortOrder
   }
 
+  export type EnumUserRoleFilter<$PrismaModel = never> = {
+    equals?: $Enums.UserRole | EnumUserRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumUserRoleFilter<$PrismaModel> | $Enums.UserRole
+  }
+
   export type IntNullableFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -12276,6 +12340,7 @@ export namespace Prisma {
     middle_name?: SortOrder
     subdivision?: SortOrder
     rang?: SortOrder
+    role_user?: SortOrder
     service_number?: SortOrder
     role_id?: SortOrder
   }
@@ -12295,6 +12360,7 @@ export namespace Prisma {
     middle_name?: SortOrder
     subdivision?: SortOrder
     rang?: SortOrder
+    role_user?: SortOrder
     service_number?: SortOrder
     role_id?: SortOrder
   }
@@ -12308,6 +12374,7 @@ export namespace Prisma {
     middle_name?: SortOrder
     subdivision?: SortOrder
     rang?: SortOrder
+    role_user?: SortOrder
     service_number?: SortOrder
     role_id?: SortOrder
   }
@@ -12316,6 +12383,16 @@ export namespace Prisma {
     id?: SortOrder
     service_number?: SortOrder
     role_id?: SortOrder
+  }
+
+  export type EnumUserRoleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.UserRole | EnumUserRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumUserRoleWithAggregatesFilter<$PrismaModel> | $Enums.UserRole
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumUserRoleFilter<$PrismaModel>
+    _max?: NestedEnumUserRoleFilter<$PrismaModel>
   }
 
   export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -12801,6 +12878,10 @@ export namespace Prisma {
     connect?: user_requestWhereUniqueInput | user_requestWhereUniqueInput[]
   }
 
+  export type EnumUserRoleFieldUpdateOperationsInput = {
+    set?: $Enums.UserRole
+  }
+
   export type NullableIntFieldUpdateOperationsInput = {
     set?: number | null
     increment?: number
@@ -13039,6 +13120,23 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type NestedEnumUserRoleFilter<$PrismaModel = never> = {
+    equals?: $Enums.UserRole | EnumUserRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumUserRoleFilter<$PrismaModel> | $Enums.UserRole
+  }
+
+  export type NestedEnumUserRoleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.UserRole | EnumUserRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumUserRoleWithAggregatesFilter<$PrismaModel> | $Enums.UserRole
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumUserRoleFilter<$PrismaModel>
+    _max?: NestedEnumUserRoleFilter<$PrismaModel>
+  }
+
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -13127,6 +13225,7 @@ export namespace Prisma {
     middle_name?: string | null
     subdivision?: string | null
     rang?: string | null
+    role_user?: $Enums.UserRole
     service_number?: number | null
     role?: roleCreateNestedOneWithoutUserInput
     user_request?: user_requestCreateNestedManyWithoutUserInput
@@ -13141,6 +13240,7 @@ export namespace Prisma {
     middle_name?: string | null
     subdivision?: string | null
     rang?: string | null
+    role_user?: $Enums.UserRole
     service_number?: number | null
     role_id?: number | null
     user_request?: user_requestUncheckedCreateNestedManyWithoutUserInput
@@ -13170,6 +13270,7 @@ export namespace Prisma {
     middle_name?: NullableStringFieldUpdateOperationsInput | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
+    role_user?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     service_number?: NullableIntFieldUpdateOperationsInput | number | null
     role?: roleUpdateOneWithoutUserNestedInput
     user_request?: user_requestUpdateManyWithoutUserNestedInput
@@ -13184,6 +13285,7 @@ export namespace Prisma {
     middle_name?: NullableStringFieldUpdateOperationsInput | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
+    role_user?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     service_number?: NullableIntFieldUpdateOperationsInput | number | null
     role_id?: NullableIntFieldUpdateOperationsInput | number | null
     user_request?: user_requestUncheckedUpdateManyWithoutUserNestedInput
@@ -13609,6 +13711,7 @@ export namespace Prisma {
     middle_name?: string | null
     subdivision?: string | null
     rang?: string | null
+    role_user?: $Enums.UserRole
     service_number?: number | null
     log?: logCreateNestedManyWithoutUserInput
     user_request?: user_requestCreateNestedManyWithoutUserInput
@@ -13623,6 +13726,7 @@ export namespace Prisma {
     middle_name?: string | null
     subdivision?: string | null
     rang?: string | null
+    role_user?: $Enums.UserRole
     service_number?: number | null
     log?: logUncheckedCreateNestedManyWithoutUserInput
     user_request?: user_requestUncheckedCreateNestedManyWithoutUserInput
@@ -13720,6 +13824,7 @@ export namespace Prisma {
     middle_name?: StringNullableFilter<"user"> | string | null
     subdivision?: StringNullableFilter<"user"> | string | null
     rang?: StringNullableFilter<"user"> | string | null
+    role_user?: EnumUserRoleFilter<"user"> | $Enums.UserRole
     service_number?: IntNullableFilter<"user"> | number | null
     role_id?: IntNullableFilter<"user"> | number | null
   }
@@ -13893,6 +13998,7 @@ export namespace Prisma {
     middle_name?: string | null
     subdivision?: string | null
     rang?: string | null
+    role_user?: $Enums.UserRole
     service_number?: number | null
     log?: logCreateNestedManyWithoutUserInput
     role?: roleCreateNestedOneWithoutUserInput
@@ -13907,6 +14013,7 @@ export namespace Prisma {
     middle_name?: string | null
     subdivision?: string | null
     rang?: string | null
+    role_user?: $Enums.UserRole
     service_number?: number | null
     role_id?: number | null
     log?: logUncheckedCreateNestedManyWithoutUserInput
@@ -13972,6 +14079,7 @@ export namespace Prisma {
     middle_name?: NullableStringFieldUpdateOperationsInput | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
+    role_user?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     service_number?: NullableIntFieldUpdateOperationsInput | number | null
     log?: logUpdateManyWithoutUserNestedInput
     role?: roleUpdateOneWithoutUserNestedInput
@@ -13986,6 +14094,7 @@ export namespace Prisma {
     middle_name?: NullableStringFieldUpdateOperationsInput | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
+    role_user?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     service_number?: NullableIntFieldUpdateOperationsInput | number | null
     role_id?: NullableIntFieldUpdateOperationsInput | number | null
     log?: logUncheckedUpdateManyWithoutUserNestedInput
@@ -14126,6 +14235,7 @@ export namespace Prisma {
     middle_name?: string | null
     subdivision?: string | null
     rang?: string | null
+    role_user?: $Enums.UserRole
     service_number?: number | null
   }
 
@@ -14186,6 +14296,7 @@ export namespace Prisma {
     middle_name?: NullableStringFieldUpdateOperationsInput | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
+    role_user?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     service_number?: NullableIntFieldUpdateOperationsInput | number | null
     log?: logUpdateManyWithoutUserNestedInput
     user_request?: user_requestUpdateManyWithoutUserNestedInput
@@ -14200,6 +14311,7 @@ export namespace Prisma {
     middle_name?: NullableStringFieldUpdateOperationsInput | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
+    role_user?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     service_number?: NullableIntFieldUpdateOperationsInput | number | null
     log?: logUncheckedUpdateManyWithoutUserNestedInput
     user_request?: user_requestUncheckedUpdateManyWithoutUserNestedInput
@@ -14214,6 +14326,7 @@ export namespace Prisma {
     middle_name?: NullableStringFieldUpdateOperationsInput | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
+    role_user?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     service_number?: NullableIntFieldUpdateOperationsInput | number | null
   }
 

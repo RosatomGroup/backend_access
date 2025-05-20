@@ -53,6 +53,10 @@ export class UpdateUserDto {
   @IsOptional()
   @Length(6, 30)
   password?: string;
+
+  @IsOptional()
+  @Length(2, 120)
+  rang?: string;
 }
 
 export class ManagementUserDto {
