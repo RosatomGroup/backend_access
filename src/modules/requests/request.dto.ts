@@ -1,141 +1,37 @@
-// import { IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+// 
 
-// export class CreateRequestDto {
-//   @IsNotEmpty()
-//   @IsNumber()
-//   userId: number;
-
-//   @IsNotEmpty()
-//   @IsNumber()
-//   resourceId: number;
-
-//   @IsOptional()
-//   @IsNumber()
-//   roleId?: number;
-
-//   @IsNotEmpty()
-//   @IsString()
-//   requestSubject: string;
-
-//   @IsNotEmpty()
-//   @IsEmail()
-//   email: string;
-// }
-
-// export class RequestDto {
-//   id: number;
-//   name: string;
-//   requestSubject: string;
-//   role: string;
-//   status: string;
-//   system: string;
-//   submissionTime: string;
-//   email: string;
-// }
-
-// export class OwnRequestDto {
-//   id: number;
-//   requester: string;
-//   createDate: Date;
-//   status: string;
-//   resourceName: string;
-//   roleName: string;
-// }
-
-// export class SystemDto {
-//   id: number;
-//   name: string;
-//   description: string;
-// }
-
-// export class RoleDto {
-//   id: number;
-//   name: string;
-//   description: string;
-//   accessLevel: number;
-//   systemName: string;
-// }
-
-
-// import { IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
-
-// export class CreateRequestDto {
-//   @IsNotEmpty()
-//   @IsString()
-//   name: string;
-
-//   @IsNotEmpty()
-//   @IsString()
-//   surname: string;
-
-//   @IsNotEmpty()
-//   @IsString()
-//   middle_name: string;
-
-//   @IsNotEmpty()
-//   @IsEmail()
-//   email: string;
-
-//   @IsNotEmpty()
-//   @IsNumber()
-//   resource_id: number;
-
-//   @IsNotEmpty()
-//   @IsNumber()
-//   role_id: number;
-
-//   @IsOptional()
-//   @IsString()
-//   status?: string;
-// }
-
-// export class RequestDto {
-//   id: number;
-//   name: string;
-//   surname: string;
-//   middle_name: string;
-//   email: string;
-//   status: string;
-//   create_date: Date;
-//   complete_date: Date;
-//   resource_id: number;
-//   role_id: number;
-//   resource_name: string;
-//   role_name: string;
-//   resource_link: string; 
-// }
-
-// export class UpdateRequestStatusDto {
-//   @IsNotEmpty()
-//   @IsString()
-//   status: string;
-// }
-
-// export class ResourceDto {
-//   id: number;
-//   name: string;
-//   description: string;
-//   // link: string;
-// }
-
-// export class RoleDto {
-//   id: number;
-//   name: string;
-//   description: string;
-//   access_level: number;
-// }
+import { IsEmail, IsEnum, IsInt, IsOptional, IsString } from 'class-validator';
 
 export class CreateRequestDto {
+  @IsString()
   name: string;
+
+  @IsString()
   surname: string;
+
+  @IsString()
+  @IsOptional()
   middle_name?: string;
+
+  @IsEmail()
   email: string;
+
+  @IsInt()
   resource_id: number;
+
+  @IsInt()
   role_id: number;
+
+  @IsEnum(['grant_access', 'revoke_access'])
   request_type: string;
+
+  @IsInt()
+  @IsOptional()
+  user_id?: number; // Для привязки к пользователю
 }
 
 export class UpdateRequestStatusDto {
+  @IsEnum(['approved', 'rejected', 'pending'])
   status: 'approved' | 'rejected' | 'pending';
 }
 
@@ -154,6 +50,7 @@ export class RequestDto {
   resource_name: string;
   role_name: string;
   resource_link?: string;
+  user_id?: number;
 }
 
 export class ResourceDto {

@@ -151,19 +151,16 @@ exports.Prisma.ResourceScalarFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
-  link: 'link'
-};
-
-exports.Prisma.Resource_roleScalarFieldEnum = {
-  role_id: 'role_id',
-  resources_id: 'resources_id'
+  link: 'link',
+  owner: 'owner'
 };
 
 exports.Prisma.RoleScalarFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
-  access_id: 'access_id'
+  access_id: 'access_id',
+  resource_id: 'resource_id'
 };
 
 exports.Prisma.UserScalarFieldEnum = {
@@ -205,7 +202,6 @@ exports.Prisma.ModelName = {
   log: 'log',
   request: 'request',
   resource: 'resource',
-  resource_role: 'resource_role',
   role: 'role',
   user: 'user',
   user_request: 'user_request'
