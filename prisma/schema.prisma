@@ -8,80 +8,106 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model access {
-  id          Int     @id @default(autoincrement())
-  level       Int     @unique
-  description String? @db.VarChar(255)
-  role        role[]
+enum RequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }
 
-model log {
-  id          Int      @id @default(autoincrement())
-  account_id  Int
-  action      String   @db.VarChar(200)
-  action_time DateTime @db.Timestamp(6)
-  user        user     @relation(fields: [account_id], references: [id], onDelete: Cascade)
+enum RequestType {
+  GRANT_ACCESS
+  REVOKE_ACCESS
 }
 
-model request {
-  id            Int            @id @default(autoincrement())
-  name          String         @db.VarChar(40)
-  surname       String         @db.VarChar(40)
-  middle_name   String         @db.VarChar(40)
-  email         String         @db.VarChar(255)
-  status        String         @db.VarChar(255)
-  create_date   DateTime       @db.Timestamp(6)
-  complete_date DateTime       @db.Timestamp(6)
-  resource_id   Int
-  role_id       Int
-  resource      resource       @relation(fields: [resource_id], references: [id])
-  role          role           @relation(fields: [role_id], references: [id])
-  user_request  user_request[]
+enum LogAction {
+  REGISTRATION
+  LOGIN
+  LOGOUT
+  REQUEST_CREATED
 }
 
-model resource {
+model AccessToken {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique @db.VarChar(512)
+  userId    Int
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model RefreshToken {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique @db.VarChar(512)
+  userId    Int
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Log {
+  id         Int       @id @default(autoincrement())
+  accountId  Int
+  action     LogAction
+  actionTime DateTime  @db.Timestamp(6)
+  user       User      @relation(fields: [accountId], references: [id], onDelete: Cascade)
+}
+
+model Request {
+  id          Int           @id @default(autoincrement())
+  name        String        @db.VarChar(40)
+  surname     String        @db.VarChar(40)
+  middleName  String        @db.VarChar(40)
+  email       String        @db.VarChar(255)
+  status      RequestStatus
+  createDate  DateTime      @db.Timestamp(6)
+  requestType RequestType
+  resourceId  Int
+  roleId      Int
+  resource    Resource      @relation(fields: [resourceId], references: [id])
+  role        Role          @relation(fields: [roleId], references: [id])
+  users       User[]
+}
+
+model Resource {
   id          Int       @id @default(autoincrement())
   name        String    @db.VarChar(100)
   description String    @db.VarChar(255)
   link        String    @db.VarChar(255)
   owner       String    @db.VarChar(255)
-  request     request[]
-  role        role[]
+  requests    Request[]
+  roles       Role[]
 }
 
-model role {
+model Role {
   id          Int       @id @default(autoincrement())
   name        String    @unique @db.VarChar(100)
   description String    @db.VarChar(255)
-  access_id   Int
-  resource_id Int
-  request     request[]
-  access      access    @relation(fields: [access_id], references: [id])
-  resource    resource  @relation(fields: [resource_id], references: [id])
-  user        user[]
+  resourceId  Int
+  requests    Request[]
+  resource    Resource  @relation(fields: [resourceId], references: [id])
+  users       User[]
 }
 
-model user {
-  id             Int            @id @default(autoincrement())
-  email          String         @unique @db.VarChar(255)
-  password       String         @db.VarChar(100)
-  name           String?        @db.VarChar(40)
-  surname        String?        @db.VarChar(40)
-  middle_name    String?        @db.VarChar(40)
-  subdivision    String?        @db.VarChar(80)
-  rang           String?        @db.VarChar(80)
-  service_number Int?           @unique
-  role_id        Int?
-  log            log[]
-  role           role?          @relation(fields: [role_id], references: [id], onDelete: Restrict)
-  user_request   user_request[]
-}
-
-model user_request {
-  user_id    Int
-  request_id Int
-  request    request @relation(fields: [request_id], references: [id], onDelete: Cascade)
-  user       user    @relation(fields: [user_id], references: [id], onDelete: Cascade)
-
-  @@id([user_id, request_id])
+model User {
+  id            Int            @id @default(autoincrement())
+  email         String         @unique @db.VarChar(255)
+  password      String         @db.VarChar(100)
+  name          String?        @db.VarChar(40)
+  surname       String?        @db.VarChar(40)
+  middleName    String?        @db.VarChar(40)
+  phone         String?        @db.VarChar(20)
+  birthDate     DateTime?
+  subdivision   String?        @db.VarChar(80)
+  rang          String?        @db.VarChar(80)
+  serviceNumber Int?           @unique
+  roleId        Int?
+  logs          Log[]
+  role          Role?          @relation(fields: [roleId], references: [id], onDelete: Restrict)
+  requests      Request[]
+  accessTokens  AccessToken[]
+  refreshTokens RefreshToken[]
 }
