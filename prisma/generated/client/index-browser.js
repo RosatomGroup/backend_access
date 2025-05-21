@@ -117,30 +117,40 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-exports.Prisma.AccessScalarFieldEnum = {
+exports.Prisma.AccessTokenScalarFieldEnum = {
   id: 'id',
-  level: 'level',
-  description: 'description'
+  token: 'token',
+  userId: 'userId',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.RefreshTokenScalarFieldEnum = {
+  id: 'id',
+  token: 'token',
+  userId: 'userId',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.LogScalarFieldEnum = {
   id: 'id',
-  account_id: 'account_id',
+  accountId: 'accountId',
   action: 'action',
-  action_time: 'action_time'
+  actionTime: 'actionTime'
 };
 
 exports.Prisma.RequestScalarFieldEnum = {
   id: 'id',
   name: 'name',
   surname: 'surname',
-  middle_name: 'middle_name',
+  middleName: 'middleName',
   email: 'email',
   status: 'status',
-  create_date: 'create_date',
-  complete_date: 'complete_date',
-  resource_id: 'resource_id',
-  role_id: 'role_id'
+  createDate: 'createDate',
+  requestType: 'requestType',
+  resourceId: 'resourceId',
+  roleId: 'roleId'
 };
 
 exports.Prisma.ResourceScalarFieldEnum = {
@@ -155,8 +165,7 @@ exports.Prisma.RoleScalarFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
-  access_id: 'access_id',
-  resource_id: 'resource_id'
+  resourceId: 'resourceId'
 };
 
 exports.Prisma.UserScalarFieldEnum = {
@@ -165,16 +174,11 @@ exports.Prisma.UserScalarFieldEnum = {
   password: 'password',
   name: 'name',
   surname: 'surname',
-  middle_name: 'middle_name',
+  middleName: 'middleName',
   subdivision: 'subdivision',
   rang: 'rang',
-  service_number: 'service_number',
-  role_id: 'role_id'
-};
-
-exports.Prisma.User_requestScalarFieldEnum = {
-  user_id: 'user_id',
-  request_id: 'request_id'
+  serviceNumber: 'serviceNumber',
+  roleId: 'roleId'
 };
 
 exports.Prisma.SortOrder = {
@@ -191,16 +195,32 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+exports.LogAction = exports.$Enums.LogAction = {
+  REGISTRATION: 'REGISTRATION',
+  LOGIN: 'LOGIN',
+  LOGOUT: 'LOGOUT',
+  REQUEST_CREATED: 'REQUEST_CREATED'
+};
 
+exports.RequestStatus = exports.$Enums.RequestStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+};
+
+exports.RequestType = exports.$Enums.RequestType = {
+  GRANT_ACCESS: 'GRANT_ACCESS',
+  REVOKE_ACCESS: 'REVOKE_ACCESS'
+};
 
 exports.Prisma.ModelName = {
-  access: 'access',
-  log: 'log',
-  request: 'request',
-  resource: 'resource',
-  role: 'role',
-  user: 'user',
-  user_request: 'user_request'
+  AccessToken: 'AccessToken',
+  RefreshToken: 'RefreshToken',
+  Log: 'Log',
+  Request: 'Request',
+  Resource: 'Resource',
+  Role: 'Role',
+  User: 'User'
 };
 
 /**
