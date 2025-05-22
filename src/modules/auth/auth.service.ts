@@ -21,9 +21,22 @@ export class AuthService {
   }
 
   async login(user: any) {
-    const payload = { email: user.email, sub: user.id };
+    // Добавляем полную информацию о роли в токен
+    const payload = {
+      sub: user.id,
+      email: user.email,
+      role: user.role_user,  // Основное поле
+      role_user: user.role_user, // Дублирование для совместимости
+      ...(user.role && { role_name: user.role.name }) // Если роль в связанной таблице
+    };
+  
     return {
       access_token: this.jwtService.sign(payload),
+      user: {
+        id: user.id,
+        email: user.email,
+        role: user.role_user
+      }
     };
   }
 }

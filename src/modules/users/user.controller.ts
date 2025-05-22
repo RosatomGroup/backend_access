@@ -19,7 +19,7 @@ import { UserService } from './user.service';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 
 @Controller('users')
-@UseGuards(JwtAuthGuard, RolesGuard)
+
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -37,8 +37,7 @@ export class UserController {
   // ) {
   //   return this.userService.updateUserRole(userId, newRole);
   // }
-
-
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Patch(':id/role')
   @Roles(UserRole.ADMIN)
   async updateUserRole(
@@ -55,7 +54,8 @@ export class UserController {
   }
   
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
+  @Roles(UserRole.ADMIN)
   @Patch(':id')
   async partialUpdateUser(
     @CurrentUser() currentUser: { id: number; role?: UserRole },
@@ -76,7 +76,8 @@ export class UserController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
   @Get()
-  async getAll() {
+  async getAll(@CurrentUser() currentUser: { id: number, role: UserRole }) {
+    console.log(`Admin access granted to user ${currentUser.id} with role ${currentUser.role}`);
     return this.userService.getAllUsers();
   }
 
