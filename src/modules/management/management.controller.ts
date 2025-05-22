@@ -1,9 +1,12 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ManagementService } from './management.service';
 import {
+  CreateResourceDto,
+  CreateRoleDto,
   ManagementResourceDto,
   ManagementRoleDto,
   ManagementUserDto,
+  ResourceResponseDto,
 } from './dto/management.dto';
 
 @Controller('management')
@@ -18,6 +21,20 @@ export class ManagementController {
   @Get('roles')
   async getRoles(): Promise<ManagementRoleDto[]> {
     return this.managementService.getRoles();
+  }
+
+  @Post('roles')
+  async addRole(
+    @Body() createRoleDto: CreateRoleDto,
+  ): Promise<ManagementRoleDto> {
+    return this.managementService.addRole(createRoleDto);
+  }
+
+  @Post('resource')
+  async createResource(
+    @Body() createResourceDto: CreateResourceDto,
+  ): Promise<ResourceResponseDto> {
+    return this.managementService.createResource(createResourceDto);
   }
 
   @Get('resources')
