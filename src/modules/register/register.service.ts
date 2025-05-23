@@ -1,21 +1,25 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { RegisterDto } from './dto/create-register.dto';
 import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../prisma/prisma.service';
-import { JwtService } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
 import { TokenService } from '../token/token.service';
 
 @Injectable()
 export class RegisterService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly jwtService: JwtService,
-    private readonly configService: ConfigService,
     private readonly tokenService: TokenService,
   ) {}
 
   async registerUser(dto: RegisterDto) {
+    const normalizedEmail = dto.email.toLowerCase().trim();
+
+    const existingUser = await this.prisma.user.findUnique({
+      where: { email: normalizedEmail },
+    });
+    if (existingUser) {
+      throw new ConflictException('Пользователь с таким email уже существует');
+    }
     const hashedPassword = await bcrypt.hash(dto.password, 10);
 
     const user = await this.prisma.user.create({
@@ -23,56 +27,20 @@ export class RegisterService {
         surname: dto.surname,
         name: dto.name,
         middle_name: dto.middle_name,
-        email: dto.email,
+        email: normalizedEmail,
         password: hashedPassword,
       },
     });
 
-    const tokens = await this.tokenService.generateTokens(user.id, user.email);
+    const tokens = await this.tokenService.generateTokens(
+      user.id,
+      user.email,
+      false,
+    );
 
     return {
       user,
       ...tokens,
-    };
-  }
-  private async generateTokens(userId: number, email: string) {
-    const accessToken = this.jwtService.sign(
-      { userId, email },
-      {
-        secret: this.configService.get<string>('JWT_ACCESS_SECRET'),
-        expiresIn:
-          this.configService.get<string>('JWT_ACCESS_EXPIRES_IN') || '15m',
-      },
-    );
-
-    const refreshToken = this.jwtService.sign(
-      { userId, email },
-      {
-        secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
-        expiresIn:
-          this.configService.get<string>('JWT_REFRESH_EXPIRES_IN') || '7d',
-      },
-    );
-
-    await this.prisma.accessToken.create({
-      data: {
-        token: accessToken,
-        userId,
-        expiresAt: new Date(Date.now() + 15 * 60 * 1000),
-      },
-    });
-
-    await this.prisma.refreshToken.create({
-      data: {
-        token: refreshToken,
-        userId,
-        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-      },
-    });
-
-    return {
-      accessToken,
-      refreshToken,
     };
   }
 }

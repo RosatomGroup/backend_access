@@ -11,8 +11,9 @@ import {
 } from './dto/user.dto';
 
 import * as bcrypt from 'bcrypt';
-import { Prisma } from '@prisma/client';
+// import { Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
+// import type { userUpdateInput } from '@prisma/client';
 
 @Injectable()
 export class UserService {
@@ -38,17 +39,17 @@ export class UserService {
       }
     }
 
-    // const updateData: Prisma.userUpdateInput = {
-    //   ...(updateUserDto.name && { name: updateUserDto.name }),
-    //   ...(updateUserDto.surname && { surname: updateUserDto.surname }),
-    //   ...(updateUserDto.middle_name && {
-    //     middle_name: updateUserDto.middle_name,
-    //   }),
-    //   ...(updateUserDto.subdivision && {
-    //     subdivision: updateUserDto.subdivision,
-    //   }),
-    //   ...(updateUserDto.email && { email: updateUserDto.email }),
-    // };
+    const updateData = {
+      ...(updateUserDto.name && { name: updateUserDto.name }),
+      ...(updateUserDto.surname && { surname: updateUserDto.surname }),
+      ...(updateUserDto.middle_name && {
+        middle_name: updateUserDto.middle_name,
+      }),
+      ...(updateUserDto.subdivision && {
+        subdivision: updateUserDto.subdivision,
+      }),
+      ...(updateUserDto.email && { email: updateUserDto.email }),
+    };
 
     // if (updateUserDto.password) {
     //   updateData.password = await bcrypt.hash(updateUserDto.password, 10);
@@ -59,25 +60,24 @@ export class UserService {
     //     connect: { id: updateUserDto.role_id },
     //   };
     // }
-    // try {
-    //   const updatedUser = await this.prisma.user.update({
-    //     where: { id },
-    //     data: updateData,
-    //   });
 
-    //   return {
-    //     key: updatedUser.id.toString(),
-    //     name: [updatedUser.surname, updatedUser.name, updatedUser.middle_name]
-    //       .filter(Boolean)
-    //       .join(' '),
-    //     rang: updatedUser.role_id || 'Не указана',
-    //     // subdivision: updatedUser.subdivision || 'Не указано',
-    //     address: updatedUser.email,
-    //   };
-    // } catch (error) {
-    //   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    //   throw new Error(`Failed to update user: ${error.message}`);
-    // }
+    try {
+      const updatedUser = await this.prisma.user.update({
+        where: { id },
+        data: updateData,
+      });
+
+      return {
+        key: updatedUser.id.toString(),
+        name: [updatedUser.surname, updatedUser.name, updatedUser.middle_name]
+          .filter(Boolean)
+          .join(' '),
+        rang: updatedUser.rang || 'Не указана',
+        address: updatedUser.email,
+      };
+    } catch (error) {
+      throw new Error(`Failed to update user: ${error.message}`);
+    }
   }
 
   async getUsersForManagement(): Promise<ManagementUserDto[]> {
@@ -87,7 +87,7 @@ export class UserService {
       key: user.id,
       name: `${user.surname} ${user.name} ${user.middle_name || ''}`.trim(),
       rang: user.role_id?.toString() || 'Не указана',
-      subdivision: 'Не указано', //user.subdivision || 'Не указано'
+      subdivision: user.subdivision || 'Не указано',
       address: user.email,
     }));
   }

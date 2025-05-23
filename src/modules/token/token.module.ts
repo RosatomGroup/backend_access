@@ -1,26 +1,14 @@
 import { Module } from '@nestjs/common';
-import { TokenService } from './token.service';
 import { JwtModule } from '@nestjs/jwt';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
+import { TokenService } from './token.service';
+import { AccessTokenService } from './strategies/access-token.service';
+import { RefreshTokenService } from './strategies/refresh-token.service';
 import { PrismaModule } from '../prisma/prisma.module';
 
 @Module({
-  imports: [
-    PrismaModule,
-    JwtModule.registerAsync({
-      imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        secret: configService.get<string>('JWT_ACCESS_SECRET'),
-        signOptions: {
-          expiresIn:
-            configService.get<string>('JWT_ACCESS_EXPIRES_IN') || '15m',
-        },
-      }),
-      inject: [ConfigService],
-    }),
-    ConfigModule,
-  ],
-  providers: [TokenService],
-  exports: [TokenService],
+  imports: [ConfigModule, JwtModule.register({}), PrismaModule],
+  providers: [TokenService, AccessTokenService, RefreshTokenService],
+  exports: [TokenService, AccessTokenService, RefreshTokenService],
 })
 export class TokenModule {}

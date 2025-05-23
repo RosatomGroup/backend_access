@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { UserModule } from './modules/users/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { PrismaModule } from './modules/prisma/prisma.module';
@@ -15,6 +15,7 @@ import { PasswordResetService } from './modules/password-reset/password-reset.se
 import { MailModule } from './modules/mail/mail.module';
 import { JwtModule } from '@nestjs/jwt';
 import { TokenModule } from './modules/token/token.module';
+import { RefreshTokenMiddleware } from './modules/auth/middleware';
 
 @Module({
   imports: [
@@ -33,4 +34,8 @@ import { TokenModule } from './modules/token/token.module';
   controllers: [AppController, RegisterController, PasswordResetController],
   providers: [AppService, UserService, RegisterService, PasswordResetService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(RefreshTokenMiddleware).forRoutes('*');
+  }
+}

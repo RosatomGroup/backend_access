@@ -28,26 +28,27 @@ export class MailService {
 
     this.transporter.verify((error) => {
       if (error) {
-        console.error('Error verifying email transporter:', error);
+        console.log('Error verifying email transporter:', error);
         throw new Error('Failed to configure email transporter');
       }
     });
   }
 
   async sendPasswordResetEmail(email: string, token: string): Promise<void> {
+    const normalizedEmail = email.toLowerCase();
     try {
-      const userExists = await this.usersService.findByEmail(email);
+      const userExists = await this.usersService.findByEmail(normalizedEmail);
       if (!userExists) {
         throw new NotFoundException(
           'Пользователь с таким email не зарегистрирован',
         );
       }
-      const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${encodeURIComponent(token)}`;
+      const resetUrl = `${process.env.FRONTEND_URL}/reset?token=${encodeURIComponent(token)}`;
 
       await this.transporter.sendMail({
         from:
           process.env.EMAIL_FROM || `"No Reply" <${process.env.EMAIL_USER}>`,
-        to: email,
+        to: normalizedEmail,
         subject: 'Запрос сброса пароля',
         html: `
           <p>Вы запросили сброс пароля. Перейдите по ссылке ниже, чтобы сбросить пароль.</p>

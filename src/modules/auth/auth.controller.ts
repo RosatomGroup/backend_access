@@ -1,92 +1,104 @@
 import {
   Body,
   Controller,
-  HttpException,
-  HttpStatus,
+  Get,
   Post,
+  Res,
+  UnauthorizedException,
+  UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginUserDto } from './dto/login-user.dto';
 import { PasswordResetService } from '../password-reset/password-reset.service';
 import { MailService } from '../mail/mail.service';
 import { UserService } from '../users/user.service';
-import { ForgotPasswordDto } from '../password-reset/dto/forgot-password.dto';
+import { Response } from 'express';
+import { PrismaService } from '../prisma/prisma.service';
+import { Req } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { Request } from 'express';
+import { TokenService } from '../token/token.service';
 
+export interface AuthPayload {
+  userId: number;
+  email: string;
+}
 @Controller('auth')
 export class AuthController {
   constructor(
     private authService: AuthService,
-    private passwordResetService: PasswordResetService,
-    private mailService: MailService,
-    private userService: UserService,
+    private prisma: PrismaService,
+    private tokenService: TokenService,
   ) {}
 
-  // @Post('/logout')
-  // async logout(@Request() req) {
-  //     return req.logout();
-  // }
   @Post('login')
-  async login(@Body() dto: LoginUserDto) {
-    try {
-      const user = await this.authService.validateUser(dto.email, dto.password);
-      if (!user) {
-        throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
-      }
-      const token = await this.authService.login(user);
-      return { access_token: token };
-    } catch (error) {
-      throw new HttpException(
-        error.message || 'Authorization failed',
-        HttpStatus.UNAUTHORIZED,
-      );
-    }
-  }
-
-  @Post('forgot-password')
-  async forgotPassword(@Body() dto: ForgotPasswordDto) {
-    try {
-      const user = await this.userService.findByEmail(dto.email);
-      if (!user) {
-        return {
-          success: true,
-          message: 'If the email exists, a reset link has been sent',
-        };
-      }
-
-      const token = await this.passwordResetService.createToken(
-        user.id.toString(),
-      );
-      await this.mailService.sendPasswordResetEmail(user.email, token);
-
-      return {
-        success: true,
-        message: 'Password reset link has been sent to your email',
-      };
-    } catch (error) {
-      throw new HttpException(
-        error.message || 'Failed to process password reset request',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
-  }
-
-  @Post('reset-password')
-  async resetPassword(
-    @Body('token') token: string,
-    @Body('newPassword') newPassword: string,
+  async login(
+    @Body() dto: LoginUserDto,
+    @Res({ passthrough: true }) res: Response,
   ) {
-    const { valid, email } =
-      await this.passwordResetService.validateToken(token);
+    const user = await this.authService.validateUser(dto.email, dto.password);
+    const { accessToken, refreshToken } = await this.authService.login(
+      user,
+      dto.rememberMe,
+    );
+    const commonOptions = {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict' as const,
+    };
 
-    if (!valid || !email) {
-      throw new HttpException(
-        'Неверный или просроченный токен',
-        HttpStatus.BAD_REQUEST,
-      );
+    res.cookie('accessToken', accessToken, {
+      ...commonOptions,
+      ...(dto.rememberMe ? { maxAge: 15 * 60 * 1000 } : {}),
+    });
+
+    res.cookie('refreshToken', refreshToken, {
+      ...commonOptions,
+      ...(dto.rememberMe ? { maxAge: 7 * 24 * 60 * 60 * 1000 } : {}),
+    });
+    return { message: 'Вход выполнен' };
+  }
+
+  @Get('me')
+  @UseGuards(AuthGuard('jwt'))
+  async getMe(@Req() req: Request & { user?: AuthPayload }) {
+    if (!req.user) {
+      throw new UnauthorizedException('User not found');
     }
 
-    await this.userService.updatePassword(email, newPassword);
-    await this.passwordResetService.deleteToken(token);
-    return { message: 'Пароль успешно изменён' };
+    return { userId: req.user.userId, email: req.user.email };
+  }
+
+  @Post('logout')
+  async logout(
+    @Req() req: Request & { user?: AuthPayload },
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const refreshToken = req.cookies?.refreshToken;
+
+    if (refreshToken) {
+      try {
+        const payload =
+          await this.tokenService.verifyRefreshToken(refreshToken);
+        await this.prisma.refreshToken.deleteMany({
+          where: { userId: payload.userId },
+        });
+      } catch (e) {
+        console.warn('Refresh token invalid or expired');
+      }
+    }
+
+    const cookieOptions = {
+      httpOnly: true,
+      // secure: process.env.NODE_ENV === 'production',
+      secure: false,
+      sameSite: 'strict' as const,
+      path: '/',
+    };
+
+    res.clearCookie('accessToken', cookieOptions);
+    res.clearCookie('refreshToken', cookieOptions);
+
+    return { message: 'Вы вышли из системы' };
   }
 }

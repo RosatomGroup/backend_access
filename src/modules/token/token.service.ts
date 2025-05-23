@@ -1,57 +1,22 @@
 import { Injectable } from '@nestjs/common';
+import { AccessTokenService } from './strategies/access-token.service';
+import { RefreshTokenService } from './strategies/refresh-token.service';
 import { PrismaService } from '../prisma/prisma.service';
-import { JwtService } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class TokenService {
   constructor(
-    private readonly prisma: PrismaService,
-    private readonly jwtService: JwtService,
-    private readonly configService: ConfigService,
+    private accessTokenService: AccessTokenService,
+    private refreshTokenService: RefreshTokenService,
+    private prisma: PrismaService,
   ) {}
 
-  async refreshTokens(refreshToken: string) {
-    try {
-      const payload = this.jwtService.verify(refreshToken, {
-        secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
-      });
-
-      const tokenExists = await this.prisma.refreshToken.findFirst({
-        where: { token: refreshToken, userId: payload.userId },
-      });
-
-      if (!tokenExists) {
-        throw new Error('Invalid refresh token');
-      }
-
-      await this.prisma.refreshToken.delete({
-        where: { id: tokenExists.id },
-      });
-
-      return this.generateTokens(payload.userId, payload.email);
-    } catch (error) {
-      throw new Error('Invalid refresh token');
-    }
-  }
-
-  async generateTokens(userId: number, email: string) {
-    const accessToken = this.jwtService.sign(
-      { userId, email },
-      {
-        secret: this.configService.get<string>('JWT_ACCESS_SECRET'),
-        expiresIn:
-          this.configService.get<string>('JWT_ACCESS_EXPIRES_IN') || '15m',
-      },
-    );
-
-    const refreshToken = this.jwtService.sign(
-      { userId, email },
-      {
-        secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
-        expiresIn:
-          this.configService.get<string>('JWT_REFRESH_EXPIRES_IN') || '7d',
-      },
+  async generateTokens(userId: number, email: string, rememberMe: boolean) {
+    const accessToken = await this.accessTokenService.sign(userId, email);
+    const refreshToken = await this.refreshTokenService.sign(
+      userId,
+      email,
+      rememberMe,
     );
 
     await this.prisma.accessToken.create({
@@ -70,9 +35,14 @@ export class TokenService {
       },
     });
 
-    return {
-      accessToken,
-      refreshToken,
-    };
+    return { accessToken, refreshToken };
+  }
+
+  async verifyRefreshToken(token: string) {
+    return this.refreshTokenService.verify(token);
+  }
+
+  async verifyAccessToken(token: string) {
+    return this.accessTokenService.verify(token);
   }
 }

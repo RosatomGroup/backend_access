@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { v4 as uuidv4 } from 'uuid';
 import { MailService } from '../mail/mail.service';
+import * as bcrypt from 'bcrypt';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 
 @Injectable()
 export class PasswordResetService {
@@ -9,9 +11,13 @@ export class PasswordResetService {
     private readonly prisma: PrismaService,
     private readonly mailService: MailService,
   ) {}
+
   async requestPasswordReset(email: string): Promise<void> {
+    email = email.toLowerCase();
     const token = uuidv4();
-    await this.prisma.passwordResetToken.deleteMany({ where: { email } });
+    await this.prisma.passwordResetToken.deleteMany({
+      where: { email: { equals: email, mode: 'insensitive' } },
+    });
     await this.prisma.passwordResetToken.create({
       data: {
         email,
@@ -23,6 +29,7 @@ export class PasswordResetService {
     await this.mailService.sendPasswordResetEmail(email, token);
   }
   async createToken(email: string): Promise<string> {
+    email = email.toLowerCase();
     const token = uuidv4();
 
     await this.prisma.passwordResetToken.deleteMany({
@@ -61,11 +68,39 @@ export class PasswordResetService {
 
   async deleteToken(token: string): Promise<void> {
     try {
-      await this.prisma['passwordResetToken'].delete({
+      await this.prisma.passwordResetToken.delete({
         where: { token },
       });
     } catch (error) {
       console.error('Error deleting token:', error);
     }
+  }
+
+  async resetPassword(token: string, newPassword: string): Promise<void> {
+    const record = await this.prisma.passwordResetToken.findUnique({
+      where: { token },
+    });
+
+    if (!record) {
+      throw new BadRequestException('Недействительный или истёкший токен');
+    }
+
+    if (new Date() > record.expiresAt) {
+      throw new BadRequestException('Недействительный или истёкший токен');
+    }
+    const email = record.email.toLowerCase();
+    const user = await this.prisma.user.findFirst({
+      where: { email: { equals: email, mode: 'insensitive' } },
+    });
+
+    if (!user) throw new NotFoundException('Пользователь не найден');
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await this.prisma.user.update({
+      where: { email: user.email },
+      data: { password: hashedPassword },
+    });
+
+    await this.deleteToken(token);
   }
 }

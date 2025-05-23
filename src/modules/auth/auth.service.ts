@@ -1,26 +1,19 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
-// import { UserService } from '../users/user.service';
+import { TokenService } from '../token/token.service';
 
 @Injectable()
 export class AuthService {
   constructor(
-    // private usersService: UserService,
     private prisma: PrismaService,
-    private jwtService: JwtService,
+    private tokenService: TokenService,
   ) {}
 
   async validateUser(email: string, pass: string): Promise<any> {
-    // const user = await this.usersService.findByEmail(email);
-    // if (user && (await bcrypt.compare(pass, user.password))) {
-    //   const { password, ...result } = user;
-    //   return result;
-    // }
-    // return null;
+    const normalizedEmail = email.toLowerCase().trim();
     const user = await this.prisma.user.findUnique({
-      where: { email },
+      where: { email: normalizedEmail },
     });
     if (!user) {
       throw new UnauthorizedException('Пользователь не найден');
@@ -33,10 +26,12 @@ export class AuthService {
     return result;
   }
 
-  async login(user: any) {
+  async login(user: any, rememberMe: boolean) {
     const payload = { email: user.email, sub: user.id };
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
+
+    const { accessToken, refreshToken } =
+      await this.tokenService.generateTokens(user.id, user.email, rememberMe);
+
+    return { accessToken, refreshToken, rememberMe };
   }
 }
