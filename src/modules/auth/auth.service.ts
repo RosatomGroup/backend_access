@@ -1,29 +1,37 @@
-import { Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
-import { UserService } from '../users/user.service';
+import { TokenService } from '../token/token.service';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private usersService: UserService,
-    private jwtService: JwtService,
+    private prisma: PrismaService,
+    private tokenService: TokenService,
   ) {}
 
   async validateUser(email: string, pass: string): Promise<any> {
-    const user = await this.usersService.findByEmail(email);
-    if (user && (await bcrypt.compare(pass, user.password))) {
-      const { password, ...result } = user;
-      return result;
+    const normalizedEmail = email.toLowerCase().trim();
+    const user = await this.prisma.user.findUnique({
+      where: { email: normalizedEmail },
+    });
+    if (!user) {
+      throw new UnauthorizedException('Пользователь не найден');
     }
-    return null;
+    const isPasswordValid = await bcrypt.compare(pass, user.password);
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Неверный пароль');
+    }
+    const { password, ...result } = user;
+    return result;
   }
 
-  async login(user: any) {
+  async login(user: any, rememberMe: boolean) {
     const payload = { email: user.email, sub: user.id };
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
+
+    const { accessToken, refreshToken } =
+      await this.tokenService.generateTokens(user.id, user.email, rememberMe);
+
+    return { accessToken, refreshToken, rememberMe };
   }
 }
