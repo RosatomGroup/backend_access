@@ -9,4 +9,6 @@ export class LoginUserDto {
   @IsNotEmpty()
   @MinLength(8)
   password: string;
+
+  rememberMe: boolean;
 }
