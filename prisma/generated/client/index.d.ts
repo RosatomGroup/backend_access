@@ -8409,6 +8409,8 @@ export namespace Prisma {
     name: string | null
     surname: string | null
     middleName: string | null
+    phone: string | null
+    birthDate: Date | null
     subdivision: string | null
     rang: string | null
     serviceNumber: number | null
@@ -8422,6 +8424,8 @@ export namespace Prisma {
     name: string | null
     surname: string | null
     middleName: string | null
+    phone: string | null
+    birthDate: Date | null
     subdivision: string | null
     rang: string | null
     serviceNumber: number | null
@@ -8435,6 +8439,8 @@ export namespace Prisma {
     name: number
     surname: number
     middleName: number
+    phone: number
+    birthDate: number
     subdivision: number
     rang: number
     serviceNumber: number
@@ -8462,6 +8468,8 @@ export namespace Prisma {
     name?: true
     surname?: true
     middleName?: true
+    phone?: true
+    birthDate?: true
     subdivision?: true
     rang?: true
     serviceNumber?: true
@@ -8475,6 +8483,8 @@ export namespace Prisma {
     name?: true
     surname?: true
     middleName?: true
+    phone?: true
+    birthDate?: true
     subdivision?: true
     rang?: true
     serviceNumber?: true
@@ -8488,6 +8498,8 @@ export namespace Prisma {
     name?: true
     surname?: true
     middleName?: true
+    phone?: true
+    birthDate?: true
     subdivision?: true
     rang?: true
     serviceNumber?: true
@@ -8588,6 +8600,8 @@ export namespace Prisma {
     name: string | null
     surname: string | null
     middleName: string | null
+    phone: string | null
+    birthDate: Date | null
     subdivision: string | null
     rang: string | null
     serviceNumber: number | null
@@ -8620,6 +8634,8 @@ export namespace Prisma {
     name?: boolean
     surname?: boolean
     middleName?: boolean
+    phone?: boolean
+    birthDate?: boolean
     subdivision?: boolean
     rang?: boolean
     serviceNumber?: boolean
@@ -8639,6 +8655,8 @@ export namespace Prisma {
     name?: boolean
     surname?: boolean
     middleName?: boolean
+    phone?: boolean
+    birthDate?: boolean
     subdivision?: boolean
     rang?: boolean
     serviceNumber?: boolean
@@ -8653,6 +8671,8 @@ export namespace Prisma {
     name?: boolean
     surname?: boolean
     middleName?: boolean
+    phone?: boolean
+    birthDate?: boolean
     subdivision?: boolean
     rang?: boolean
     serviceNumber?: boolean
@@ -8667,13 +8687,15 @@ export namespace Prisma {
     name?: boolean
     surname?: boolean
     middleName?: boolean
+    phone?: boolean
+    birthDate?: boolean
     subdivision?: boolean
     rang?: boolean
     serviceNumber?: boolean
     roleId?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "name" | "surname" | "middleName" | "subdivision" | "rang" | "serviceNumber" | "roleId", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "name" | "surname" | "middleName" | "phone" | "birthDate" | "subdivision" | "rang" | "serviceNumber" | "roleId", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     logs?: boolean | User$logsArgs<ExtArgs>
     role?: boolean | User$roleArgs<ExtArgs>
@@ -8705,6 +8727,8 @@ export namespace Prisma {
       name: string | null
       surname: string | null
       middleName: string | null
+      phone: string | null
+      birthDate: Date | null
       subdivision: string | null
       rang: string | null
       serviceNumber: number | null
@@ -9143,6 +9167,8 @@ export namespace Prisma {
     readonly name: FieldRef<"User", 'String'>
     readonly surname: FieldRef<"User", 'String'>
     readonly middleName: FieldRef<"User", 'String'>
+    readonly phone: FieldRef<"User", 'String'>
+    readonly birthDate: FieldRef<"User", 'DateTime'>
     readonly subdivision: FieldRef<"User", 'String'>
     readonly rang: FieldRef<"User", 'String'>
     readonly serviceNumber: FieldRef<"User", 'Int'>
@@ -9766,6 +9792,8 @@ export namespace Prisma {
     name: 'name',
     surname: 'surname',
     middleName: 'middleName',
+    phone: 'phone',
+    birthDate: 'birthDate',
     subdivision: 'subdivision',
     rang: 'rang',
     serviceNumber: 'serviceNumber',
@@ -10287,6 +10315,8 @@ export namespace Prisma {
     name?: StringNullableFilter<"User"> | string | null
     surname?: StringNullableFilter<"User"> | string | null
     middleName?: StringNullableFilter<"User"> | string | null
+    phone?: StringNullableFilter<"User"> | string | null
+    birthDate?: DateTimeNullableFilter<"User"> | Date | string | null
     subdivision?: StringNullableFilter<"User"> | string | null
     rang?: StringNullableFilter<"User"> | string | null
     serviceNumber?: IntNullableFilter<"User"> | number | null
@@ -10305,6 +10335,8 @@ export namespace Prisma {
     name?: SortOrderInput | SortOrder
     surname?: SortOrderInput | SortOrder
     middleName?: SortOrderInput | SortOrder
+    phone?: SortOrderInput | SortOrder
+    birthDate?: SortOrderInput | SortOrder
     subdivision?: SortOrderInput | SortOrder
     rang?: SortOrderInput | SortOrder
     serviceNumber?: SortOrderInput | SortOrder
@@ -10327,6 +10359,8 @@ export namespace Prisma {
     name?: StringNullableFilter<"User"> | string | null
     surname?: StringNullableFilter<"User"> | string | null
     middleName?: StringNullableFilter<"User"> | string | null
+    phone?: StringNullableFilter<"User"> | string | null
+    birthDate?: DateTimeNullableFilter<"User"> | Date | string | null
     subdivision?: StringNullableFilter<"User"> | string | null
     rang?: StringNullableFilter<"User"> | string | null
     roleId?: IntNullableFilter<"User"> | number | null
@@ -10344,6 +10378,8 @@ export namespace Prisma {
     name?: SortOrderInput | SortOrder
     surname?: SortOrderInput | SortOrder
     middleName?: SortOrderInput | SortOrder
+    phone?: SortOrderInput | SortOrder
+    birthDate?: SortOrderInput | SortOrder
     subdivision?: SortOrderInput | SortOrder
     rang?: SortOrderInput | SortOrder
     serviceNumber?: SortOrderInput | SortOrder
@@ -10365,6 +10401,8 @@ export namespace Prisma {
     name?: StringNullableWithAggregatesFilter<"User"> | string | null
     surname?: StringNullableWithAggregatesFilter<"User"> | string | null
     middleName?: StringNullableWithAggregatesFilter<"User"> | string | null
+    phone?: StringNullableWithAggregatesFilter<"User"> | string | null
+    birthDate?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     subdivision?: StringNullableWithAggregatesFilter<"User"> | string | null
     rang?: StringNullableWithAggregatesFilter<"User"> | string | null
     serviceNumber?: IntNullableWithAggregatesFilter<"User"> | number | null
@@ -10730,6 +10768,8 @@ export namespace Prisma {
     name?: string | null
     surname?: string | null
     middleName?: string | null
+    phone?: string | null
+    birthDate?: Date | string | null
     subdivision?: string | null
     rang?: string | null
     serviceNumber?: number | null
@@ -10747,6 +10787,8 @@ export namespace Prisma {
     name?: string | null
     surname?: string | null
     middleName?: string | null
+    phone?: string | null
+    birthDate?: Date | string | null
     subdivision?: string | null
     rang?: string | null
     serviceNumber?: number | null
@@ -10763,6 +10805,8 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     surname?: NullableStringFieldUpdateOperationsInput | string | null
     middleName?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
     serviceNumber?: NullableIntFieldUpdateOperationsInput | number | null
@@ -10780,6 +10824,8 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     surname?: NullableStringFieldUpdateOperationsInput | string | null
     middleName?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
     serviceNumber?: NullableIntFieldUpdateOperationsInput | number | null
@@ -10797,6 +10843,8 @@ export namespace Prisma {
     name?: string | null
     surname?: string | null
     middleName?: string | null
+    phone?: string | null
+    birthDate?: Date | string | null
     subdivision?: string | null
     rang?: string | null
     serviceNumber?: number | null
@@ -10809,6 +10857,8 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     surname?: NullableStringFieldUpdateOperationsInput | string | null
     middleName?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
     serviceNumber?: NullableIntFieldUpdateOperationsInput | number | null
@@ -10821,6 +10871,8 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     surname?: NullableStringFieldUpdateOperationsInput | string | null
     middleName?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
     serviceNumber?: NullableIntFieldUpdateOperationsInput | number | null
@@ -11236,6 +11288,17 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type IntNullableFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -11294,6 +11357,8 @@ export namespace Prisma {
     name?: SortOrder
     surname?: SortOrder
     middleName?: SortOrder
+    phone?: SortOrder
+    birthDate?: SortOrder
     subdivision?: SortOrder
     rang?: SortOrder
     serviceNumber?: SortOrder
@@ -11313,6 +11378,8 @@ export namespace Prisma {
     name?: SortOrder
     surname?: SortOrder
     middleName?: SortOrder
+    phone?: SortOrder
+    birthDate?: SortOrder
     subdivision?: SortOrder
     rang?: SortOrder
     serviceNumber?: SortOrder
@@ -11326,6 +11393,8 @@ export namespace Prisma {
     name?: SortOrder
     surname?: SortOrder
     middleName?: SortOrder
+    phone?: SortOrder
+    birthDate?: SortOrder
     subdivision?: SortOrder
     rang?: SortOrder
     serviceNumber?: SortOrder
@@ -11354,6 +11423,20 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -11754,6 +11837,10 @@ export namespace Prisma {
     set?: string | null
   }
 
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
   export type NullableIntFieldUpdateOperationsInput = {
     set?: number | null
     increment?: number
@@ -12041,6 +12128,17 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type NestedIntNullableFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -12067,6 +12165,20 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -12102,6 +12214,8 @@ export namespace Prisma {
     name?: string | null
     surname?: string | null
     middleName?: string | null
+    phone?: string | null
+    birthDate?: Date | string | null
     subdivision?: string | null
     rang?: string | null
     serviceNumber?: number | null
@@ -12118,6 +12232,8 @@ export namespace Prisma {
     name?: string | null
     surname?: string | null
     middleName?: string | null
+    phone?: string | null
+    birthDate?: Date | string | null
     subdivision?: string | null
     rang?: string | null
     serviceNumber?: number | null
@@ -12149,6 +12265,8 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     surname?: NullableStringFieldUpdateOperationsInput | string | null
     middleName?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
     serviceNumber?: NullableIntFieldUpdateOperationsInput | number | null
@@ -12165,6 +12283,8 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     surname?: NullableStringFieldUpdateOperationsInput | string | null
     middleName?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
     serviceNumber?: NullableIntFieldUpdateOperationsInput | number | null
@@ -12180,6 +12300,8 @@ export namespace Prisma {
     name?: string | null
     surname?: string | null
     middleName?: string | null
+    phone?: string | null
+    birthDate?: Date | string | null
     subdivision?: string | null
     rang?: string | null
     serviceNumber?: number | null
@@ -12196,6 +12318,8 @@ export namespace Prisma {
     name?: string | null
     surname?: string | null
     middleName?: string | null
+    phone?: string | null
+    birthDate?: Date | string | null
     subdivision?: string | null
     rang?: string | null
     serviceNumber?: number | null
@@ -12227,6 +12351,8 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     surname?: NullableStringFieldUpdateOperationsInput | string | null
     middleName?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
     serviceNumber?: NullableIntFieldUpdateOperationsInput | number | null
@@ -12243,6 +12369,8 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     surname?: NullableStringFieldUpdateOperationsInput | string | null
     middleName?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
     serviceNumber?: NullableIntFieldUpdateOperationsInput | number | null
@@ -12258,6 +12386,8 @@ export namespace Prisma {
     name?: string | null
     surname?: string | null
     middleName?: string | null
+    phone?: string | null
+    birthDate?: Date | string | null
     subdivision?: string | null
     rang?: string | null
     serviceNumber?: number | null
@@ -12274,6 +12404,8 @@ export namespace Prisma {
     name?: string | null
     surname?: string | null
     middleName?: string | null
+    phone?: string | null
+    birthDate?: Date | string | null
     subdivision?: string | null
     rang?: string | null
     serviceNumber?: number | null
@@ -12305,6 +12437,8 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     surname?: NullableStringFieldUpdateOperationsInput | string | null
     middleName?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
     serviceNumber?: NullableIntFieldUpdateOperationsInput | number | null
@@ -12321,6 +12455,8 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     surname?: NullableStringFieldUpdateOperationsInput | string | null
     middleName?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
     serviceNumber?: NullableIntFieldUpdateOperationsInput | number | null
@@ -12378,6 +12514,8 @@ export namespace Prisma {
     name?: string | null
     surname?: string | null
     middleName?: string | null
+    phone?: string | null
+    birthDate?: Date | string | null
     subdivision?: string | null
     rang?: string | null
     serviceNumber?: number | null
@@ -12394,6 +12532,8 @@ export namespace Prisma {
     name?: string | null
     surname?: string | null
     middleName?: string | null
+    phone?: string | null
+    birthDate?: Date | string | null
     subdivision?: string | null
     rang?: string | null
     serviceNumber?: number | null
@@ -12488,6 +12628,8 @@ export namespace Prisma {
     name?: StringNullableFilter<"User"> | string | null
     surname?: StringNullableFilter<"User"> | string | null
     middleName?: StringNullableFilter<"User"> | string | null
+    phone?: StringNullableFilter<"User"> | string | null
+    birthDate?: DateTimeNullableFilter<"User"> | Date | string | null
     subdivision?: StringNullableFilter<"User"> | string | null
     rang?: StringNullableFilter<"User"> | string | null
     serviceNumber?: IntNullableFilter<"User"> | number | null
@@ -12675,6 +12817,8 @@ export namespace Prisma {
     name?: string | null
     surname?: string | null
     middleName?: string | null
+    phone?: string | null
+    birthDate?: Date | string | null
     subdivision?: string | null
     rang?: string | null
     serviceNumber?: number | null
@@ -12691,6 +12835,8 @@ export namespace Prisma {
     name?: string | null
     surname?: string | null
     middleName?: string | null
+    phone?: string | null
+    birthDate?: Date | string | null
     subdivision?: string | null
     rang?: string | null
     serviceNumber?: number | null
@@ -13015,6 +13161,8 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     surname?: NullableStringFieldUpdateOperationsInput | string | null
     middleName?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
     serviceNumber?: NullableIntFieldUpdateOperationsInput | number | null
@@ -13031,6 +13179,8 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     surname?: NullableStringFieldUpdateOperationsInput | string | null
     middleName?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
     serviceNumber?: NullableIntFieldUpdateOperationsInput | number | null
@@ -13047,6 +13197,8 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     surname?: NullableStringFieldUpdateOperationsInput | string | null
     middleName?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
     serviceNumber?: NullableIntFieldUpdateOperationsInput | number | null
@@ -13148,6 +13300,8 @@ export namespace Prisma {
     name?: string | null
     surname?: string | null
     middleName?: string | null
+    phone?: string | null
+    birthDate?: Date | string | null
     subdivision?: string | null
     rang?: string | null
     serviceNumber?: number | null
@@ -13196,6 +13350,8 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     surname?: NullableStringFieldUpdateOperationsInput | string | null
     middleName?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
     serviceNumber?: NullableIntFieldUpdateOperationsInput | number | null
@@ -13212,6 +13368,8 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     surname?: NullableStringFieldUpdateOperationsInput | string | null
     middleName?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
     serviceNumber?: NullableIntFieldUpdateOperationsInput | number | null
@@ -13228,6 +13386,8 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     surname?: NullableStringFieldUpdateOperationsInput | string | null
     middleName?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
     serviceNumber?: NullableIntFieldUpdateOperationsInput | number | null
