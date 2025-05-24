@@ -1,8 +1,10 @@
 import {
+  IsDateString,
   IsEmail,
   IsInt,
   IsNotEmpty,
   IsOptional,
+  IsPhoneNumber,
   IsString,
   Length,
 } from 'class-validator';
@@ -36,39 +38,45 @@ export class UpdateUserDto {
   @IsOptional()
   @IsString()
   @Length(1, 40)
-  middle_name?: string;
+  middleName?: string;
+
+  @IsOptional()
+  @IsPhoneNumber()
+  phone?: string;
+
+  @IsOptional()
+  @IsString()
+  @Length(1, 80)
+  rang?: string;
+
+  @IsOptional()
+  @IsDateString()
+  birthDate?: string;
+
+  @IsOptional()
+  @IsString()
+  @Length(1, 80)
+  subdivision?: string;
 
   @IsOptional()
   @IsInt()
-  @Length(3, 20)
-  service_number?: number;
-
-  @IsOptional()
-  subdivision?: string;
+  serviceNumber?: number;
 
   @IsOptional()
   @IsEmail()
   email?: string;
-
-  @IsOptional()
-  @Length(6, 30)
-  password?: string;
 }
 
 export class ReplyUpdateUserDto {
   name?: string;
-
   surname?: string;
-
-  middle_name?: string;
-
-  service_number?: number;
-
+  middleName?: string;
+  phone?: string;
+  rang?: string;
+  birthDate?: Date;
   subdivision?: string;
-
+  serviceNumber?: number;
   email?: string;
-
-  password?: string;
 }
 
 export class ManagementUserDto {
