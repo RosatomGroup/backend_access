@@ -16,6 +16,7 @@ import { MailModule } from './modules/mail/mail.module';
 import { JwtModule } from '@nestjs/jwt';
 import { TokenModule } from './modules/token/token.module';
 import { RefreshTokenMiddleware } from './modules/auth/middleware';
+import { RequestModule } from './modules/requests/request.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { RefreshTokenMiddleware } from './modules/auth/middleware';
     PasswordResetModule,
     MailModule,
     JwtModule,
+    RequestModule,
   ],
   controllers: [AppController, RegisterController, PasswordResetController],
   providers: [AppService, UserService, RegisterService, PasswordResetService],
