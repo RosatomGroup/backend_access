@@ -3,7 +3,6 @@ import {
   IsEmail,
   IsInt,
   IsNotEmpty,
-  IsOptional,
   IsPhoneNumber,
   IsString,
   Length,
@@ -25,58 +24,45 @@ export class ReplyCreateUserDto {
 }
 
 export class UpdateUserDto {
-  @IsOptional()
   @IsString()
   @Length(1, 40)
-  name?: string;
+  name: string;
 
-  @IsOptional()
   @IsString()
   @Length(1, 40)
   surname?: string;
 
-  @IsOptional()
   @IsString()
   @Length(1, 40)
   middleName?: string;
 
-  @IsOptional()
   @IsPhoneNumber()
   phone?: string;
 
-  @IsOptional()
   @IsString()
   @Length(1, 80)
   rang?: string;
 
-  @IsOptional()
   @IsDateString()
   birthDate?: string;
 
-  @IsOptional()
   @IsString()
   @Length(1, 80)
   subdivision?: string;
 
-  @IsOptional()
   @IsInt()
   serviceNumber?: number;
-
-  @IsOptional()
-  @IsEmail()
-  email?: string;
 }
 
 export class ReplyUpdateUserDto {
-  name?: string;
+  name: string;
   surname?: string;
-  middleName?: string;
-  phone?: string;
-  rang?: string;
+  middleName: string;
+  phone: string;
+  rang: string;
   birthDate?: Date;
   subdivision?: string;
-  serviceNumber?: number;
-  email?: string;
+  serviceNumber: number;
 }
 
 export class ManagementUserDto {

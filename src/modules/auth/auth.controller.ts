@@ -3,20 +3,16 @@ import {
   Controller,
   Get,
   Post,
+  Req,
   Res,
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginUserDto } from './dto/login-user.dto';
-import { PasswordResetService } from '../password-reset/password-reset.service';
-import { MailService } from '../mail/mail.service';
-import { UserService } from '../users/user.service';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { PrismaService } from '../prisma/prisma.service';
-import { Req } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { Request } from 'express';
 import { TokenService } from '../token/token.service';
 
 export interface AuthPayload {

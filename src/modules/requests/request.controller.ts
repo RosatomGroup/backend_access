@@ -1,11 +1,11 @@
 import {
+  Body,
   Controller,
   Get,
-  Post,
-  Body,
   Param,
-  Put,
   ParseIntPipe,
+  Post,
+  Put,
   Request,
 } from '@nestjs/common';
 import { RequestService } from './request.service';
@@ -27,7 +27,7 @@ export class RequestController {
     // Если user_id не указан, берём из JWT-токена
     const dtoWithUser = {
       ...createRequestDto,
-      user_id: createRequestDto.user_id || req.user?.userId,
+      user_id: createRequestDto.userId || req.user?.userId,
     };
     return this.requestService.create(dtoWithUser);
   }

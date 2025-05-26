@@ -29,8 +29,8 @@ export class ManagementService {
     return {
       key: user.id,
       name: `${user.surname} ${user.name} ${user.middleName || ''}`.trim(),
-      rang: user.rang,
-      subdivision: user.subdivision,
+      rang: user.rang || 'Не указано',
+      subdivision: user.subdivision || 'Не указано',
       email: user.email,
     };
   }
