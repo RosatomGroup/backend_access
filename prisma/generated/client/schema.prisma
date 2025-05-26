@@ -48,6 +48,16 @@ model RefreshToken {
   @@index([userId])
 }
 
+model PasswordResetToken {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([email])
+}
+
 model Log {
   id         Int       @id @default(autoincrement())
   accountId  Int
@@ -110,4 +120,6 @@ model User {
   requests      Request[]
   accessTokens  AccessToken[]
   refreshTokens RefreshToken[]
+
+  @@index([id])
 }
