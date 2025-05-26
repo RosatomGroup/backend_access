@@ -31,9 +31,4 @@ export class UserController {
   async getAll() {
     return this.userService.getAllUsers();
   }
-
-  @Get('management')
-  async getUsersForManagement() {
-    return this.userService.getUsersForManagement();
-  }
 }

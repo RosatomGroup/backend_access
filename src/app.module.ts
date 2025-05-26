@@ -17,10 +17,19 @@ import { JwtModule } from '@nestjs/jwt';
 import { TokenModule } from './modules/token/token.module';
 import { RefreshTokenMiddleware } from './modules/auth/middleware';
 import { RequestModule } from './modules/requests/request.module';
+import { ManagementModule } from './modules/management/management.module';
+import { ManagementController } from './modules/management/management.controller';
+import { UserController } from './modules/users/user.controller';
+import { RequestController } from './modules/requests/request.controller';
+import { RequestService } from './modules/requests/request.service';
+import { ManagementService } from './modules/management/management.service';
+import { HttpLoggerMiddleware } from './modules/middleware/HttpLoggerMiddleware';
+import * as cookieParser from 'cookie-parser';
 
 @Module({
   imports: [
     PrismaModule,
+    ManagementModule,
     UserModule,
     AuthModule,
     TokenModule,
@@ -33,11 +42,26 @@ import { RequestModule } from './modules/requests/request.module';
     JwtModule,
     RequestModule,
   ],
-  controllers: [AppController, RegisterController, PasswordResetController],
-  providers: [AppService, UserService, RegisterService, PasswordResetService],
+  controllers: [
+    AppController,
+    RegisterController,
+    PasswordResetController,
+    ManagementController,
+    UserController,
+    RequestController,
+  ],
+  providers: [
+    AppService,
+    UserService,
+    RegisterService,
+    PasswordResetService,
+    RequestService,
+    ManagementService,
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(RefreshTokenMiddleware).forRoutes('*');
+    consumer.apply(cookieParser(), RefreshTokenMiddleware).forRoutes('*');
+    consumer.apply(HttpLoggerMiddleware).forRoutes('*');
   }
 }

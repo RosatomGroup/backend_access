@@ -1,14 +1,19 @@
+import {
+  RequestStatus as PrismaRequestStatus,
+  RequestType as PrismaRequestType,
+} from '@prisma/client';
+
 import { IsEmail, IsEnum, IsInt, IsString } from 'class-validator';
 
 export enum RequestType {
-  GRANT_ACCESS = 'grant_access',
-  REVOKE_ACCESS = 'revoke_access',
+  GRANT_ACCESS = 'GRANT_ACCESS',
+  REVOKE_ACCESS = 'REVOKE_ACCESS',
 }
 
 export enum RequestStatus {
-  PENDING = 'pending',
-  APPROVED = 'approved',
-  REJECTED = 'rejected',
+  PENDING = 'PENDING',
+  APPROVED = 'APPROVED',
+  REJECTED = 'REJECTED',
 }
 
 export class CreateRequestDto {
@@ -19,22 +24,22 @@ export class CreateRequestDto {
   surname: string;
 
   @IsString()
-  middle_name: string;
+  middleName: string;
 
   @IsEmail()
   email: string;
 
   @IsInt()
-  resource_id: number;
+  resourceId: number;
 
   @IsInt()
-  role_id: number;
+  roleId: number;
 
   @IsEnum(RequestType)
-  request_type: RequestType;
+  requestType: RequestType;
 
   @IsInt()
-  user_id?: number;
+  userId?: number;
 }
 
 export class UpdateRequestStatusDto {
@@ -46,18 +51,18 @@ export class RequestDto {
   id: number;
   name: string;
   surname: string;
-  middle_name: string;
+  middleName: string;
   email: string;
-  request_type: RequestType;
-  status: RequestStatus;
-  create_date: Date;
-  complete_date?: Date;
-  resource_id: number;
-  role_id: number;
-  resource_name: string;
-  role_name: string;
-  resource_link?: string;
-  user_id?: number;
+  requestType: PrismaRequestType;
+  status: PrismaRequestStatus;
+  createDate: Date;
+  completeDate?: Date;
+  resourceId: number;
+  roleId: number;
+  resourceName: string;
+  roleName: string;
+  resourceLink?: string;
+  userId?: number;
 }
 
 export class ResourceDto {
@@ -71,5 +76,4 @@ export class RoleDto {
   id: number;
   name: string;
   description: string;
-  access_level: number;
 }

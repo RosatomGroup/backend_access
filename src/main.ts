@@ -1,22 +1,31 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import * as cookieParser from 'cookie-parser';
 import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger: ['verbose'], // Уровни логирования: 'log', 'error', 'warn', 'debug', 'verbose'
+  });
 
-  app.enableCors();
-  app.use(cookieParser());
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+    }),
+  );
+
+  // Настройка CORS (должен быть перед другими middleware)
   app.enableCors({
     origin: 'http://localhost:3000',
-    methods: 'GET, POST, PUT, DELETE, PATCH',
+    methods: 'GET, HEAD, PUT, PATCH, POST, DELETE',
     allowedHeaders: 'Content-Type, Authorization',
     credentials: true,
   });
 
-  await app.listen(process.env.PORT ?? 3001);
+  // Запуск приложения
+  const port = process.env.PORT ?? 3001;
+  await app.listen(port);
 }
 
 bootstrap();

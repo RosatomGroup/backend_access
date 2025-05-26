@@ -1,19 +1,20 @@
 import {
-  Injectable,
-  NotFoundException,
   ConflictException,
+  Injectable,
   InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import {
   CreateRequestDto,
   RequestDto,
+  RequestStatus,
+  RequestType,
   ResourceDto,
   RoleDto,
   UpdateRequestStatusDto,
-  RequestType,
-  RequestStatus,
 } from './request.dto';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class RequestService {
@@ -24,17 +25,16 @@ export class RequestService {
       // Проверка существования ресурса и роли
       const [resource, role] = await Promise.all([
         this.prisma.resource.findUnique({
-          where: { id: createRequestDto.resource_id },
+          where: { id: createRequestDto.resourceId },
         }),
         this.prisma.role.findUnique({
-          where: { id: createRequestDto.role_id },
-          include: { access: true },
+          where: { id: createRequestDto.roleId },
         }),
       ]);
 
       if (!resource || !role) {
         throw new NotFoundException(
-          `Resource or Role not found (Resource ID: ${createRequestDto.resource_id}, Role ID: ${createRequestDto.role_id})`,
+          `Resource or Role not found (Resource ID: ${createRequestDto.resourceId}, Role ID: ${createRequestDto.roleId})`,
         );
       }
 
@@ -42,9 +42,9 @@ export class RequestService {
       const existingRequest = await this.prisma.request.findFirst({
         where: {
           email: createRequestDto.email,
-          resource_id: createRequestDto.resource_id,
-          role_id: createRequestDto.role_id,
-          request_type: createRequestDto.request_type,
+          resourceId: createRequestDto.resourceId,
+          roleId: createRequestDto.roleId,
+          requestType: createRequestDto.requestType,
           status: {
             not: RequestStatus.REJECTED, // Игнорируем отклоненные заявки
           },
@@ -53,7 +53,7 @@ export class RequestService {
 
       if (existingRequest) {
         const actionType =
-          createRequestDto.request_type === RequestType.GRANT_ACCESS
+          createRequestDto.requestType === RequestType.GRANT_ACCESS
             ? 'на выдачу доступа'
             : 'на отзыв доступа';
         throw new ConflictException(
@@ -66,34 +66,33 @@ export class RequestService {
         data: {
           name: createRequestDto.name,
           surname: createRequestDto.surname,
-          middle_name: createRequestDto.middle_name,
+          middleName: createRequestDto.middleName,
           email: createRequestDto.email,
-          request_type: createRequestDto.request_type,
+          requestType: createRequestDto.requestType,
           status: RequestStatus.PENDING,
-          create_date: new Date(),
-          complete_date: new Date(0), // Дата-заглушка
-          resource: { connect: { id: createRequestDto.resource_id } },
-          role: { connect: { id: createRequestDto.role_id } },
-          ...(createRequestDto.user_id && {
-            user_request: {
-              create: { user_id: createRequestDto.user_id },
+          createDate: new Date(),
+          resource: { connect: { id: createRequestDto.resourceId } },
+          role: { connect: { id: createRequestDto.roleId } },
+          ...(createRequestDto.userId && {
+            users: {
+              connect: { id: createRequestDto.userId },
             },
           }),
         },
         include: {
           resource: true,
-          role: { include: { access: true } },
-          user_request: { include: { user: true } },
+          role: true,
+          users: true,
         },
       });
 
       // Логирование действия
-      if (createRequestDto.user_id) {
+      if (createRequestDto.userId) {
         await this.prisma.log.create({
           data: {
-            account_id: createRequestDto.user_id,
-            action: `Created ${createRequestDto.request_type} request #${createdRequest.id}`,
-            action_time: new Date(),
+            accountId: createRequestDto.userId,
+            action: 'REQUEST_CREATED',
+            actionTime: new Date(),
           },
         });
       }
@@ -116,12 +115,12 @@ export class RequestService {
     const requests = await this.prisma.request.findMany({
       include: {
         resource: true,
-        role: { include: { access: true } },
-        user_request: { include: { user: true } },
+        role: true,
+        users: true,
       },
-      orderBy: { create_date: 'desc' },
+      orderBy: { createDate: 'desc' },
     });
-    return requests.map(this.mapToRequestDto);
+    return requests.map((request) => this.mapToRequestDto(request));
   }
 
   async findOneById(id: number): Promise<RequestDto> {
@@ -129,8 +128,8 @@ export class RequestService {
       where: { id },
       include: {
         resource: true,
-        role: { include: { access: true } },
-        user_request: { include: { user: true } },
+        role: true,
+        users: true,
       },
     });
     if (!request) {
@@ -144,30 +143,25 @@ export class RequestService {
     updateStatusDto: UpdateRequestStatusDto,
   ): Promise<RequestDto> {
     try {
-      const updateData = {
-        status: updateStatusDto.status,
-        ...(updateStatusDto.status !== RequestStatus.PENDING && {
-          complete_date: new Date(),
-        }),
-      };
-
       const updatedRequest = await this.prisma.request.update({
         where: { id },
-        data: updateData,
+        data: {
+          status: updateStatusDto.status,
+        },
         include: {
           resource: true,
-          role: { include: { access: true } },
-          user_request: { include: { user: true } },
+          role: true,
+          users: true,
         },
       });
 
       // Логирование изменения статуса
-      if (updatedRequest.user_request.length > 0) {
+      if (updatedRequest.users.length > 0) {
         await this.prisma.log.create({
           data: {
-            account_id: updatedRequest.user_request[0].user_id,
-            action: `Updated request #${id} status to ${updateStatusDto.status}`,
-            action_time: new Date(),
+            accountId: updatedRequest.users[0].id,
+            action: 'REQUEST_CREATED', // В схеме нет других вариантов для LogAction
+            actionTime: new Date(),
           },
         });
       }
@@ -197,37 +191,39 @@ export class RequestService {
 
   async findAllRoles(): Promise<RoleDto[]> {
     const roles = await this.prisma.role.findMany({
-      include: { access: true },
       orderBy: { name: 'asc' },
     });
     return roles.map((role) => ({
       id: role.id,
       name: role.name,
       description: role.description,
-      access_level: role.access.level,
     }));
   }
 
-  private mapToRequestDto(request: any): RequestDto {
+  private mapToRequestDto(
+    request: Prisma.RequestGetPayload<{
+      include: {
+        resource: true;
+        role: true;
+        users: true;
+      };
+    }>,
+  ): RequestDto {
     return {
       id: request.id,
       name: request.name,
       surname: request.surname,
-      middle_name: request.middle_name,
+      middleName: request.middleName,
       email: request.email,
-      request_type: request.request_type,
+      requestType: request.requestType,
       status: request.status,
-      create_date: request.create_date,
-      complete_date:
-        request.complete_date?.getTime() > 0
-          ? request.complete_date
-          : undefined,
-      resource_id: request.resource_id,
-      role_id: request.role_id,
-      resource_name: request.resource?.name || '',
-      role_name: request.role?.name || '',
-      resource_link: request.resource?.link || undefined,
-      user_id: request.user_request?.[0]?.user_id,
+      createDate: request.createDate,
+      resourceId: request.resourceId,
+      roleId: request.roleId,
+      resourceName: request.resource?.name || '',
+      roleName: request.role?.name || '',
+      resourceLink: request.resource?.link || undefined,
+      userId: request.users?.[0]?.id,
     };
   }
 }

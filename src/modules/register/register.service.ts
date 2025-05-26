@@ -26,7 +26,7 @@ export class RegisterService {
       data: {
         surname: dto.surname,
         name: dto.name,
-        middle_name: dto.middle_name,
+        middleName: dto.middle_name,
         email: normalizedEmail,
         password: hashedPassword,
       },

@@ -1,8 +1,9 @@
 import {
+  IsDateString,
   IsEmail,
   IsInt,
   IsNotEmpty,
-  IsOptional,
+  IsPhoneNumber,
   IsString,
   Length,
 } from 'class-validator';
@@ -23,34 +24,51 @@ export class ReplyCreateUserDto {
 }
 
 export class UpdateUserDto {
-  @IsOptional()
   @IsString()
   @Length(1, 40)
-  name?: string;
+  name: string;
 
-  @IsOptional()
   @IsString()
   @Length(1, 40)
   surname?: string;
 
-  @IsOptional()
   @IsString()
   @Length(1, 40)
-  middle_name?: string;
+  middleName?: string;
 
-  @IsOptional()
-  @IsInt()
-  @Length(3, 20)
-  service_number?: number;
+  @IsPhoneNumber()
+  phone?: string;
 
-  @IsOptional()
+  @IsString()
+  @Length(1, 80)
+  rang?: string;
+
+  @IsDateString()
+  birthDate?: string;
+
+  @IsString()
+  @Length(1, 80)
   subdivision?: string;
 
-  @IsOptional()
-  @IsEmail()
-  email?: string;
+  @IsInt()
+  serviceNumber?: number;
+}
 
-  @IsOptional()
-  @Length(6, 30)
-  password?: string;
+export class ReplyUpdateUserDto {
+  name: string;
+  surname?: string;
+  middleName: string;
+  phone: string;
+  rang: string;
+  birthDate?: Date;
+  subdivision?: string;
+  serviceNumber: number;
+}
+
+export class ManagementUserDto {
+  key: number;
+  name: string;
+  rang: string;
+  subdivision: string;
+  email: string;
 }
