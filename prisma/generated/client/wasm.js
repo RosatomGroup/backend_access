@@ -187,10 +187,12 @@ exports.Prisma.UserScalarFieldEnum = {
   surname: 'surname',
   middleName: 'middleName',
   phone: 'phone',
+  avatarUrl: 'avatarUrl',
   birthDate: 'birthDate',
   subdivision: 'subdivision',
   rang: 'rang',
   serviceNumber: 'serviceNumber',
+  accessLevel: 'accessLevel',
   roleId: 'roleId'
 };
 
@@ -224,6 +226,11 @@ exports.RequestStatus = exports.$Enums.RequestStatus = {
 exports.RequestType = exports.$Enums.RequestType = {
   GRANT_ACCESS: 'GRANT_ACCESS',
   REVOKE_ACCESS: 'REVOKE_ACCESS'
+};
+
+exports.AccessLevel = exports.$Enums.AccessLevel = {
+  ADMIN: 'ADMIN',
+  USER: 'USER'
 };
 
 exports.Prisma.ModelName = {
