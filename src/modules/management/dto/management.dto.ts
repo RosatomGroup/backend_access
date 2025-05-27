@@ -58,16 +58,10 @@ export class CreateRoleDto {
 }
 
 export class ManagementResourceDto {
-  @IsString()
-  @MaxLength(100)
+  id: number;
   name: string;
-
-  @IsString()
-  @MaxLength(255)
   description: string;
-
-  @IsString()
-  @MaxLength(255)
+  link: string;
   owner: string;
 }
 
