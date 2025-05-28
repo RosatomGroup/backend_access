@@ -15,8 +15,6 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { DocumentsService } from './documents.service';
-import { diskStorage } from 'multer';
-import { extname } from 'path';
 import { Request, Response } from 'express';
 import * as multer from 'multer';
 import { S3Service } from './s3.service';
@@ -56,14 +54,12 @@ export class DocumentsController {
 
     const key = `${Date.now()}_${file.originalname.replace(/\s+/g, '_')}`;
 
-    // загружаем в S3
     const url = await this.s3Service.uploadFile(
       file.buffer,
       key,
       file.mimetype,
     );
 
-    // сохраняем в базе
     const saved = await this.documentsService.createDocument({
       filename: key,
       originalname: file.originalname,

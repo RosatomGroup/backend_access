@@ -136,3 +136,13 @@ model Document {
   url          String
   createdAt    DateTime @default(now())
 }
+
+model Video {
+  id           Int      @id @default(autoincrement())
+  originalname String
+  filename     String   @unique
+  mimetype     String
+  size         Int
+  url          String
+  createdAt    DateTime @default(now())
+}

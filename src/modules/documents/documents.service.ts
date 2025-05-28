@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { promises as fs } from 'fs';
 import * as path from 'path';
 import { PrismaService } from 'src/modules/prisma/prisma.service';
-import { constants } from 'fs';
 import { S3Service } from './s3.service';
 
 @Injectable()
@@ -56,12 +54,10 @@ export class DocumentsService {
     const ext = path.extname(fileRecord.filename);
     const newFilename = `${newName.replace(/\s+/g, '_')}_${Date.now()}${ext}`;
 
-    // Переименование в S3
     await this.s3Service.renameFileInS3(fileRecord.filename, newFilename);
 
     const newUrl = `https://${this.s3Service.bucketName}.storage.yandexcloud.net/${newFilename}`;
 
-    // Обновляем запись в базе
     await this.prisma.document.update({
       where: { filename },
       data: {

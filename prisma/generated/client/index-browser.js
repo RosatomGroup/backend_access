@@ -217,6 +217,16 @@ exports.Prisma.DocumentScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.VideoScalarFieldEnum = {
+  id: 'id',
+  originalname: 'originalname',
+  filename: 'filename',
+  mimetype: 'mimetype',
+  size: 'size',
+  url: 'url',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -245,7 +255,8 @@ exports.Prisma.ModelName = {
   PasswordResetToken: 'PasswordResetToken',
   AccessToken: 'AccessToken',
   RefreshToken: 'RefreshToken',
-  Document: 'Document'
+  Document: 'Document',
+  Video: 'Video'
 };
 
 /**

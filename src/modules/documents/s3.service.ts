@@ -5,6 +5,8 @@ import {
   DeleteObjectCommand,
   CopyObjectCommand,
 } from '@aws-sdk/client-s3';
+import { GetObjectCommand, GetObjectCommandOutput } from '@aws-sdk/client-s3';
+import { Readable } from 'stream';
 
 @Injectable()
 export class S3Service {
@@ -30,6 +32,7 @@ export class S3Service {
       Body: buffer,
       ContentType: mimetype,
       ACL: 'public-read',
+      ContentDisposition: 'inline',
     });
     try {
       await this.s3Client.send(command);
@@ -38,6 +41,23 @@ export class S3Service {
       throw e;
     }
     return `https://${this.bucketName}.storage.yandexcloud.net/${key}`;
+  }
+
+  async getFileStream(key: string): Promise<Readable> {
+    const command = new GetObjectCommand({
+      Bucket: this.bucketName,
+      Key: key,
+    });
+    const response = await this.s3Client.send(command);
+    return response.Body as Readable;
+  }
+
+  async getObjectWithMeta(key: string): Promise<GetObjectCommandOutput> {
+    const command = new GetObjectCommand({
+      Bucket: this.bucketName,
+      Key: key,
+    });
+    return this.s3Client.send(command);
   }
 
   async deleteFile(key: string) {

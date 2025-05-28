@@ -16,9 +16,10 @@ import { MailModule } from './modules/mail/mail.module';
 import { JwtModule } from '@nestjs/jwt';
 import { TokenModule } from './modules/token/token.module';
 import { RefreshTokenMiddleware } from './modules/auth/middleware';
-import { DocumentsModule } from './documents/documents.module';
+import { DocumentsModule } from './modules/documents/documents.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { VideosModule } from './modules/videos/videos.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { join } from 'path';
     MailModule,
     JwtModule,
     DocumentsModule,
+    VideosModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'uploads'),
       serveRoot: '/documents',
