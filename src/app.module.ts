@@ -16,6 +16,9 @@ import { MailModule } from './modules/mail/mail.module';
 import { JwtModule } from '@nestjs/jwt';
 import { TokenModule } from './modules/token/token.module';
 import { RefreshTokenMiddleware } from './modules/auth/middleware';
+import { DocumentsModule } from './documents/documents.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -30,6 +33,11 @@ import { RefreshTokenMiddleware } from './modules/auth/middleware';
     PasswordResetModule,
     MailModule,
     JwtModule,
+    DocumentsModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'),
+      serveRoot: '/documents',
+    }),
   ],
   controllers: [AppController, RegisterController, PasswordResetController],
   providers: [AppService, UserService, RegisterService, PasswordResetService],

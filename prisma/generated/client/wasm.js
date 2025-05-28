@@ -207,6 +207,16 @@ exports.Prisma.RefreshTokenScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.DocumentScalarFieldEnum = {
+  id: 'id',
+  filename: 'filename',
+  originalname: 'originalname',
+  mimetype: 'mimetype',
+  size: 'size',
+  url: 'url',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -234,7 +244,8 @@ exports.Prisma.ModelName = {
   user_request: 'user_request',
   PasswordResetToken: 'PasswordResetToken',
   AccessToken: 'AccessToken',
-  RefreshToken: 'RefreshToken'
+  RefreshToken: 'RefreshToken',
+  Document: 'Document'
 };
 
 /**
