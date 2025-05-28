@@ -25,6 +25,9 @@ import { RequestService } from './modules/requests/request.service';
 import { ManagementService } from './modules/management/management.service';
 import { HttpLoggerMiddleware } from './modules/middleware/HttpLoggerMiddleware';
 import * as cookieParser from 'cookie-parser';
+import { NotificationsService } from './modules/notifications/notifications.service';
+import { NotificationsModule } from './modules/notifications/notifications.module';
+import { NotificationsController } from './modules/notifications/notifications.controller';
 
 @Module({
   imports: [
@@ -41,6 +44,7 @@ import * as cookieParser from 'cookie-parser';
     MailModule,
     JwtModule,
     RequestModule,
+    NotificationsModule,
   ],
   controllers: [
     AppController,
@@ -49,6 +53,7 @@ import * as cookieParser from 'cookie-parser';
     ManagementController,
     UserController,
     RequestController,
+    NotificationsController,
   ],
   providers: [
     AppService,
@@ -57,6 +62,7 @@ import * as cookieParser from 'cookie-parser';
     PasswordResetService,
     RequestService,
     ManagementService,
+    NotificationsService,
   ],
 })
 export class AppModule implements NestModule {
