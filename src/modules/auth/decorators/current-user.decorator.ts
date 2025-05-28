@@ -4,9 +4,7 @@ import { JwtPayload } from '../interfaces/jwt-payload.interface'; // Тип дл
 export const CurrentUser = createParamDecorator(
   (data: keyof JwtPayload | undefined, ctx: ExecutionContext) => {
     const request = ctx.switchToHttp().getRequest();
-    const user = request.user; // Данные пользователя из JWT (добавляются в Guard)
-    
-    // Если указано конкретное поле (например, @CurrentUser('email'))
-    return data ? user?.[data] : user; // Возвращаем поле или весь объект
+    console.log('Request user:', request.user);
+    return data ? request.user?.[data] : request.user;
   },
 );

@@ -7,43 +7,47 @@ import { ROLES_KEY } from '../decorators/roles.decorator';
 export class RolesGuard implements CanActivate {
   private readonly logger = new Logger(RolesGuard.name);
 
-  constructor(private reflector: Reflector) {}
+  constructor(private reflector: Reflector) { }
 
   canActivate(context: ExecutionContext): boolean {
-    const requiredRoles = this.reflector.get<AccessLevel[]>(ROLES_KEY, context.getHandler());
-    
+
+    const requiredRoles = this.reflector.getAllAndOverride<AccessLevel[]>(ROLES_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
+
     if (!requiredRoles) {
-      this.logger.debug('No roles required - access granted');
+      this.logger.debug('No roles required on this route or controller - access granted by RolesGuard.');
       return true;
     }
 
     const request = context.switchToHttp().getRequest();
     const user = request.user;
-    
+
     this.logger.debug(`Checking access for user: ${JSON.stringify(user)}`);
     this.logger.debug(`Required roles: ${requiredRoles.join(', ')}`);
 
+    // Это как дополнительная проверка, но основная аутентификация уже была.
     if (!user) {
-      this.logger.warn('No user in request');
-      throw new ForbiddenException('Authentication required');
+      this.logger.warn('No user in request after authentication. This should not happen if JwtAuthGuard works first.');
+      throw new ForbiddenException('Authentication data missing'); // Или UnauthorizedException, если вы хотите переопределить
     }
 
-    // Проверяем все возможные варианты хранения роли
-    const userRole = user.role || user.role_user || user.role?.name;
-    
-    if (!userRole) {
-      this.logger.error(`Role not found in user object: ${JSON.stringify(user)}`);
-      throw new ForbiddenException('User role not defined');
+    const userAccessLevel: AccessLevel = user.accessLevel;
+
+    if (!userAccessLevel) {
+      this.logger.error(`User accessLevel not defined in user object: ${JSON.stringify(user)}`);
+      throw new ForbiddenException('User access level is not defined');
     }
 
-    const hasAccess = requiredRoles.includes(userRole);
-    
+    const hasAccess = requiredRoles.includes(userAccessLevel);
+
     if (!hasAccess) {
-      this.logger.warn(`Access denied. User role: ${userRole}, Required: ${requiredRoles.join(', ')}`);
-      throw new ForbiddenException('Insufficient permissions');
+      this.logger.warn(`Доступ запрещен. Уровень текущего пользователя: ${userAccessLevel}, Требуемый уровень: ${requiredRoles.join(', ')}`);
+      throw new ForbiddenException('Insufficient permissions for this resource.');
     }
 
-    this.logger.debug('Access granted');
+    this.logger.debug(`Access granted for user with role ${userAccessLevel}.`);
     return true;
   }
 }
