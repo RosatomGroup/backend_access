@@ -20,7 +20,7 @@ async function main() {
   const admin = await prisma.user.create({
     data: {
       email: 'admin@example.com',
-      password: '$2a$10$E9x8Z7Qy2Vt7k3j6KdS4X.F6wz8oL9b5VjJxWJfYHdG1sN3cR5vD2',
+      password: '$2b$10$Mszg8mjxwX28d1heSmH5zeNUID.ymjlrgDgv2tOsPc.1K5G66FxA.',
       name: 'Admin',
       surname: 'User',
       accessLevel: 'ADMIN',
@@ -34,7 +34,7 @@ async function main() {
   const user1 = await prisma.user.create({
     data: {
       email: 'user1@example.com',
-      password: '$2a$10$E9x8Z7Qy2Vt7k3j6KdS4X.F6wz8oL9b5VjJxWJfYHdG1sN3cR5vD2',
+      password: '$2b$10$Mszg8mjxwX28d1heSmH5zeNUID.ymjlrgDgv2tOsPc.1K5G66FxA.',
       name: 'John',
       surname: 'Doe',
       middleName: 'Alexandrovich',
@@ -49,7 +49,7 @@ async function main() {
   const user2 = await prisma.user.create({
     data: {
       email: 'user2@example.com',
-      password: '$2a$10$E9x8Z7Qy2Vt7k3j6KdS4X.F6wz8oL9b5VjJxWJfYHdG1sN3cR5vD2',
+      password: '$2b$10$Mszg8mjxwX28d1heSmH5zeNUID.ymjlrgDgv2tOsPc.1K5G66FxA.',
       name: 'Jane',
       surname: 'Doe',
       middleName: 'Borisovna',
