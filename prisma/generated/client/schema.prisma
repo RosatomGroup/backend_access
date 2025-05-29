@@ -32,6 +32,11 @@ enum AccessLevel {
   USER
 }
 
+enum AccessLevel {
+  ADMIN
+  USER
+}
+
 model AccessToken {
   id        Int      @id @default(autoincrement())
   token     String   @unique @db.VarChar(512)
@@ -73,19 +78,20 @@ model Log {
 }
 
 model Request {
-  id          Int           @id @default(autoincrement())
-  name        String        @db.VarChar(40)
-  surname     String        @db.VarChar(40)
-  middleName  String        @db.VarChar(40)
-  email       String        @db.VarChar(255)
-  status      RequestStatus
-  createDate  DateTime      @db.Timestamp(6)
-  requestType RequestType
-  resourceId  Int
-  roleId      Int
-  resource    Resource      @relation(fields: [resourceId], references: [id])
-  role        Role          @relation(fields: [roleId], references: [id])
-  users       User[]
+  id            Int            @id @default(autoincrement())
+  name          String         @db.VarChar(40)
+  surname       String         @db.VarChar(40)
+  middleName    String         @db.VarChar(40)
+  email         String         @db.VarChar(255)
+  status        RequestStatus
+  createDate    DateTime       @db.Timestamp(6)
+  requestType   RequestType
+  resourceId    Int
+  roleId        Int
+  resource      Resource       @relation(fields: [resourceId], references: [id])
+  role          Role           @relation(fields: [roleId], references: [id])
+  users         User[]
+  notifications Notification[]
 }
 
 model Resource {
@@ -126,8 +132,45 @@ model User {
   logs          Log[]
   role          Role?          @relation(fields: [roleId], references: [id], onDelete: Restrict)
   requests      Request[]
+  notifications Notification[]
   accessTokens  AccessToken[]
   refreshTokens RefreshToken[]
 
   @@index([id])
+}
+
+model Notification {
+  id        Int           @id @default(autoincrement())
+  userId    Int
+  requestId Int
+  status    RequestStatus
+  message   String        @db.VarChar(255)
+  read      Boolean       @default(false)
+  createdAt DateTime      @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  request Request @relation(fields: [requestId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([requestId])
+}
+
+model Document {
+  id           Int      @id @default(autoincrement())
+  filename     String   @unique
+  originalname String
+  mimetype     String
+  size         Int
+  url          String
+  createdAt    DateTime @default(now())
+}
+
+model Video {
+  id           Int      @id @default(autoincrement())
+  originalname String
+  filename     String   @unique
+  mimetype     String
+  size         Int
+  url          String
+  createdAt    DateTime @default(now())
 }

@@ -65,9 +65,11 @@ export class ManagementService {
     resource: Resource,
   ): ManagementResourceDto {
     return {
+      id: resource.id,
       name: resource.name,
       description: resource.description,
       owner: resource.owner,
+      link: resource.link,
     };
   }
 

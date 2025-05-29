@@ -20,7 +20,7 @@ export class RegisterDto {
   @IsOptional()
   @IsString()
   @Length(1, 40)
-  middle_name?: string;
+  middleName?: string;
 
   @IsNotEmpty()
   @IsEmail()
