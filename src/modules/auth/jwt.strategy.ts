@@ -29,7 +29,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     return {
       id: payload.userId,
       email: payload.email,
-      accessLevel: payload.accessLevel
+      accessLevel: payload.accessLevel,
     };
   }
 }

@@ -81,18 +81,26 @@ export class UserService {
 
     // Фильтруем undefined значения
     const updateData: Prisma.UserUpdateInput = {};
-    
+
     if (updateUserDto.name !== undefined) updateData.name = updateUserDto.name;
-    if (updateUserDto.surname !== undefined) updateData.surname = updateUserDto.surname;
-    if (updateUserDto.middleName !== undefined) updateData.middleName = updateUserDto.middleName;
-    if (updateUserDto.phone !== undefined) updateData.phone = updateUserDto.phone;
-    if (updateUserDto.avatarUrl !== undefined) updateData.avatarUrl = updateUserDto.avatarUrl;
+    if (updateUserDto.surname !== undefined)
+      updateData.surname = updateUserDto.surname;
+    if (updateUserDto.middleName !== undefined)
+      updateData.middleName = updateUserDto.middleName;
+    if (updateUserDto.phone !== undefined)
+      updateData.phone = updateUserDto.phone;
+    if (updateUserDto.avatarUrl !== undefined)
+      updateData.avatarUrl = updateUserDto.avatarUrl;
     if (updateUserDto.rang !== undefined) updateData.rang = updateUserDto.rang;
     if (updateUserDto.birthDate !== undefined) {
-      updateData.birthDate = updateUserDto.birthDate ? new Date(updateUserDto.birthDate) : null;
+      updateData.birthDate = updateUserDto.birthDate
+        ? new Date(updateUserDto.birthDate)
+        : null;
     }
-    if (updateUserDto.subdivision !== undefined) updateData.subdivision = updateUserDto.subdivision;
-    if (updateUserDto.serviceNumber !== undefined) updateData.serviceNumber = updateUserDto.serviceNumber;
+    if (updateUserDto.subdivision !== undefined)
+      updateData.subdivision = updateUserDto.subdivision;
+    if (updateUserDto.serviceNumber !== undefined)
+      updateData.serviceNumber = updateUserDto.serviceNumber;
 
     const updatedUser = await this.prisma.user.update({
       where: { id },

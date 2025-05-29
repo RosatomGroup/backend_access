@@ -38,7 +38,7 @@ export class RegisterService {
       email: user.email,
       isVerified: false,
       rememberMe: false,
-      accessLevel: AccessLevel.USER
+      accessLevel: AccessLevel.USER,
     });
 
     return {

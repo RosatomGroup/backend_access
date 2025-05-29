@@ -206,6 +206,26 @@ exports.Prisma.NotificationScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.DocumentScalarFieldEnum = {
+  id: 'id',
+  filename: 'filename',
+  originalname: 'originalname',
+  mimetype: 'mimetype',
+  size: 'size',
+  url: 'url',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.VideoScalarFieldEnum = {
+  id: 'id',
+  originalname: 'originalname',
+  filename: 'filename',
+  mimetype: 'mimetype',
+  size: 'size',
+  url: 'url',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -252,7 +272,9 @@ exports.Prisma.ModelName = {
   Resource: 'Resource',
   Role: 'Role',
   User: 'User',
-  Notification: 'Notification'
+  Notification: 'Notification',
+  Document: 'Document',
+  Video: 'Video'
 };
 
 /**
