@@ -22,7 +22,6 @@ export class RequestService {
 
   async create(createRequestDto: CreateRequestDto): Promise<RequestDto> {
     try {
-      // Проверка существования ресурса и роли
       const [resource, role] = await Promise.all([
         this.prisma.resource.findUnique({
           where: { id: createRequestDto.resourceId },
@@ -38,7 +37,6 @@ export class RequestService {
         );
       }
 
-      // Проверка на существующую заявку
       const existingRequest = await this.prisma.request.findFirst({
         where: {
           email: createRequestDto.email,
@@ -46,7 +44,7 @@ export class RequestService {
           roleId: createRequestDto.roleId,
           requestType: createRequestDto.requestType,
           status: {
-            not: RequestStatus.REJECTED, // Игнорируем отклоненные заявки
+            not: RequestStatus.REJECTED,
           },
         },
       });
@@ -61,7 +59,6 @@ export class RequestService {
         );
       }
 
-      // Создание заявки
       const createdRequest = await this.prisma.request.create({
         data: {
           name: createRequestDto.name,
@@ -86,7 +83,6 @@ export class RequestService {
         },
       });
 
-      // Логирование действия
       if (createRequestDto.userId) {
         await this.prisma.log.create({
           data: {
@@ -111,8 +107,13 @@ export class RequestService {
     }
   }
 
-  async findAll(): Promise<RequestDto[]> {
+  async findAll(isAdmin: boolean, userId?: number): Promise<RequestDto[]> {
+    const whereCondition: Prisma.RequestWhereInput = isAdmin 
+      ? {} 
+      : { users: { some: { id: userId } } };
+
     const requests = await this.prisma.request.findMany({
+      where: whereCondition,
       include: {
         resource: true,
         role: true,
@@ -120,7 +121,8 @@ export class RequestService {
       },
       orderBy: { createDate: 'desc' },
     });
-    return requests.map((request) => this.mapToRequestDto(request));
+
+    return requests.map(request => this.mapToRequestDto(request));
   }
 
   async findOneById(id: number): Promise<RequestDto> {
@@ -147,6 +149,9 @@ export class RequestService {
         where: { id },
         data: {
           status: updateStatusDto.status,
+          ...(updateStatusDto.status === RequestStatus.APPROVED && {
+            completeDate: new Date(),
+          }),
         },
         include: {
           resource: true,
@@ -155,12 +160,11 @@ export class RequestService {
         },
       });
 
-      // Логирование изменения статуса
       if (updatedRequest.users.length > 0) {
         await this.prisma.log.create({
           data: {
             accountId: updatedRequest.users[0].id,
-            action: 'REQUEST_CREATED', // В схеме нет других вариантов для LogAction
+            action: 'REQUEST_STATUS_UPDATED',
             actionTime: new Date(),
           },
         });
@@ -197,6 +201,7 @@ export class RequestService {
       id: role.id,
       name: role.name,
       description: role.description,
+      resourceId: role.resourceId,
     }));
   }
 
@@ -218,6 +223,7 @@ export class RequestService {
       requestType: request.requestType,
       status: request.status,
       createDate: request.createDate,
+      // completeDate: request.completeDate || undefined,
       resourceId: request.resourceId,
       roleId: request.roleId,
       resourceName: request.resource?.name || '',
