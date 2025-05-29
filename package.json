@@ -11,7 +11,7 @@
     "db:push": "prisma db push",
     "db:seed": "ts-node src/modules/prisma/seed.ts",
     "postinstall": "prisma generate",
-    "start": "npm run db:push && npm run db:seed && node dist/main.js",
+    "start": "docker-compose up -d && npm run db:push && npm run db:seed && node dist/main.js",
     "prestart:dev": "npx prisma db push",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",

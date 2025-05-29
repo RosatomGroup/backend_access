@@ -34,12 +34,11 @@ export class RolesGuard implements CanActivate {
     this.logger.debug(`Checking access for user: ${JSON.stringify(user)}`);
     this.logger.debug(`Required roles: ${requiredRoles.join(', ')}`);
 
-    // Это как дополнительная проверка, но основная аутентификация уже была.
     if (!user) {
       this.logger.warn(
         'No user in request after authentication. This should not happen if JwtAuthGuard works first.',
       );
-      throw new ForbiddenException('Authentication data missing'); // Или UnauthorizedException, если вы хотите переопределить
+      throw new ForbiddenException('Authentication data missing');
     }
 
     const userAccessLevel: AccessLevel = user.accessLevel;
@@ -58,7 +57,7 @@ export class RolesGuard implements CanActivate {
         `Доступ запрещен. Уровень текущего пользователя: ${userAccessLevel}, Требуемый уровень: ${requiredRoles.join(', ')}`,
       );
       throw new ForbiddenException(
-        'Insufficient permissions for this resource.',
+        `Доступ запрещен. Уровень текущего пользователя: ${userAccessLevel}, Требуемый уровень: ${requiredRoles.join(', ')}`
       );
     }
 

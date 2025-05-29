@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  rbac-db:
+    image: postgres:16.1
+    container_name: postgres-rbac-db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: rbac
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      # context: ./backend
+      dockerfile: Dockerfile
+    container_name: rbac-backend
+    ports:
+      - "3001:3001"
+    environment:
+      - DATABASE_URL=postgresql://admin:admin@rbac-db:5432/rbac?schema=public
+      - JWT_ACCESS_SECRET=${JWT_ACCESS_SECRET}
+      - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET}
+      - EMAIL_USER={EMAIL_USER}
+      - EMAIL_PASSWORD={EMAIL_PASSWORD}
+      - EMAIL_FROM={EMAIL_FROM}
+      - FRONTEND_URL={FRONTEND_URL}
+    depends_on:
+      rbac-db:
+        condition: service_healthy
+    restart: always
+
+volumes:
+  db_data:
