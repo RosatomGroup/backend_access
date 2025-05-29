@@ -1,13 +1,17 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Body, Controller, Post, Res, UseGuards } from '@nestjs/common';
 import { RegisterService } from './register.service';
 import { RegisterDto } from './dto/create-register.dto';
 import { Response } from 'express';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { Public } from '../auth/decorators/public.decorator';
 
 @Controller('auth')
+@UseGuards(JwtAuthGuard) // Защищаем все роуты контроллера
 export class RegisterController {
   RegisterService: any;
   constructor(private readonly registerService: RegisterService) {}
 
+  @Public()
   @Post('register')
   async register(
     @Body() dto: RegisterDto,

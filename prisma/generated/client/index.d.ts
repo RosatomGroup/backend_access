@@ -89,6 +89,14 @@ export const LogAction: {
 
 export type LogAction = (typeof LogAction)[keyof typeof LogAction]
 
+
+export const AccessLevel: {
+  ADMIN: 'ADMIN',
+  USER: 'USER'
+};
+
+export type AccessLevel = (typeof AccessLevel)[keyof typeof AccessLevel]
+
 }
 
 export type RequestStatus = $Enums.RequestStatus
@@ -102,6 +110,10 @@ export const RequestType: typeof $Enums.RequestType
 export type LogAction = $Enums.LogAction
 
 export const LogAction: typeof $Enums.LogAction
+
+export type AccessLevel = $Enums.AccessLevel
+
+export const AccessLevel: typeof $Enums.AccessLevel
 
 /**
  * ##  Prisma Client ʲˢ
@@ -9633,10 +9645,12 @@ export namespace Prisma {
     surname: string | null
     middleName: string | null
     phone: string | null
+    avatarUrl: string | null
     birthDate: Date | null
     subdivision: string | null
     rang: string | null
     serviceNumber: number | null
+    accessLevel: $Enums.AccessLevel | null
     roleId: number | null
   }
 
@@ -9648,10 +9662,12 @@ export namespace Prisma {
     surname: string | null
     middleName: string | null
     phone: string | null
+    avatarUrl: string | null
     birthDate: Date | null
     subdivision: string | null
     rang: string | null
     serviceNumber: number | null
+    accessLevel: $Enums.AccessLevel | null
     roleId: number | null
   }
 
@@ -9663,10 +9679,12 @@ export namespace Prisma {
     surname: number
     middleName: number
     phone: number
+    avatarUrl: number
     birthDate: number
     subdivision: number
     rang: number
     serviceNumber: number
+    accessLevel: number
     roleId: number
     _all: number
   }
@@ -9692,10 +9710,12 @@ export namespace Prisma {
     surname?: true
     middleName?: true
     phone?: true
+    avatarUrl?: true
     birthDate?: true
     subdivision?: true
     rang?: true
     serviceNumber?: true
+    accessLevel?: true
     roleId?: true
   }
 
@@ -9707,10 +9727,12 @@ export namespace Prisma {
     surname?: true
     middleName?: true
     phone?: true
+    avatarUrl?: true
     birthDate?: true
     subdivision?: true
     rang?: true
     serviceNumber?: true
+    accessLevel?: true
     roleId?: true
   }
 
@@ -9722,10 +9744,12 @@ export namespace Prisma {
     surname?: true
     middleName?: true
     phone?: true
+    avatarUrl?: true
     birthDate?: true
     subdivision?: true
     rang?: true
     serviceNumber?: true
+    accessLevel?: true
     roleId?: true
     _all?: true
   }
@@ -9824,10 +9848,12 @@ export namespace Prisma {
     surname: string | null
     middleName: string | null
     phone: string | null
+    avatarUrl: string | null
     birthDate: Date | null
     subdivision: string | null
     rang: string | null
     serviceNumber: number | null
+    accessLevel: $Enums.AccessLevel
     roleId: number | null
     _count: UserCountAggregateOutputType | null
     _avg: UserAvgAggregateOutputType | null
@@ -9858,10 +9884,12 @@ export namespace Prisma {
     surname?: boolean
     middleName?: boolean
     phone?: boolean
+    avatarUrl?: boolean
     birthDate?: boolean
     subdivision?: boolean
     rang?: boolean
     serviceNumber?: boolean
+    accessLevel?: boolean
     roleId?: boolean
     logs?: boolean | User$logsArgs<ExtArgs>
     role?: boolean | User$roleArgs<ExtArgs>
@@ -9880,10 +9908,12 @@ export namespace Prisma {
     surname?: boolean
     middleName?: boolean
     phone?: boolean
+    avatarUrl?: boolean
     birthDate?: boolean
     subdivision?: boolean
     rang?: boolean
     serviceNumber?: boolean
+    accessLevel?: boolean
     roleId?: boolean
     role?: boolean | User$roleArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
@@ -9896,10 +9926,12 @@ export namespace Prisma {
     surname?: boolean
     middleName?: boolean
     phone?: boolean
+    avatarUrl?: boolean
     birthDate?: boolean
     subdivision?: boolean
     rang?: boolean
     serviceNumber?: boolean
+    accessLevel?: boolean
     roleId?: boolean
     role?: boolean | User$roleArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
@@ -9912,14 +9944,16 @@ export namespace Prisma {
     surname?: boolean
     middleName?: boolean
     phone?: boolean
+    avatarUrl?: boolean
     birthDate?: boolean
     subdivision?: boolean
     rang?: boolean
     serviceNumber?: boolean
+    accessLevel?: boolean
     roleId?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "name" | "surname" | "middleName" | "phone" | "birthDate" | "subdivision" | "rang" | "serviceNumber" | "roleId", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "name" | "surname" | "middleName" | "phone" | "avatarUrl" | "birthDate" | "subdivision" | "rang" | "serviceNumber" | "accessLevel" | "roleId", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     logs?: boolean | User$logsArgs<ExtArgs>
     role?: boolean | User$roleArgs<ExtArgs>
@@ -9954,10 +9988,12 @@ export namespace Prisma {
       surname: string | null
       middleName: string | null
       phone: string | null
+      avatarUrl: string | null
       birthDate: Date | null
       subdivision: string | null
       rang: string | null
       serviceNumber: number | null
+      accessLevel: $Enums.AccessLevel
       roleId: number | null
     }, ExtArgs["result"]["user"]>
     composites: {}
@@ -10395,10 +10431,12 @@ export namespace Prisma {
     readonly surname: FieldRef<"User", 'String'>
     readonly middleName: FieldRef<"User", 'String'>
     readonly phone: FieldRef<"User", 'String'>
+    readonly avatarUrl: FieldRef<"User", 'String'>
     readonly birthDate: FieldRef<"User", 'DateTime'>
     readonly subdivision: FieldRef<"User", 'String'>
     readonly rang: FieldRef<"User", 'String'>
     readonly serviceNumber: FieldRef<"User", 'Int'>
+    readonly accessLevel: FieldRef<"User", 'AccessLevel'>
     readonly roleId: FieldRef<"User", 'Int'>
   }
     
@@ -12189,10 +12227,12 @@ export namespace Prisma {
     surname: 'surname',
     middleName: 'middleName',
     phone: 'phone',
+    avatarUrl: 'avatarUrl',
     birthDate: 'birthDate',
     subdivision: 'subdivision',
     rang: 'rang',
     serviceNumber: 'serviceNumber',
+    accessLevel: 'accessLevel',
     roleId: 'roleId'
   };
 
@@ -12322,6 +12362,20 @@ export namespace Prisma {
    * Reference to a field of type 'RequestType[]'
    */
   export type ListEnumRequestTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RequestType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'AccessLevel'
+   */
+  export type EnumAccessLevelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AccessLevel'>
+    
+
+
+  /**
+   * Reference to a field of type 'AccessLevel[]'
+   */
+  export type ListEnumAccessLevelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AccessLevel[]'>
     
 
 
@@ -12787,10 +12841,12 @@ export namespace Prisma {
     surname?: StringNullableFilter<"User"> | string | null
     middleName?: StringNullableFilter<"User"> | string | null
     phone?: StringNullableFilter<"User"> | string | null
+    avatarUrl?: StringNullableFilter<"User"> | string | null
     birthDate?: DateTimeNullableFilter<"User"> | Date | string | null
     subdivision?: StringNullableFilter<"User"> | string | null
     rang?: StringNullableFilter<"User"> | string | null
     serviceNumber?: IntNullableFilter<"User"> | number | null
+    accessLevel?: EnumAccessLevelFilter<"User"> | $Enums.AccessLevel
     roleId?: IntNullableFilter<"User"> | number | null
     logs?: LogListRelationFilter
     role?: XOR<RoleNullableScalarRelationFilter, RoleWhereInput> | null
@@ -12808,10 +12864,12 @@ export namespace Prisma {
     surname?: SortOrderInput | SortOrder
     middleName?: SortOrderInput | SortOrder
     phone?: SortOrderInput | SortOrder
+    avatarUrl?: SortOrderInput | SortOrder
     birthDate?: SortOrderInput | SortOrder
     subdivision?: SortOrderInput | SortOrder
     rang?: SortOrderInput | SortOrder
     serviceNumber?: SortOrderInput | SortOrder
+    accessLevel?: SortOrder
     roleId?: SortOrderInput | SortOrder
     logs?: LogOrderByRelationAggregateInput
     role?: RoleOrderByWithRelationInput
@@ -12833,9 +12891,11 @@ export namespace Prisma {
     surname?: StringNullableFilter<"User"> | string | null
     middleName?: StringNullableFilter<"User"> | string | null
     phone?: StringNullableFilter<"User"> | string | null
+    avatarUrl?: StringNullableFilter<"User"> | string | null
     birthDate?: DateTimeNullableFilter<"User"> | Date | string | null
     subdivision?: StringNullableFilter<"User"> | string | null
     rang?: StringNullableFilter<"User"> | string | null
+    accessLevel?: EnumAccessLevelFilter<"User"> | $Enums.AccessLevel
     roleId?: IntNullableFilter<"User"> | number | null
     logs?: LogListRelationFilter
     role?: XOR<RoleNullableScalarRelationFilter, RoleWhereInput> | null
@@ -12853,10 +12913,12 @@ export namespace Prisma {
     surname?: SortOrderInput | SortOrder
     middleName?: SortOrderInput | SortOrder
     phone?: SortOrderInput | SortOrder
+    avatarUrl?: SortOrderInput | SortOrder
     birthDate?: SortOrderInput | SortOrder
     subdivision?: SortOrderInput | SortOrder
     rang?: SortOrderInput | SortOrder
     serviceNumber?: SortOrderInput | SortOrder
+    accessLevel?: SortOrder
     roleId?: SortOrderInput | SortOrder
     _count?: UserCountOrderByAggregateInput
     _avg?: UserAvgOrderByAggregateInput
@@ -12876,10 +12938,12 @@ export namespace Prisma {
     surname?: StringNullableWithAggregatesFilter<"User"> | string | null
     middleName?: StringNullableWithAggregatesFilter<"User"> | string | null
     phone?: StringNullableWithAggregatesFilter<"User"> | string | null
+    avatarUrl?: StringNullableWithAggregatesFilter<"User"> | string | null
     birthDate?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     subdivision?: StringNullableWithAggregatesFilter<"User"> | string | null
     rang?: StringNullableWithAggregatesFilter<"User"> | string | null
     serviceNumber?: IntNullableWithAggregatesFilter<"User"> | number | null
+    accessLevel?: EnumAccessLevelWithAggregatesFilter<"User"> | $Enums.AccessLevel
     roleId?: IntNullableWithAggregatesFilter<"User"> | number | null
   }
 
@@ -13373,10 +13437,12 @@ export namespace Prisma {
     surname?: string | null
     middleName?: string | null
     phone?: string | null
+    avatarUrl?: string | null
     birthDate?: Date | string | null
     subdivision?: string | null
     rang?: string | null
     serviceNumber?: number | null
+    accessLevel?: $Enums.AccessLevel
     logs?: LogCreateNestedManyWithoutUserInput
     role?: RoleCreateNestedOneWithoutUsersInput
     requests?: RequestCreateNestedManyWithoutUsersInput
@@ -13393,10 +13459,12 @@ export namespace Prisma {
     surname?: string | null
     middleName?: string | null
     phone?: string | null
+    avatarUrl?: string | null
     birthDate?: Date | string | null
     subdivision?: string | null
     rang?: string | null
     serviceNumber?: number | null
+    accessLevel?: $Enums.AccessLevel
     roleId?: number | null
     logs?: LogUncheckedCreateNestedManyWithoutUserInput
     requests?: RequestUncheckedCreateNestedManyWithoutUsersInput
@@ -13412,10 +13480,12 @@ export namespace Prisma {
     surname?: NullableStringFieldUpdateOperationsInput | string | null
     middleName?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
     serviceNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    accessLevel?: EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
     logs?: LogUpdateManyWithoutUserNestedInput
     role?: RoleUpdateOneWithoutUsersNestedInput
     requests?: RequestUpdateManyWithoutUsersNestedInput
@@ -13432,10 +13502,12 @@ export namespace Prisma {
     surname?: NullableStringFieldUpdateOperationsInput | string | null
     middleName?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
     serviceNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    accessLevel?: EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
     roleId?: NullableIntFieldUpdateOperationsInput | number | null
     logs?: LogUncheckedUpdateManyWithoutUserNestedInput
     requests?: RequestUncheckedUpdateManyWithoutUsersNestedInput
@@ -13452,10 +13524,12 @@ export namespace Prisma {
     surname?: string | null
     middleName?: string | null
     phone?: string | null
+    avatarUrl?: string | null
     birthDate?: Date | string | null
     subdivision?: string | null
     rang?: string | null
     serviceNumber?: number | null
+    accessLevel?: $Enums.AccessLevel
     roleId?: number | null
   }
 
@@ -13466,10 +13540,12 @@ export namespace Prisma {
     surname?: NullableStringFieldUpdateOperationsInput | string | null
     middleName?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
     serviceNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    accessLevel?: EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -13480,10 +13556,12 @@ export namespace Prisma {
     surname?: NullableStringFieldUpdateOperationsInput | string | null
     middleName?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
     serviceNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    accessLevel?: EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
     roleId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
@@ -14017,6 +14095,13 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
+  export type EnumAccessLevelFilter<$PrismaModel = never> = {
+    equals?: $Enums.AccessLevel | EnumAccessLevelFieldRefInput<$PrismaModel>
+    in?: $Enums.AccessLevel[] | ListEnumAccessLevelFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AccessLevel[] | ListEnumAccessLevelFieldRefInput<$PrismaModel>
+    not?: NestedEnumAccessLevelFilter<$PrismaModel> | $Enums.AccessLevel
+  }
+
   export type LogListRelationFilter = {
     every?: LogWhereInput
     some?: LogWhereInput
@@ -14065,10 +14150,12 @@ export namespace Prisma {
     surname?: SortOrder
     middleName?: SortOrder
     phone?: SortOrder
+    avatarUrl?: SortOrder
     birthDate?: SortOrder
     subdivision?: SortOrder
     rang?: SortOrder
     serviceNumber?: SortOrder
+    accessLevel?: SortOrder
     roleId?: SortOrder
   }
 
@@ -14086,10 +14173,12 @@ export namespace Prisma {
     surname?: SortOrder
     middleName?: SortOrder
     phone?: SortOrder
+    avatarUrl?: SortOrder
     birthDate?: SortOrder
     subdivision?: SortOrder
     rang?: SortOrder
     serviceNumber?: SortOrder
+    accessLevel?: SortOrder
     roleId?: SortOrder
   }
 
@@ -14101,10 +14190,12 @@ export namespace Prisma {
     surname?: SortOrder
     middleName?: SortOrder
     phone?: SortOrder
+    avatarUrl?: SortOrder
     birthDate?: SortOrder
     subdivision?: SortOrder
     rang?: SortOrder
     serviceNumber?: SortOrder
+    accessLevel?: SortOrder
     roleId?: SortOrder
   }
 
@@ -14160,6 +14251,16 @@ export namespace Prisma {
     _sum?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedIntNullableFilter<$PrismaModel>
     _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type EnumAccessLevelWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AccessLevel | EnumAccessLevelFieldRefInput<$PrismaModel>
+    in?: $Enums.AccessLevel[] | ListEnumAccessLevelFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AccessLevel[] | ListEnumAccessLevelFieldRefInput<$PrismaModel>
+    not?: NestedEnumAccessLevelWithAggregatesFilter<$PrismaModel> | $Enums.AccessLevel
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAccessLevelFilter<$PrismaModel>
+    _max?: NestedEnumAccessLevelFilter<$PrismaModel>
   }
 
   export type BoolFilter<$PrismaModel = never> = {
@@ -14672,6 +14773,10 @@ export namespace Prisma {
     divide?: number
   }
 
+  export type EnumAccessLevelFieldUpdateOperationsInput = {
+    set?: $Enums.AccessLevel
+  }
+
   export type LogUpdateManyWithoutUserNestedInput = {
     create?: XOR<LogCreateWithoutUserInput, LogUncheckedCreateWithoutUserInput> | LogCreateWithoutUserInput[] | LogUncheckedCreateWithoutUserInput[]
     connectOrCreate?: LogCreateOrConnectWithoutUserInput | LogCreateOrConnectWithoutUserInput[]
@@ -15033,6 +15138,13 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
+  export type NestedEnumAccessLevelFilter<$PrismaModel = never> = {
+    equals?: $Enums.AccessLevel | EnumAccessLevelFieldRefInput<$PrismaModel>
+    in?: $Enums.AccessLevel[] | ListEnumAccessLevelFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AccessLevel[] | ListEnumAccessLevelFieldRefInput<$PrismaModel>
+    not?: NestedEnumAccessLevelFilter<$PrismaModel> | $Enums.AccessLevel
+  }
+
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -15091,6 +15203,16 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
+  export type NestedEnumAccessLevelWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AccessLevel | EnumAccessLevelFieldRefInput<$PrismaModel>
+    in?: $Enums.AccessLevel[] | ListEnumAccessLevelFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AccessLevel[] | ListEnumAccessLevelFieldRefInput<$PrismaModel>
+    not?: NestedEnumAccessLevelWithAggregatesFilter<$PrismaModel> | $Enums.AccessLevel
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAccessLevelFilter<$PrismaModel>
+    _max?: NestedEnumAccessLevelFilter<$PrismaModel>
+  }
+
   export type NestedBoolFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolFilter<$PrismaModel> | boolean
@@ -15111,10 +15233,12 @@ export namespace Prisma {
     surname?: string | null
     middleName?: string | null
     phone?: string | null
+    avatarUrl?: string | null
     birthDate?: Date | string | null
     subdivision?: string | null
     rang?: string | null
     serviceNumber?: number | null
+    accessLevel?: $Enums.AccessLevel
     logs?: LogCreateNestedManyWithoutUserInput
     role?: RoleCreateNestedOneWithoutUsersInput
     requests?: RequestCreateNestedManyWithoutUsersInput
@@ -15130,10 +15254,12 @@ export namespace Prisma {
     surname?: string | null
     middleName?: string | null
     phone?: string | null
+    avatarUrl?: string | null
     birthDate?: Date | string | null
     subdivision?: string | null
     rang?: string | null
     serviceNumber?: number | null
+    accessLevel?: $Enums.AccessLevel
     roleId?: number | null
     logs?: LogUncheckedCreateNestedManyWithoutUserInput
     requests?: RequestUncheckedCreateNestedManyWithoutUsersInput
@@ -15164,10 +15290,12 @@ export namespace Prisma {
     surname?: NullableStringFieldUpdateOperationsInput | string | null
     middleName?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
     serviceNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    accessLevel?: EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
     logs?: LogUpdateManyWithoutUserNestedInput
     role?: RoleUpdateOneWithoutUsersNestedInput
     requests?: RequestUpdateManyWithoutUsersNestedInput
@@ -15183,10 +15311,12 @@ export namespace Prisma {
     surname?: NullableStringFieldUpdateOperationsInput | string | null
     middleName?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
     serviceNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    accessLevel?: EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
     roleId?: NullableIntFieldUpdateOperationsInput | number | null
     logs?: LogUncheckedUpdateManyWithoutUserNestedInput
     requests?: RequestUncheckedUpdateManyWithoutUsersNestedInput
@@ -15201,10 +15331,12 @@ export namespace Prisma {
     surname?: string | null
     middleName?: string | null
     phone?: string | null
+    avatarUrl?: string | null
     birthDate?: Date | string | null
     subdivision?: string | null
     rang?: string | null
     serviceNumber?: number | null
+    accessLevel?: $Enums.AccessLevel
     logs?: LogCreateNestedManyWithoutUserInput
     role?: RoleCreateNestedOneWithoutUsersInput
     requests?: RequestCreateNestedManyWithoutUsersInput
@@ -15220,10 +15352,12 @@ export namespace Prisma {
     surname?: string | null
     middleName?: string | null
     phone?: string | null
+    avatarUrl?: string | null
     birthDate?: Date | string | null
     subdivision?: string | null
     rang?: string | null
     serviceNumber?: number | null
+    accessLevel?: $Enums.AccessLevel
     roleId?: number | null
     logs?: LogUncheckedCreateNestedManyWithoutUserInput
     requests?: RequestUncheckedCreateNestedManyWithoutUsersInput
@@ -15254,10 +15388,12 @@ export namespace Prisma {
     surname?: NullableStringFieldUpdateOperationsInput | string | null
     middleName?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
     serviceNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    accessLevel?: EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
     logs?: LogUpdateManyWithoutUserNestedInput
     role?: RoleUpdateOneWithoutUsersNestedInput
     requests?: RequestUpdateManyWithoutUsersNestedInput
@@ -15273,10 +15409,12 @@ export namespace Prisma {
     surname?: NullableStringFieldUpdateOperationsInput | string | null
     middleName?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
     serviceNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    accessLevel?: EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
     roleId?: NullableIntFieldUpdateOperationsInput | number | null
     logs?: LogUncheckedUpdateManyWithoutUserNestedInput
     requests?: RequestUncheckedUpdateManyWithoutUsersNestedInput
@@ -15291,10 +15429,12 @@ export namespace Prisma {
     surname?: string | null
     middleName?: string | null
     phone?: string | null
+    avatarUrl?: string | null
     birthDate?: Date | string | null
     subdivision?: string | null
     rang?: string | null
     serviceNumber?: number | null
+    accessLevel?: $Enums.AccessLevel
     role?: RoleCreateNestedOneWithoutUsersInput
     requests?: RequestCreateNestedManyWithoutUsersInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
@@ -15310,10 +15450,12 @@ export namespace Prisma {
     surname?: string | null
     middleName?: string | null
     phone?: string | null
+    avatarUrl?: string | null
     birthDate?: Date | string | null
     subdivision?: string | null
     rang?: string | null
     serviceNumber?: number | null
+    accessLevel?: $Enums.AccessLevel
     roleId?: number | null
     requests?: RequestUncheckedCreateNestedManyWithoutUsersInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
@@ -15344,10 +15486,12 @@ export namespace Prisma {
     surname?: NullableStringFieldUpdateOperationsInput | string | null
     middleName?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
     serviceNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    accessLevel?: EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
     role?: RoleUpdateOneWithoutUsersNestedInput
     requests?: RequestUpdateManyWithoutUsersNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
@@ -15363,10 +15507,12 @@ export namespace Prisma {
     surname?: NullableStringFieldUpdateOperationsInput | string | null
     middleName?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
     serviceNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    accessLevel?: EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
     roleId?: NullableIntFieldUpdateOperationsInput | number | null
     requests?: RequestUncheckedUpdateManyWithoutUsersNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
@@ -15423,10 +15569,12 @@ export namespace Prisma {
     surname?: string | null
     middleName?: string | null
     phone?: string | null
+    avatarUrl?: string | null
     birthDate?: Date | string | null
     subdivision?: string | null
     rang?: string | null
     serviceNumber?: number | null
+    accessLevel?: $Enums.AccessLevel
     logs?: LogCreateNestedManyWithoutUserInput
     role?: RoleCreateNestedOneWithoutUsersInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
@@ -15442,10 +15590,12 @@ export namespace Prisma {
     surname?: string | null
     middleName?: string | null
     phone?: string | null
+    avatarUrl?: string | null
     birthDate?: Date | string | null
     subdivision?: string | null
     rang?: string | null
     serviceNumber?: number | null
+    accessLevel?: $Enums.AccessLevel
     roleId?: number | null
     logs?: LogUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
@@ -15566,10 +15716,12 @@ export namespace Prisma {
     surname?: StringNullableFilter<"User"> | string | null
     middleName?: StringNullableFilter<"User"> | string | null
     phone?: StringNullableFilter<"User"> | string | null
+    avatarUrl?: StringNullableFilter<"User"> | string | null
     birthDate?: DateTimeNullableFilter<"User"> | Date | string | null
     subdivision?: StringNullableFilter<"User"> | string | null
     rang?: StringNullableFilter<"User"> | string | null
     serviceNumber?: IntNullableFilter<"User"> | number | null
+    accessLevel?: EnumAccessLevelFilter<"User"> | $Enums.AccessLevel
     roleId?: IntNullableFilter<"User"> | number | null
   }
 
@@ -15788,10 +15940,12 @@ export namespace Prisma {
     surname?: string | null
     middleName?: string | null
     phone?: string | null
+    avatarUrl?: string | null
     birthDate?: Date | string | null
     subdivision?: string | null
     rang?: string | null
     serviceNumber?: number | null
+    accessLevel?: $Enums.AccessLevel
     logs?: LogCreateNestedManyWithoutUserInput
     requests?: RequestCreateNestedManyWithoutUsersInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
@@ -15807,10 +15961,12 @@ export namespace Prisma {
     surname?: string | null
     middleName?: string | null
     phone?: string | null
+    avatarUrl?: string | null
     birthDate?: Date | string | null
     subdivision?: string | null
     rang?: string | null
     serviceNumber?: number | null
+    accessLevel?: $Enums.AccessLevel
     logs?: LogUncheckedCreateNestedManyWithoutUserInput
     requests?: RequestUncheckedCreateNestedManyWithoutUsersInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
@@ -16179,10 +16335,12 @@ export namespace Prisma {
     surname?: string | null
     middleName?: string | null
     phone?: string | null
+    avatarUrl?: string | null
     birthDate?: Date | string | null
     subdivision?: string | null
     rang?: string | null
     serviceNumber?: number | null
+    accessLevel?: $Enums.AccessLevel
     logs?: LogCreateNestedManyWithoutUserInput
     role?: RoleCreateNestedOneWithoutUsersInput
     requests?: RequestCreateNestedManyWithoutUsersInput
@@ -16198,10 +16356,12 @@ export namespace Prisma {
     surname?: string | null
     middleName?: string | null
     phone?: string | null
+    avatarUrl?: string | null
     birthDate?: Date | string | null
     subdivision?: string | null
     rang?: string | null
     serviceNumber?: number | null
+    accessLevel?: $Enums.AccessLevel
     roleId?: number | null
     logs?: LogUncheckedCreateNestedManyWithoutUserInput
     requests?: RequestUncheckedCreateNestedManyWithoutUsersInput
@@ -16264,10 +16424,12 @@ export namespace Prisma {
     surname?: NullableStringFieldUpdateOperationsInput | string | null
     middleName?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
     serviceNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    accessLevel?: EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
     logs?: LogUpdateManyWithoutUserNestedInput
     role?: RoleUpdateOneWithoutUsersNestedInput
     requests?: RequestUpdateManyWithoutUsersNestedInput
@@ -16283,10 +16445,12 @@ export namespace Prisma {
     surname?: NullableStringFieldUpdateOperationsInput | string | null
     middleName?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
     serviceNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    accessLevel?: EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
     roleId?: NullableIntFieldUpdateOperationsInput | number | null
     logs?: LogUncheckedUpdateManyWithoutUserNestedInput
     requests?: RequestUncheckedUpdateManyWithoutUsersNestedInput
@@ -16348,10 +16512,12 @@ export namespace Prisma {
     surname?: NullableStringFieldUpdateOperationsInput | string | null
     middleName?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
     serviceNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    accessLevel?: EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
     logs?: LogUpdateManyWithoutUserNestedInput
     role?: RoleUpdateOneWithoutUsersNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
@@ -16367,10 +16533,12 @@ export namespace Prisma {
     surname?: NullableStringFieldUpdateOperationsInput | string | null
     middleName?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
     serviceNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    accessLevel?: EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
     roleId?: NullableIntFieldUpdateOperationsInput | number | null
     logs?: LogUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
@@ -16386,10 +16554,12 @@ export namespace Prisma {
     surname?: NullableStringFieldUpdateOperationsInput | string | null
     middleName?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
     serviceNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    accessLevel?: EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
     roleId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
@@ -16517,10 +16687,12 @@ export namespace Prisma {
     surname?: string | null
     middleName?: string | null
     phone?: string | null
+    avatarUrl?: string | null
     birthDate?: Date | string | null
     subdivision?: string | null
     rang?: string | null
     serviceNumber?: number | null
+    accessLevel?: $Enums.AccessLevel
   }
 
   export type RequestUpdateWithoutRoleInput = {
@@ -16569,10 +16741,12 @@ export namespace Prisma {
     surname?: NullableStringFieldUpdateOperationsInput | string | null
     middleName?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
     serviceNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    accessLevel?: EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
     logs?: LogUpdateManyWithoutUserNestedInput
     requests?: RequestUpdateManyWithoutUsersNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
@@ -16588,10 +16762,12 @@ export namespace Prisma {
     surname?: NullableStringFieldUpdateOperationsInput | string | null
     middleName?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
     serviceNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    accessLevel?: EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
     logs?: LogUncheckedUpdateManyWithoutUserNestedInput
     requests?: RequestUncheckedUpdateManyWithoutUsersNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
@@ -16607,10 +16783,12 @@ export namespace Prisma {
     surname?: NullableStringFieldUpdateOperationsInput | string | null
     middleName?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     subdivision?: NullableStringFieldUpdateOperationsInput | string | null
     rang?: NullableStringFieldUpdateOperationsInput | string | null
     serviceNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    accessLevel?: EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
   }
 
   export type LogCreateManyUserInput = {

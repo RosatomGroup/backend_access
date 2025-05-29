@@ -17,5 +17,6 @@ export class LoginUserDto {
   password: string;
 
   @IsBoolean()
+  @IsNotEmpty()
   rememberMe: boolean;
 }
