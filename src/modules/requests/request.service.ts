@@ -1,25 +1,229 @@
-import { OwnRequestDto } from './request.dto';
+import {
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import {
+  CreateRequestDto,
+  RequestDto,
+  RequestStatus,
+  RequestType,
+  ResourceDto,
+  RoleDto,
+  UpdateRequestStatusDto,
+} from './request.dto';
+import { Prisma } from '@prisma/client';
 
+@Injectable()
 export class RequestService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getOwnRequests(userId: number): Promise<OwnRequestDto[]> {
-    const requestDb = await this.prisma.request.findMany({
-      where: { id: userId },
+  async create(createRequestDto: CreateRequestDto): Promise<RequestDto> {
+    try {
+      // Проверка существования ресурса и роли
+      const [resource, role] = await Promise.all([
+        this.prisma.resource.findUnique({
+          where: { id: createRequestDto.resourceId },
+        }),
+        this.prisma.role.findUnique({
+          where: { id: createRequestDto.roleId },
+        }),
+      ]);
+
+      if (!resource || !role) {
+        throw new NotFoundException(
+          `Resource or Role not found (Resource ID: ${createRequestDto.resourceId}, Role ID: ${createRequestDto.roleId})`,
+        );
+      }
+
+      // Проверка на существующую заявку
+      const existingRequest = await this.prisma.request.findFirst({
+        where: {
+          email: createRequestDto.email,
+          resourceId: createRequestDto.resourceId,
+          roleId: createRequestDto.roleId,
+          requestType: createRequestDto.requestType,
+          status: {
+            not: RequestStatus.REJECTED, // Игнорируем отклоненные заявки
+          },
+        },
+      });
+
+      if (existingRequest) {
+        const actionType =
+          createRequestDto.requestType === RequestType.GRANT_ACCESS
+            ? 'на выдачу доступа'
+            : 'на отзыв доступа';
+        throw new ConflictException(
+          `Заявка ${actionType} для этого email, системы и роли уже существует (статус: ${existingRequest.status})`,
+        );
+      }
+
+      // Создание заявки
+      const createdRequest = await this.prisma.request.create({
+        data: {
+          name: createRequestDto.name,
+          surname: createRequestDto.surname,
+          middleName: createRequestDto.middleName,
+          email: createRequestDto.email,
+          requestType: createRequestDto.requestType,
+          status: RequestStatus.PENDING,
+          createDate: new Date(),
+          resource: { connect: { id: createRequestDto.resourceId } },
+          role: { connect: { id: createRequestDto.roleId } },
+          ...(createRequestDto.userId && {
+            users: {
+              connect: { id: createRequestDto.userId },
+            },
+          }),
+        },
+        include: {
+          resource: true,
+          role: true,
+          users: true,
+        },
+      });
+
+      // Логирование действия
+      if (createRequestDto.userId) {
+        await this.prisma.log.create({
+          data: {
+            accountId: createRequestDto.userId,
+            action: 'REQUEST_CREATED',
+            actionTime: new Date(),
+          },
+        });
+      }
+
+      return this.mapToRequestDto(createdRequest);
+    } catch (error) {
+      if (
+        error instanceof NotFoundException ||
+        error instanceof ConflictException
+      ) {
+        throw error;
+      }
+      throw new InternalServerErrorException(
+        `Failed to create request: ${error.message}`,
+      );
+    }
+  }
+
+  async findAll(): Promise<RequestDto[]> {
+    const requests = await this.prisma.request.findMany({
       include: {
         resource: true,
-        // role: true,
+        role: true,
+        users: true,
+      },
+      orderBy: { createDate: 'desc' },
+    });
+    return requests.map((request) => this.mapToRequestDto(request));
+  }
+
+  async findOneById(id: number): Promise<RequestDto> {
+    const request = await this.prisma.request.findUnique({
+      where: { id },
+      include: {
+        resource: true,
+        role: true,
+        users: true,
       },
     });
+    if (!request) {
+      throw new NotFoundException(`Request with ID ${id} not found`);
+    }
+    return this.mapToRequestDto(request);
+  }
 
-    return requestDb.map((request) => ({
-      id: request.id,
-      requester: request.status, //requester
-      createDate: request.create_date,
-      status: request.status,
-      resourceName: request.resource.name,
-      roleName: 'role_name',
+  async updateStatus(
+    id: number,
+    updateStatusDto: UpdateRequestStatusDto,
+  ): Promise<RequestDto> {
+    try {
+      const updatedRequest = await this.prisma.request.update({
+        where: { id },
+        data: {
+          status: updateStatusDto.status,
+        },
+        include: {
+          resource: true,
+          role: true,
+          users: true,
+        },
+      });
+
+      // Логирование изменения статуса
+      if (updatedRequest.users.length > 0) {
+        await this.prisma.log.create({
+          data: {
+            accountId: updatedRequest.users[0].id,
+            action: 'REQUEST_CREATED', // В схеме нет других вариантов для LogAction
+            actionTime: new Date(),
+          },
+        });
+      }
+
+      return this.mapToRequestDto(updatedRequest);
+    } catch (error) {
+      if (error.code === 'P2025') {
+        throw new NotFoundException(`Request with ID ${id} not found`);
+      }
+      throw new InternalServerErrorException(
+        `Failed to update request status: ${error.message}`,
+      );
+    }
+  }
+
+  async findAllResources(): Promise<ResourceDto[]> {
+    const resources = await this.prisma.resource.findMany({
+      orderBy: { name: 'asc' },
+    });
+    return resources.map((resource) => ({
+      id: resource.id,
+      name: resource.name,
+      description: resource.description,
+      link: resource.link || undefined,
     }));
+  }
+
+  async findAllRoles(): Promise<RoleDto[]> {
+    const roles = await this.prisma.role.findMany({
+      orderBy: { name: 'asc' },
+    });
+    return roles.map((role) => ({
+      id: role.id,
+      name: role.name,
+      description: role.description,
+    }));
+  }
+
+  private mapToRequestDto(
+    request: Prisma.RequestGetPayload<{
+      include: {
+        resource: true;
+        role: true;
+        users: true;
+      };
+    }>,
+  ): RequestDto {
+    return {
+      id: request.id,
+      name: request.name,
+      surname: request.surname,
+      middleName: request.middleName,
+      email: request.email,
+      requestType: request.requestType,
+      status: request.status,
+      createDate: request.createDate,
+      resourceId: request.resourceId,
+      roleId: request.roleId,
+      resourceName: request.resource?.name || '',
+      roleName: request.role?.name || '',
+      resourceLink: request.resource?.link || undefined,
+      userId: request.users?.[0]?.id,
+    };
   }
 }

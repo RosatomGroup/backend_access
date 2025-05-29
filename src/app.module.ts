@@ -24,6 +24,7 @@ import { VideosModule } from './modules/videos/videos.module';
 @Module({
   imports: [
     PrismaModule,
+    ManagementModule,
     UserModule,
     AuthModule,
     TokenModule,
@@ -34,6 +35,15 @@ import { VideosModule } from './modules/videos/videos.module';
     PasswordResetModule,
     MailModule,
     JwtModule,
+    RequestModule,
+  ],
+  controllers: [
+    AppController,
+    RegisterController,
+    PasswordResetController,
+    ManagementController,
+    UserController,
+    RequestController,
     DocumentsModule,
     VideosModule,
     ServeStaticModule.forRoot({
@@ -41,11 +51,18 @@ import { VideosModule } from './modules/videos/videos.module';
       serveRoot: '/documents',
     }),
   ],
-  controllers: [AppController, RegisterController, PasswordResetController],
-  providers: [AppService, UserService, RegisterService, PasswordResetService],
+  providers: [
+    AppService,
+    UserService,
+    RegisterService,
+    PasswordResetService,
+    RequestService,
+    ManagementService,
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(RefreshTokenMiddleware).forRoutes('*');
+    consumer.apply(cookieParser(), RefreshTokenMiddleware).forRoutes('*');
+    consumer.apply(HttpLoggerMiddleware).forRoutes('*');
   }
 }
