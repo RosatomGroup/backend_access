@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../prisma/generated/client"
 }
 
 datasource db {
@@ -25,11 +24,6 @@ enum LogAction {
   LOGOUT
   REQUEST_CREATED
   REQUEST_STATUS_UPDATED
-}
-
-enum AccessLevel {
-  ADMIN
-  USER
 }
 
 enum AccessLevel {
@@ -127,7 +121,7 @@ model User {
   subdivision   String?        @db.VarChar(80)
   rang          String?        @db.VarChar(80)
   serviceNumber Int?           @unique
-  accessLevel        AccessLevel    @default(USER)
+  accessLevel   AccessLevel    @default(USER)
   roleId        Int?
   logs          Log[]
   role          Role?          @relation(fields: [roleId], references: [id], onDelete: Restrict)

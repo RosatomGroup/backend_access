@@ -1,6 +1,6 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { Prisma, Resource, User } from '../../../prisma/generated/client';
+import { Prisma, Resource, User } from '@prisma/client';
 import {
   CreateResourceDto,
   CreateRoleDto,
