@@ -5,13 +5,8 @@ import { PrismaModule } from './modules/prisma/prisma.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
-import { UserService } from './modules/users/user.service';
-import { RegisterController } from './modules/register/register.controller';
-import { RegisterService } from './modules/register/register.service';
 import { RegisterModule } from './modules/register/register.module';
 import { PasswordResetModule } from './modules/password-reset/password-reset.module';
-import { PasswordResetController } from './modules/password-reset/password-reset.controller';
-import { PasswordResetService } from './modules/password-reset/password-reset.service';
 import { MailModule } from './modules/mail/mail.module';
 import { JwtModule } from '@nestjs/jwt';
 import { TokenModule } from './modules/token/token.module';
@@ -20,6 +15,10 @@ import { DocumentsModule } from './modules/documents/documents.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { VideosModule } from './modules/videos/videos.module';
+import { ManagementModule } from './modules/management/management.module';
+import { RequestModule } from './modules/requests/request.module';
+import * as cookieParser from 'cookie-parser';
+import { HttpLoggerMiddleware } from './modules/middleware/HttpLoggerMiddleware';
 
 @Module({
   imports: [
@@ -36,33 +35,20 @@ import { VideosModule } from './modules/videos/videos.module';
     MailModule,
     JwtModule,
     RequestModule,
-  ],
-  controllers: [
-    AppController,
-    RegisterController,
-    PasswordResetController,
-    ManagementController,
-    UserController,
-    RequestController,
-    DocumentsModule,
-    VideosModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'uploads'),
       serveRoot: '/documents',
     }),
+    DocumentsModule,
+    VideosModule,
   ],
-  providers: [
-    AppService,
-    UserService,
-    RegisterService,
-    PasswordResetService,
-    RequestService,
-    ManagementService,
-  ],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(cookieParser(), RefreshTokenMiddleware).forRoutes('*');
-    consumer.apply(HttpLoggerMiddleware).forRoutes('*');
+    consumer
+      .apply(cookieParser(), HttpLoggerMiddleware, RefreshTokenMiddleware)
+      .forRoutes('*');
   }
 }

@@ -1,17 +1,17 @@
 import {
+  BadRequestException,
+  Body,
   Controller,
-  Post,
-  UploadedFile,
-  UseInterceptors,
+  Delete,
   Get,
+  NotFoundException,
   Param,
   Patch,
-  Body,
-  Res,
+  Post,
   Req,
-  Delete,
-  NotFoundException,
-  BadRequestException,
+  Res,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { VideosService } from './videos.service';

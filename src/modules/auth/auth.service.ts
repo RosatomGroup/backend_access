@@ -1,4 +1,3 @@
-
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
@@ -22,7 +21,7 @@ export class AuthService {
         accessLevel: true,
       },
     });
-    
+
     if (!user) {
       throw new UnauthorizedException('Пользователь не найден');
     }
@@ -38,24 +37,25 @@ export class AuthService {
 
   async login(user: any, rememberMe: boolean) {
     console.log('User object passed to login:', user);
-    const payload = { 
-      email: user.email, 
+    const payload = {
+      email: user.email,
       sub: user.id,
-      accessLevel: user.accessLevel
+      accessLevel: user.accessLevel,
     };
 
-    const { accessToken, refreshToken } = await this.tokenService.generateTokens({
-      userId: user.id,
-      email: user.email,
-      rememberMe,
-      accessLevel: user.accessLevel
-    });
+    const { accessToken, refreshToken } =
+      await this.tokenService.generateTokens({
+        userId: user.id,
+        email: user.email,
+        rememberMe,
+        accessLevel: user.accessLevel,
+      });
 
-    return { 
-      accessToken, 
-      refreshToken, 
+    return {
+      accessToken,
+      refreshToken,
       rememberMe,
-      accessLevel: user.accessLevel
+      accessLevel: user.accessLevel,
     };
   }
 }

@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import {
-  S3Client,
-  PutObjectCommand,
-  DeleteObjectCommand,
   CopyObjectCommand,
+  DeleteObjectCommand,
+  GetObjectCommand,
+  GetObjectCommandOutput,
+  PutObjectCommand,
+  S3Client,
 } from '@aws-sdk/client-s3';
-import { GetObjectCommand, GetObjectCommandOutput } from '@aws-sdk/client-s3';
 import { Readable } from 'stream';
 
 @Injectable()

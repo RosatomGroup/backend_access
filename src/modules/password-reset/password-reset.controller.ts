@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { PasswordResetService } from './password-reset.service';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { PrismaService } from '../prisma/prisma.service';

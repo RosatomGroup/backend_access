@@ -21,8 +21,17 @@ export class TokenService {
   ) {}
 
   async generateTokens(payload: GenerateTokensParams) {
-    const accessToken = await this.accessTokenService.sign(payload.userId, payload.email, payload.accessLevel);
-    const refreshToken = await this.refreshTokenService.sign(payload.userId, payload.email, payload.rememberMe, payload.accessLevel);
+    const accessToken = await this.accessTokenService.sign(
+      payload.userId,
+      payload.email,
+      payload.accessLevel,
+    );
+    const refreshToken = await this.refreshTokenService.sign(
+      payload.userId,
+      payload.email,
+      payload.rememberMe,
+      payload.accessLevel,
+    );
     return { accessToken, refreshToken };
   }
 

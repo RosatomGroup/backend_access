@@ -8,8 +8,8 @@ import {
   IsPhoneNumber,
   IsString,
   Length,
-  Min,
   Max,
+  Min,
 } from 'class-validator';
 
 export class CreateUserDto {
@@ -25,7 +25,7 @@ export class CreateUserDto {
 export class ReplyCreateUserDto {
   id: number;
   email: string;
-  accessLevel: AccessLevel
+  accessLevel: AccessLevel;
 }
 
 export class UpdateUserDto {

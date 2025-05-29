@@ -10,7 +10,12 @@ export class RefreshTokenService {
     private configService: ConfigService,
   ) {}
 
-  async sign(userId: number, email: string, rememberMe: boolean, accessLevel: AccessLevel) {
+  async sign(
+    userId: number,
+    email: string,
+    rememberMe: boolean,
+    accessLevel: AccessLevel,
+  ) {
     return this.jwtService.signAsync(
       { userId, email, rememberMe, accessLevel },
       {
