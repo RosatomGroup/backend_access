@@ -38,7 +38,7 @@ export class ManagementController {
     return this.managementService.addRole(createRoleDto);
   }
 
-  @Post('resource')
+  @Post('resources')
   async createResource(
     @Body() createResourceDto: CreateResourceDto,
   ): Promise<ResourceResponseDto> {

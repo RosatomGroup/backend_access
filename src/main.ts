@@ -15,7 +15,6 @@ async function bootstrap() {
     }),
   );
 
-  // Настройка CORS (должен быть перед другими middleware)
   app.enableCors({
     origin: 'http://localhost:3000',
     methods: 'GET, HEAD, PUT, PATCH, POST, DELETE',
