@@ -6,15 +6,13 @@ import {
   Param,
   ParseIntPipe,
   Patch,
-  Post,
   Put,
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
-import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
+import { UpdateUserDto } from './dto/user.dto';
 import { UserService } from './user.service';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
-import { Public } from '../auth/decorators/public.decorator';
 import { AccessLevel } from '../auth/enums/user-role.enum';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
@@ -22,11 +20,6 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 @UseGuards(JwtAuthGuard) // Защищаем все роуты контроллера
 export class UserController {
   constructor(private readonly userService: UserService) {}
-  @Public() // Делаем метод публичным без необходимости быть авторизованным.
-  @Post('register')
-  async register(@Body() createUserDto: CreateUserDto) {
-    return this.userService.createUser(createUserDto);
-  }
 
   @Put(':id')
   async updateUser(

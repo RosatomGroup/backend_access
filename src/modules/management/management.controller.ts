@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards  } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { ManagementService } from './management.service';
 import {
   CreateResourceDto,
@@ -15,8 +15,7 @@ import { AccessLevel } from '../auth/enums/user-role.enum';
 
 @Controller('management')
 @UseGuards(JwtAuthGuard, RolesGuard)
-@Roles(AccessLevel.ADMIN) 
-
+@Roles(AccessLevel.ADMIN)
 @Controller('management')
 export class ManagementController {
   constructor(private readonly managementService: ManagementService) {}
