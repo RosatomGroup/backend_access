@@ -35,4 +35,5 @@
     EXPOSE 3001
     
     # 7. Оптимизированная команда запуска
-    CMD ["sh", "-c", "npx prisma migrate deploy && npx prisma db seed && node dist/main.js"]
+    # CMD ["sh", "-c", "npx prisma migrate deploy && npx prisma db seed && node dist/main.js"]
+    CMD ["sh", "-c", "npx prisma migrate deploy && npm run db:seed:prod && node dist/main.js"]
