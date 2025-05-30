@@ -1,56 +1,38 @@
-# --- Этап сборки (Build Stage) ---
+# --- Build Stage ---
     FROM node:20-alpine AS builder
 
     WORKDIR /app
     
-    # Копируем файлы для установки зависимостей
+    # 1. Копируем только то, что нужно для установки зависимостей
     COPY package.json package-lock.json ./
-    
-    # Копируем директорию prisma.
-    # Это важно, так как 'npm install' может вызвать 'postinstall' скрипт,
-    # который запускает 'prisma generate', и ему нужна схема.
     COPY prisma ./prisma/
     
-    RUN npm install --ci
+    # 2. Устанавливаем зависимости (включая devDependencies)
+    RUN npm ci
     
-    # Копируем остальной код вашего приложения
+    # 3. Копируем остальной код и собираем приложение
     COPY . .
-    
-    # Примечание: 'npx prisma generate' вызывается через 'postinstall' после 'npm install'
-    # Если вам нужно явно генерировать клиент здесь (например, если у вас нет 'postinstall' или он не работает),
-    # раскомментируйте следующую строку:
-    # RUN npx prisma generate
-    
     RUN npm run build
     
-    
-    # --- Этап продакшн-сервера (Production Stage) ---
+    # --- Production Stage ---
     FROM node:20-alpine AS runner
     
     WORKDIR /app
     
-    # Копируем package.json и package-lock.json.
-    COPY package.json package-lock.json ./
+    # 4. Устанавливаем только production зависимости
+    COPY --from=builder /app/package.json /app/package-lock.json ./
+    COPY --from=builder /app/prisma ./prisma
+    RUN npm ci --only=production
     
-    # !!! ВАЖНОЕ ИЗМЕНЕНИЕ: Снова копируем директорию prisma СЮДА !!!
-    # Это критично, так как 'npm install --production --ci' на этом этапе
-    # также запускает 'postinstall' скрипт, который требует 'schema.prisma'.
-    COPY prisma ./prisma/
-    
-    RUN npm install --production --ci
-    
-    # Копируем скомпилированный JavaScript-код
+    # 5. Копируем собранное приложение
     COPY --from=builder /app/dist ./dist
     
-    # Директория prisma уже скопирована выше, но убедимся, что она нужна для runtime тоже
-    # Хотя она уже есть, я оставляю эту строку, если вы решите не копировать ее раньше
-    # (например, если postinstall не будет запускаться, но prisma client все равно нужен)
-    # Но в данном случае, она уже должна быть из предыдущего COPY.
-    # Если вы уверены, что COPY prisma ./prisma/ выше покрывает все нужды,
-    # эту строку можно было бы и удалить, но для надежности пока оставим.
-    # COPY --from=builder /app/prisma ./prisma
-    
+    # 6. Для безопасности - создаем непривилегированного пользователя
+    RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+    RUN chown -R appuser:appgroup /app
+    USER appuser
     
     EXPOSE 3001
     
-    CMD ["sh", "-c", "npx prisma migrate deploy && node dist/main.js"]
+    # 7. Оптимизированная команда запуска
+    CMD ["sh", "-c", "npx prisma migrate deploy && npx prisma db seed && node dist/main.js"]
