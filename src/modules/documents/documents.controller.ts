@@ -3,6 +3,7 @@ import {
   Body,
   Controller,
   Delete,
+  ForbiddenException,
   Get,
   NotFoundException,
   Param,
@@ -18,6 +19,8 @@ import { DocumentsService } from './documents.service';
 import { Request, Response } from 'express';
 import * as multer from 'multer';
 import { S3Service } from './s3.service';
+import { CurrentUser } from './../auth/decorators/current-user.decorator';
+import { JwtPayload } from './../auth/interfaces/jwt-payload.interface';
 
 @Controller('documents')
 export class DocumentsController {
@@ -48,8 +51,14 @@ export class DocumentsController {
   )
   async uploadFile(
     @UploadedFile() file: Express.Multer.File,
+    @CurrentUser() user: JwtPayload,
     @Req() req: Request,
   ) {
+    if (user.accessLevel !== 'ADMIN') {
+      throw new ForbiddenException(
+        'Только администратор может загружать файлы',
+      );
+    }
     if (!file.buffer) throw new Error('Файл не загружен');
 
     const key = `${Date.now()}_${file.originalname.replace(/\s+/g, '_')}`;
@@ -90,14 +99,24 @@ export class DocumentsController {
   }
 
   @Delete(':filename')
-  async deleteFile(@Param('filename') filename: string) {
+  async deleteFile(
+    @Param('filename') filename: string,
+    @CurrentUser() user: JwtPayload,
+  ) {
+    if (user.accessLevel !== 'ADMIN') {
+      throw new ForbiddenException('Нет прав на удаление файла');
+    }
     return this.documentsService.deleteFile(filename);
   }
   @Patch(':filename/rename')
   async renameDocument(
     @Param('filename') filename: string,
     @Body('newName') newName: string,
+    @CurrentUser() user: JwtPayload,
   ) {
+    if (user.accessLevel !== 'ADMIN') {
+      throw new ForbiddenException('Нет прав на переименования файла');
+    }
     if (!newName || newName.trim() === '') {
       throw new BadRequestException('Новое имя файла не может быть пустым');
     }

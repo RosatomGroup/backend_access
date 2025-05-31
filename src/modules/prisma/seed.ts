@@ -525,25 +525,41 @@ async function main() {
     ],
   });
 
-  // Document
-  await prisma.document.create({
-    data: {
-      filename: 'document_1.pdf',
-      originalname: 'Документ 1.pdf',
-      mimetype: 'application/pdf',
-      size: 1024,
-      url: '/uploads/documents/document_1.pdf',
-    },
+  // Documents
+  await prisma.document.createMany({
+    data: [
+      {
+        filename: 'Инструкция_администратора.pdf_1748686367671.pdf',
+        originalname: 'Инструкция администратора.pdf',
+        mimetype: 'application/pdf',
+        size: 142568,
+        url: 'https://rosatomaccess.storage.yandexcloud.net/Инструкция_администратора.pdf_1748686367671.pdf',
+      },
+      {
+        filename: 'Инструкция_пользователя.pdf_1748686736911.pdf',
+        originalname: 'Инструкция пользователя.pdf',
+        mimetype: 'application/pdf',
+        size: 190886,
+        url: 'https://rosatomaccess.storage.yandexcloud.net/Инструкция_пользователя.pdf_1748686736911.pdf',
+      },
+      {
+        filename: 'Описание_полного_функционала_системы.pdf_1748686832133.pdf',
+        originalname: 'Описание полного функционала системы.pdf',
+        mimetype: 'application/pdf',
+        size: 139132,
+        url: 'https://rosatomaccess.storage.yandexcloud.net/Описание_полного_функционала_системы.pdf_1748686832133.pdf',
+      },
+    ],
   });
 
   // Video
   await prisma.video.create({
     data: {
-      originalname: 'Видео 1.mp4',
-      filename: 'video_1.mp4',
-      mimetype: 'video/mp4',
-      size: 2048,
-      url: '/uploads/videos/video_1.mp4',
+      originalname: 'Обзор функционала системы.mov',
+      filename: 'Обзор_функционала_системы.mov_1748687338308.mov',
+      mimetype: 'video/quicktime',
+      size: 20678624,
+      url: 'https://rosatomaccess.storage.yandexcloud.net/Обзор_функционала_системы.mov_1748687338308.mov',
     },
   });
 }
