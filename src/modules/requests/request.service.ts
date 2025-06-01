@@ -3,6 +3,7 @@ import {
   Injectable,
   InternalServerErrorException,
   NotFoundException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import {
@@ -15,6 +16,7 @@ import {
   UpdateRequestStatusDto,
 } from './request.dto';
 import { Prisma } from '@prisma/client';
+import { JwtPayload } from '../auth/interfaces/jwt-payload.interface';
 
 @Injectable()
 export class RequestService {
@@ -107,10 +109,11 @@ export class RequestService {
     }
   }
 
-  async findAll(isAdmin: boolean, userId?: number): Promise<RequestDto[]> {
-    const whereCondition: Prisma.RequestWhereInput = isAdmin 
-      ? {} 
-      : { users: { some: { id: userId } } };
+  async findAll(currentUser: JwtPayload): Promise<RequestDto[]> {
+    const whereCondition: Prisma.RequestWhereInput =
+      currentUser.accessLevel === 'ADMIN'
+        ? {}
+        : { users: { some: { id: currentUser.id } } };
 
     const requests = await this.prisma.request.findMany({
       where: whereCondition,
@@ -122,7 +125,7 @@ export class RequestService {
       orderBy: { createDate: 'desc' },
     });
 
-    return requests.map(request => this.mapToRequestDto(request));
+    return requests.map((request) => this.mapToRequestDto(request));
   }
 
   async findOneById(id: number): Promise<RequestDto> {
@@ -143,7 +146,14 @@ export class RequestService {
   async updateStatus(
     id: number,
     updateStatusDto: UpdateRequestStatusDto,
+    currentUser: JwtPayload,
   ): Promise<RequestDto> {
+    if (currentUser.accessLevel !== 'ADMIN') {
+      throw new ForbiddenException(
+        'Только администратор может менять статусы заявок',
+      );
+    }
+
     try {
       const updatedRequest = await this.prisma.request.update({
         where: { id },

@@ -1,13 +1,13 @@
 import {
   Body,
   Controller,
+  ForbiddenException,
   Get,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
-  Put,
-  Request,
-  ForbiddenException,
+  UseGuards,
 } from '@nestjs/common';
 import { RequestService } from './request.service';
 import {
@@ -15,60 +15,58 @@ import {
   RequestDto,
   UpdateRequestStatusDto,
 } from './request.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { CurrentUser } from '../auth/decorators/current-user.decorator';
+import { JwtPayload } from '../auth/interfaces/jwt-payload.interface';
 
 @Controller('requests')
+@UseGuards(JwtAuthGuard)
 export class RequestController {
   constructor(private readonly requestService: RequestService) {}
 
   @Post()
   async createRequest(
     @Body() createRequestDto: CreateRequestDto,
-    @Request() req,
+    @CurrentUser() user: JwtPayload,
   ): Promise<RequestDto> {
     const dtoWithUser = {
       ...createRequestDto,
-      userId: createRequestDto.userId || req.user?.userId,
+      userId: createRequestDto.userId || user.id,
     };
     return this.requestService.create(dtoWithUser);
   }
 
   @Get()
-  async getAllRequests(@Request() req): Promise<RequestDto[]> {
-    const isAdmin = req.user?.accessLevel === 'ADMIN';
-    return this.requestService.findAll(isAdmin, req.user?.userId);
+  async getAllRequests(
+    @CurrentUser() user: JwtPayload,
+  ): Promise<RequestDto[]> {
+    return this.requestService.findAll(user);
   }
 
   @Get(':id')
   async getRequestById(
     @Param('id', ParseIntPipe) id: number,
-    @Request() req,
+    @CurrentUser() user: JwtPayload,
   ): Promise<RequestDto> {
     const request = await this.requestService.findOneById(id);
-    
-    const isAdmin = req.user?.accessLevel === 'ADMIN';
-    const isOwner = request.userId === req.user?.userId;
-    
+
+    const isAdmin = user.accessLevel === 'ADMIN';
+    const isOwner = request.userId === user.id;
+
     if (!isAdmin && !isOwner) {
-      throw new ForbiddenException('Access denied');
+      throw new ForbiddenException('Нет прав доступа к этой заявке');
     }
-    
+
     return request;
   }
 
-  @Put(':id/status')
+  @Patch(':id/status')
   async updateRequestStatus(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateStatusDto: UpdateRequestStatusDto,
-    @Request() req,
+    @CurrentUser() user: JwtPayload,
   ): Promise<RequestDto> {
-    const request = await this.requestService.findOneById(id);
-    
-    const isAdmin = req.user?.accessLevel === 'ADMIN';
-    if (!isAdmin) {
-      throw new ForbiddenException('Only admin can update request status');
-    }
-    
-    return this.requestService.updateStatus(id, updateStatusDto);
+    return this.requestService.updateStatus(id, updateStatusDto, user);
   }
 
   @Get('resources')
