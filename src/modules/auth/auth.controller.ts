@@ -14,10 +14,13 @@ import { Request, Response } from 'express';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuthGuard } from '@nestjs/passport';
 import { TokenService } from '../token/token.service';
+import { CurrentUser } from './decorators/current-user.decorator';
 
 export interface AuthPayload {
   userId: number;
   email: string;
+  accessLevel: string;
+  avatarUrl: string;
 }
 @Controller('auth')
 export class AuthController {
@@ -25,7 +28,7 @@ export class AuthController {
     private authService: AuthService,
     private prisma: PrismaService,
     private tokenService: TokenService,
-  ) {}
+  ) { }
 
   @Post('login')
   async login(
@@ -52,17 +55,49 @@ export class AuthController {
       ...commonOptions,
       ...(dto.rememberMe ? { maxAge: 7 * 24 * 60 * 60 * 1000 } : {}),
     });
-    return { message: 'Вход выполнен' };
+    return {
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        avatarUrl: user.avatarUrl,
+        accessLevel: user.accessLevel,
+      },
+      message: 'Вход выполнен',
+    };
   }
 
   @Get('me')
   @UseGuards(AuthGuard('jwt'))
-  async getMe(@Req() req: Request & { user?: AuthPayload }) {
-    if (!req.user) {
-      throw new UnauthorizedException('User not found');
+  async getMe(@CurrentUser() user: AuthPayload) {
+    if (!user || !user.userId) {
+      throw new UnauthorizedException('Пользователь не аутентифицирован или его ID отсутствует.');
     }
 
-    return { userId: req.user.userId, email: req.user.email };
+    const fullUser = await this.prisma.user.findUnique({
+      where: {
+        id: user.userId,
+      },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        surname: true,
+        middleName: true,
+        accessLevel: true,
+        phone: true,
+        avatarUrl: true,
+        birthDate: true,
+        subdivision: true,
+        rang: true,
+      },
+    });
+
+    if (!fullUser) {
+      throw new UnauthorizedException('Данные пользователя не найдены в базе данных.');
+    }
+
+    return fullUser;
   }
 
   @Post('logout')

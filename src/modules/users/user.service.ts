@@ -25,7 +25,7 @@ export class UserService {
   async createUser(createUserDto: CreateUserDto): Promise<ReplyCreateUserDto> {
     const existingUser = await this.findByEmail(createUserDto.email);
     if (existingUser) {
-      throw new ConflictException('User with this email already exists');
+      throw new ConflictException('Пользователь с таким email уже существует');
     }
 
     const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
@@ -36,7 +36,7 @@ export class UserService {
       },
     });
 
-    return { id: user.id, email: user.email };
+    return { id: user.id, email: user.email, accessLevel: user.accessLevel };
   }
 
   async updateUser(
@@ -44,7 +44,7 @@ export class UserService {
     updateUserDto: UpdateUserDto,
   ): Promise<ReplyUpdateUserDto> {
     if (!id || isNaN(id)) {
-      throw new BadRequestException('Invalid user ID');
+      throw new BadRequestException('Неверный ID пользователя');
     }
 
     await this.findById(id);
@@ -56,6 +56,7 @@ export class UserService {
         surname: updateUserDto.surname,
         middleName: updateUserDto.middleName,
         phone: updateUserDto.phone,
+        avatarUrl: updateUserDto.avatarUrl,
         rang: updateUserDto.rang,
         birthDate: updateUserDto.birthDate
           ? new Date(updateUserDto.birthDate)
@@ -68,10 +69,51 @@ export class UserService {
     return this.mapToReplyDto(updatedUser);
   }
 
+  async partialUpdateUser(
+    id: number,
+    updateUserDto: Partial<UpdateUserDto>,
+  ): Promise<ReplyUpdateUserDto> {
+    if (!id || isNaN(id)) {
+      throw new BadRequestException('Неверный ID пользователя');
+    }
+
+    await this.findById(id);
+
+    // Фильтруем undefined значения
+    const updateData: Prisma.UserUpdateInput = {};
+
+    if (updateUserDto.name !== undefined) updateData.name = updateUserDto.name;
+    if (updateUserDto.surname !== undefined)
+      updateData.surname = updateUserDto.surname;
+    if (updateUserDto.middleName !== undefined)
+      updateData.middleName = updateUserDto.middleName;
+    if (updateUserDto.phone !== undefined)
+      updateData.phone = updateUserDto.phone;
+    if (updateUserDto.avatarUrl !== undefined)
+      updateData.avatarUrl = updateUserDto.avatarUrl;
+    if (updateUserDto.rang !== undefined) updateData.rang = updateUserDto.rang;
+    if (updateUserDto.birthDate !== undefined) {
+      updateData.birthDate = updateUserDto.birthDate
+        ? new Date(updateUserDto.birthDate)
+        : null;
+    }
+    if (updateUserDto.subdivision !== undefined)
+      updateData.subdivision = updateUserDto.subdivision;
+    if (updateUserDto.serviceNumber !== undefined)
+      updateData.serviceNumber = updateUserDto.serviceNumber;
+
+    const updatedUser = await this.prisma.user.update({
+      where: { id },
+      data: updateData,
+    });
+
+    return this.mapToReplyDto(updatedUser);
+  }
+
   private async findById(id: number) {
     const user = await this.prisma.user.findUnique({ where: { id } });
     if (!user) {
-      throw new NotFoundException(`User with ID ${id} not found`);
+      throw new NotFoundException(`Пользователь с ID ${id} не найден`);
     }
     return user;
   }
@@ -90,6 +132,7 @@ export class UserService {
       birthDate: user.birthDate || undefined,
       subdivision: user.subdivision || 'Не указано',
       serviceNumber: user.serviceNumber || 0,
+      avatarUrl: user.avatarUrl || undefined,
     };
   }
 }

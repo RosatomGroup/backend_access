@@ -3,6 +3,7 @@ import { RegisterDto } from './dto/create-register.dto';
 import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../prisma/prisma.service';
 import { TokenService } from '../token/token.service';
+import { AccessLevel } from '../auth/enums/user-role.enum';
 
 @Injectable()
 export class RegisterService {
@@ -32,11 +33,13 @@ export class RegisterService {
       },
     });
 
-    const tokens = await this.tokenService.generateTokens(
-      user.id,
-      user.email,
-      false,
-    );
+    const tokens = await this.tokenService.generateTokens({
+      userId: user.id,
+      email: user.email,
+      isVerified: false,
+      rememberMe: false,
+      accessLevel: AccessLevel.USER,
+    });
 
     return {
       user,

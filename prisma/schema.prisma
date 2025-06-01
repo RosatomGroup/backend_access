@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../prisma/generated/client"
 }
 
 datasource db {
@@ -24,6 +23,12 @@ enum LogAction {
   LOGIN
   LOGOUT
   REQUEST_CREATED
+  REQUEST_STATUS_UPDATED
+}
+
+enum AccessLevel {
+  ADMIN
+  USER
 }
 
 model AccessToken {
@@ -111,10 +116,12 @@ model User {
   surname       String?        @db.VarChar(40)
   middleName    String?        @db.VarChar(40)
   phone         String?        @db.VarChar(20)
+  avatarUrl     String?        @default("/avatar.png")
   birthDate     DateTime?
   subdivision   String?        @db.VarChar(80)
   rang          String?        @db.VarChar(80)
   serviceNumber Int?           @unique
+  accessLevel   AccessLevel    @default(USER)
   roleId        Int?
   logs          Log[]
   role          Role?          @relation(fields: [roleId], references: [id], onDelete: Restrict)
@@ -140,4 +147,24 @@ model Notification {
 
   @@index([userId])
   @@index([requestId])
+}
+
+model Document {
+  id           Int      @id @default(autoincrement())
+  filename     String   @unique
+  originalname String
+  mimetype     String
+  size         Int
+  url          String
+  createdAt    DateTime @default(now())
+}
+
+model Video {
+  id           Int      @id @default(autoincrement())
+  originalname String
+  filename     String   @unique
+  mimetype     String
+  size         Int
+  url          String
+  createdAt    DateTime @default(now())
 }

@@ -2,39 +2,36 @@ import { Injectable } from '@nestjs/common';
 import { AccessTokenService } from './strategies/access-token.service';
 import { RefreshTokenService } from './strategies/refresh-token.service';
 import { PrismaService } from '../prisma/prisma.service';
+import { AccessLevel } from '../auth/enums/user-role.enum';
+
+interface GenerateTokensParams {
+  userId: number;
+  email: string;
+  isVerified?: boolean;
+  rememberMe: boolean;
+  accessLevel: AccessLevel;
+}
 
 @Injectable()
 export class TokenService {
   constructor(
-    private accessTokenService: AccessTokenService,
-    private refreshTokenService: RefreshTokenService,
-    private prisma: PrismaService,
+    private readonly accessTokenService: AccessTokenService,
+    private readonly refreshTokenService: RefreshTokenService,
+    private readonly prisma: PrismaService,
   ) {}
 
-  async generateTokens(userId: number, email: string, rememberMe: boolean) {
-    const accessToken = await this.accessTokenService.sign(userId, email);
-    const refreshToken = await this.refreshTokenService.sign(
-      userId,
-      email,
-      rememberMe,
+  async generateTokens(payload: GenerateTokensParams) {
+    const accessToken = await this.accessTokenService.sign(
+      payload.userId,
+      payload.email,
+      payload.accessLevel,
     );
-
-    await this.prisma.accessToken.create({
-      data: {
-        token: accessToken,
-        userId,
-        expiresAt: new Date(Date.now() + 15 * 60 * 1000),
-      },
-    });
-
-    await this.prisma.refreshToken.create({
-      data: {
-        token: refreshToken,
-        userId,
-        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-      },
-    });
-
+    const refreshToken = await this.refreshTokenService.sign(
+      payload.userId,
+      payload.email,
+      payload.rememberMe,
+      payload.accessLevel,
+    );
     return { accessToken, refreshToken };
   }
 

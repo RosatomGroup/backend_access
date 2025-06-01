@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { AccessLevel } from '../../auth/enums/user-role.enum';
 
 @Injectable()
 export class AccessTokenService {
@@ -9,9 +10,9 @@ export class AccessTokenService {
     private configService: ConfigService,
   ) {}
 
-  async sign(userId: number, email: string) {
+  async sign(userId: number, email: string, accessLevel: AccessLevel) {
     return this.jwtService.signAsync(
-      { userId, email },
+      { userId, email, accessLevel },
       {
         secret: this.configService.get<string>('JWT_ACCESS_SECRET'),
         expiresIn:

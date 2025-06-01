@@ -2,7 +2,6 @@ import {
   RequestStatus as PrismaRequestStatus,
   RequestType as PrismaRequestType,
 } from '@prisma/client';
-
 import { IsEmail, IsEnum, IsInt, IsString } from 'class-validator';
 
 export enum RequestType {
@@ -76,4 +75,5 @@ export class RoleDto {
   id: number;
   name: string;
   description: string;
+  resourceId: number;
 }
