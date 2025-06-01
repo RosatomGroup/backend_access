@@ -12,7 +12,7 @@ import { Readable } from 'stream';
 @Injectable()
 export class S3Service {
   private s3Client: S3Client;
-  readonly bucketName = process.env.YANDEX_BUCKET_NAME || 'твой-бакет';
+  readonly bucketName = process.env.YANDEX_BUCKET_NAME || '';
 
   constructor() {
     this.s3Client = new S3Client({

@@ -3,6 +3,7 @@ import {
   Body,
   Controller,
   Delete,
+  ForbiddenException,
   Get,
   NotFoundException,
   Param,
@@ -20,6 +21,8 @@ import * as multer from 'multer';
 import { S3Service } from '../documents/s3.service';
 import { Readable } from 'stream';
 import { GetObjectCommandOutput } from '@aws-sdk/client-s3';
+import { CurrentUser } from './../auth/decorators/current-user.decorator';
+import { JwtPayload } from './../auth/interfaces/jwt-payload.interface';
 
 @Controller('videos')
 export class VideosController {
@@ -44,7 +47,13 @@ export class VideosController {
   async uploadVideo(
     @UploadedFile() file: Express.Multer.File,
     @Req() req: Request,
+    @CurrentUser() user: JwtPayload,
   ) {
+    if (user.accessLevel !== 'ADMIN') {
+      throw new ForbiddenException(
+        'Только администратор может загружать файлы',
+      );
+    }
     if (!file.buffer) throw new BadRequestException('Файл не загружен');
 
     const key = `${Date.now()}_${file.originalname.replace(/\s+/g, '_')}`;
@@ -107,7 +116,13 @@ export class VideosController {
   }
 
   @Delete(':filename')
-  async deleteVideo(@Param('filename') filename: string) {
+  async deleteVideo(
+    @Param('filename') filename: string,
+    @CurrentUser() user: JwtPayload,
+  ) {
+    if (user.accessLevel !== 'ADMIN') {
+      throw new ForbiddenException('Нет прав на удаление файла');
+    }
     return this.videosService.deleteVideo(filename);
   }
 
@@ -115,7 +130,11 @@ export class VideosController {
   async renameVideo(
     @Param('filename') filename: string,
     @Body('newName') newName: string,
+    @CurrentUser() user: JwtPayload,
   ) {
+    if (user.accessLevel !== 'ADMIN') {
+      throw new ForbiddenException('Нет прав на удаление файла');
+    }
     if (!newName.trim()) {
       throw new BadRequestException('Новое имя не может быть пустым');
     }
