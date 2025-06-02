@@ -116,7 +116,7 @@ model User {
   surname       String?        @db.VarChar(40)
   middleName    String?        @db.VarChar(40)
   phone         String?        @db.VarChar(20)
-  avatarUrl     String?        @default("/avatar.png")
+  avatarUrl     String?        @default("/images/avatar.png")
   birthDate     DateTime?
   subdivision   String?        @db.VarChar(80)
   rang          String?        @db.VarChar(80)
