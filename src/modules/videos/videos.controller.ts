@@ -12,6 +12,7 @@ import {
   Req,
   Res,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -23,6 +24,7 @@ import { Readable } from 'stream';
 import { GetObjectCommandOutput } from '@aws-sdk/client-s3';
 import { CurrentUser } from './../auth/decorators/current-user.decorator';
 import { JwtPayload } from './../auth/interfaces/jwt-payload.interface';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @Controller('videos')
 export class VideosController {
@@ -30,7 +32,7 @@ export class VideosController {
     private readonly videosService: VideosService,
     private readonly s3Service: S3Service,
   ) {}
-
+  @UseGuards(JwtAuthGuard)
   @Post('upload')
   @UseInterceptors(
     FileInterceptor('file', {
@@ -115,6 +117,7 @@ export class VideosController {
     // return videos;
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':filename')
   async deleteVideo(
     @Param('filename') filename: string,
@@ -126,6 +129,7 @@ export class VideosController {
     return this.videosService.deleteVideo(filename);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':filename/rename')
   async renameVideo(
     @Param('filename') filename: string,

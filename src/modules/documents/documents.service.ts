@@ -21,19 +21,14 @@ export class DocumentsService {
     const filePath = path.join(this.uploadDir, filename);
     try {
       await this.s3Service.deleteFile(filename);
-    } catch (err) {
-      console.error('Ошибка при удалении файла из файловой системы:', err);
-    }
-
-    try {
       await this.prisma.document.delete({
         where: { filename },
       });
+      return { success: true, message: 'Файл успешно удален' };
     } catch (err) {
-      console.error('Ошибка при удалении записи из базы:', err);
+      console.error('Ошибка при удалении файла из файловой системы:', err);
+      throw new Error('Failed to delete file');
     }
-
-    return { success: true, message: 'Файл успешно удален' };
   }
 
   async createDocument(data: {
@@ -43,9 +38,17 @@ export class DocumentsService {
     size: number;
     url: string;
   }) {
-    return this.prisma.document.create({
-      data,
-    });
+    try {
+      return this.prisma.document.create({
+        data: {
+          ...data,
+          url: this.generateFileUrl(data.filename),
+        },
+      });
+    } catch (error) {
+      console.error('Create document error:', error);
+      throw new Error('Failed to create document record');
+    }
   }
   async renameDocument(filename: string, newName: string) {
     const fileRecord = await this.findFileRecordByFilename(filename);
@@ -89,5 +92,9 @@ export class DocumentsService {
         url: fileRecord.url,
       },
     });
+  }
+
+  private generateFileUrl(filename: string): string {
+    return `https://${this.s3Service.bucketName}.storage.yandexcloud.net/${filename}`;
   }
 }

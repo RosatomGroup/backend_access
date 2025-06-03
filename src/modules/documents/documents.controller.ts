@@ -21,6 +21,8 @@ import * as multer from 'multer';
 import { S3Service } from './s3.service';
 import { CurrentUser } from './../auth/decorators/current-user.decorator';
 import { JwtPayload } from './../auth/interfaces/jwt-payload.interface';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @Controller('documents')
 export class DocumentsController {
@@ -28,7 +30,7 @@ export class DocumentsController {
     private readonly documentsService: DocumentsService,
     private readonly s3Service: S3Service,
   ) {}
-
+  @UseGuards(JwtAuthGuard)
   @Post('upload')
   @UseInterceptors(
     FileInterceptor('file', {
@@ -97,7 +99,7 @@ export class DocumentsController {
       url: `${req.protocol}://${req.get('host')}/documents/${file.filename}`,
     }));
   }
-
+  @UseGuards(JwtAuthGuard)
   @Delete(':filename')
   async deleteFile(
     @Param('filename') filename: string,
@@ -108,6 +110,7 @@ export class DocumentsController {
     }
     return this.documentsService.deleteFile(filename);
   }
+  @UseGuards(JwtAuthGuard)
   @Patch(':filename/rename')
   async renameDocument(
     @Param('filename') filename: string,
