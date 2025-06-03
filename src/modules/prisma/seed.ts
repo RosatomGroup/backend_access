@@ -3,7 +3,7 @@ import { PrismaService } from './prisma.service';
 const prisma = new PrismaService();
 
 async function main() {
-  // Очистка данных (опционально, для повторных запусков)
+  // Очистка данных
   await prisma.notification.deleteMany();
   await prisma.log.deleteMany();
   await prisma.request.deleteMany();
@@ -24,7 +24,7 @@ async function main() {
       name: 'Admin',
       surname: 'User',
       accessLevel: 'ADMIN',
-      avatarUrl: '/avatar.png',
+      avatarUrl: '/images/avatar.png',
       subdivision: 'IT Department',
       rang: 'Senior',
       serviceNumber: 1001,
@@ -39,7 +39,7 @@ async function main() {
       surname: 'Doe',
       middleName: 'Alexandrovich',
       accessLevel: 'USER',
-      avatarUrl: '/avatar.png',
+      avatarUrl: '/images/avatar.png',
       subdivision: 'Finance',
       rang: 'Junior',
       serviceNumber: 1002,
@@ -54,15 +54,46 @@ async function main() {
       surname: 'Doe',
       middleName: 'Borisovna',
       accessLevel: 'USER',
-      avatarUrl: '/avatar.png',
+      avatarUrl: '/images/avatar.png',
       subdivision: 'HR',
       rang: 'Middle',
       serviceNumber: 1003,
     },
   });
 
+  // Дополнительные пользователи
+  const user3 = await prisma.user.create({
+    data: {
+      email: 'user3@example.com',
+      password: '$2b$10$Mszg8mjxwX28d1heSmH5zeNUID.ymjlrgDgv2tOsPc.1K5G66FxA.',
+      name: 'Ivan',
+      surname: 'Petrov',
+      middleName: 'Sergeevich',
+      accessLevel: 'USER',
+      avatarUrl: '/avatar2.png',
+      subdivision: 'Legal',
+      rang: 'Middle',
+      serviceNumber: 1004,
+    },
+  });
+
+  const user4 = await prisma.user.create({
+    data: {
+      email: 'user4@example.com',
+      password: '$2b$10$Mszg8mjxwX28d1heSmH5zeNUID.ymjlrgDgv2tOsPc.1K5G66FxA.',
+      name: 'Olga',
+      surname: 'Sidorova',
+      middleName: 'Petrovna',
+      accessLevel: 'USER',
+      avatarUrl: '/avatar3.png',
+      subdivision: 'IT Department',
+      rang: 'Senior',
+      serviceNumber: 1005,
+    },
+  });
+
   // Ресурсы
-  const resources = await prisma.resource.createMany({
+  await prisma.resource.createMany({
     data: [
       {
         name: 'СУ ИТ',
@@ -124,6 +155,19 @@ async function main() {
         link: 'https://mail.example.com',
         owner: 'Администратор системы',
       },
+      // Дополнительные ресурсы
+      {
+        name: 'BI-платформа',
+        description: 'Система аналитики',
+        link: 'https://bi.example.com',
+        owner: 'Администратор BI',
+      },
+      {
+        name: 'Портал обучения',
+        description: 'Платформа для корпоративного обучения',
+        link: 'https://edu.example.com',
+        owner: 'Администратор обучения',
+      },
     ],
   });
 
@@ -131,281 +175,58 @@ async function main() {
   const allResources = await prisma.resource.findMany();
   const suIt = allResources.find((r) => r.name === 'СУ ИТ')!;
   const eosdo = allResources.find((r) => r.name === 'ЕОСДО 2.0')!;
-  const digitalScience = allResources.find(
-    (r) => r.name === 'КЦС «Цифровая наука»',
-  )!;
+  const digitalScience = allResources.find((r) => r.name === 'КЦС «Цифровая наука»')!;
   const sirius = allResources.find((r) => r.name === 'ИС Сириус')!;
   const record = allResources.find((r) => r.name === 'Рекорд 2.0')!;
   const mlk = allResources.find((r) => r.name === 'МЛК')!;
   const vdnm = allResources.find((r) => r.name === 'ИС ВДНМ')!;
   const skd = allResources.find((r) => r.name === 'ИС СКД (REP900)')!;
   const assistant = allResources.find((r) => r.name === 'Цифровой ассистент')!;
-  const mail = allResources.find(
-    (r) => r.name === 'Защищенная корпоративная почтовая система (ЗКПС)',
-  )!;
+  const mail = allResources.find((r) => r.name === 'Защищенная корпоративная почтовая система (ЗКПС)')!;
+  const bi = allResources.find((r) => r.name === 'BI-платформа')!;
+  const edu = allResources.find((r) => r.name === 'Портал обучения')!;
 
-  // Создаём роли для каждого ресурса (пример для первого ресурса, остальные аналогично)
+  // Роли (добавьте еще из roles.json при необходимости)
   await prisma.role.createMany({
     data: [
       // СУ ИТ
-      {
-        name: 'Администратор СУ ИТ',
-        description: 'Полный доступ ко всем функциям системы',
-        resourceId: suIt.id,
-      },
-      {
-        name: 'Аудитор СУ ИТ',
-        description: 'Просмотр объектов в режиме только чтение',
-        resourceId: suIt.id,
-      },
-      {
-        name: 'Оператор СУ ИТ',
-        description: 'Выполнение стандартных операций',
-        resourceId: suIt.id,
-      },
-      {
-        name: 'Аналитик СУ ИТ',
-        description: 'Анализ данных и генерация отчетов',
-        resourceId: suIt.id,
-      },
-      {
-        name: 'Техподдержка СУ ИТ',
-        description: 'Решение технических проблем пользователей',
-        resourceId: suIt.id,
-      },
+      { name: 'Администратор СУ ИТ', description: 'Полный доступ ко всем функциям системы', resourceId: suIt.id },
+      { name: 'Аудитор СУ ИТ', description: 'Просмотр объектов в режиме только чтение', resourceId: suIt.id },
+      { name: 'Оператор СУ ИТ', description: 'Выполнение стандартных операций', resourceId: suIt.id },
+      // BI-платформа
+      { name: 'BI-аналитик', description: 'Анализ данных', resourceId: bi.id },
+      // Портал обучения
+      { name: 'Обучающийся', description: 'Доступ к материалам', resourceId: edu.id },
       // ЕОСДО 2.0
-      {
-        name: 'Администратор ЕОСДО 2.0',
-        description: 'Технологическая роль для настройки системы',
-        resourceId: eosdo.id,
-      },
-      {
-        name: 'Архивариус ЕОСДО 2.0',
-        description: 'Управление документами и архивами',
-        resourceId: eosdo.id,
-      },
-      {
-        name: 'Бухгалтер ЕОСДО 2.0',
-        description: 'Работа с финансовыми документами',
-        resourceId: eosdo.id,
-      },
-      {
-        name: 'Делопроизводитель ЕОСДО 2.0',
-        description: 'Обработка входящих/исходящих документов',
-        resourceId: eosdo.id,
-      },
-      {
-        name: 'Руководитель ЕОСДО 2.0',
-        description: 'Согласование и подписание документов',
-        resourceId: eosdo.id,
-      },
+      { name: 'Архивариус ЕОСДО 2.0', description: 'Управление документами и архивами', resourceId: eosdo.id },
       // КЦС «Цифровая наука»
+      { name: 'Администратор КЦС «Цифровая наука»', description: 'Полный доступ ко всем модулям системы', resourceId: digitalScience.id },
+      // ... (добавьте остальные роли по аналогии)
+    ],
+  });
+
+  // Пример добавления нескольких ролей из roles.json (ручная вставка для примера)
+  await prisma.role.createMany({
+    data: [
       {
-        name: 'Администратор КЦС «Цифровая наука»',
-        description: 'Полный доступ ко всем модулям системы',
-        resourceId: digitalScience.id,
+        name: 'Админ отраслевого провайдера Корп_Академия редактирование (EDU - Обучение )',
+        description: 'Администратор отраслевого провайдера с доступом на редактирование, с зоной ответственности на АНО Корпоративная академия',
+        resourceId: record.id,
       },
       {
-        name: 'Администратор базы НИОКР КЦС ЦН',
-        description: 'Управление записями дивизионов и организаций',
+        name: 'Администратор АБЭ',
+        description: 'Доступ к записям всех экспертов и экспертиз.',
         resourceId: digitalScience.id,
       },
-      {
-        name: 'Администратор МАО КЦС ЦН',
-        description: 'Управление полномочиями и объектами',
-        resourceId: digitalScience.id,
-      },
-      {
-        name: 'Исследователь КЦС ЦН',
-        description: 'Доступ к исследовательским инструментами',
-        resourceId: digitalScience.id,
-      },
-      {
-        name: 'Аналитик данных КЦС ЦН',
-        description: 'Анализ научных данных',
-        resourceId: digitalScience.id,
-      },
-      // ИС Сириус
       {
         name: 'Администратор инвестиционной стратегии ИС Сириус',
         description: 'Управление инвестиционными стратегиями',
         resourceId: sirius.id,
       },
       {
-        name: 'Владелец направления ИС Сириус',
-        description: 'Формулирование вызовов/проблем направления',
-        resourceId: sirius.id,
-      },
-      {
-        name: 'Директор проекта ИС Сириус',
-        description: 'Руководство проектами',
-        resourceId: sirius.id,
-      },
-      {
-        name: 'Аналитик портфеля ИС Сириус',
-        description: 'Анализ проектов портфеля',
-        resourceId: sirius.id,
-      },
-      {
-        name: 'Администратор базы знаний ИС Сириус',
-        description: 'Управление базой извлеченных уроков',
-        resourceId: sirius.id,
-      },
-      // Рекорд 2.0
-      {
-        name: 'Администратор РекордИН 2.0',
-        description: 'Полный доступ к системе',
-        resourceId: record.id,
-      },
-      {
-        name: 'HR-специалист Рекорд 2.0',
-        description: 'Управление кадровыми процессами',
-        resourceId: record.id,
-      },
-      {
-        name: 'Менеджер по подбору Рекорд 2.0',
-        description: 'Работа с кандидатами',
-        resourceId: record.id,
-      },
-      {
-        name: 'Сотрудник Рекорд 2.0',
-        description: 'Доступ к личному кабинету',
-        resourceId: record.id,
-      },
-      {
-        name: 'Отчетный аналитик Рекорд 2.0',
-        description: 'Формирование кадровых отчетов',
-        resourceId: record.id,
-      },
-      // МЛК
-      {
-        name: 'Администратор МЛК',
-        description: 'Управление мессенджером',
-        resourceId: mlk.id,
-      },
-      {
-        name: 'Модератор МЛК',
-        description: 'Контроль контента',
-        resourceId: mlk.id,
-      },
-      {
-        name: 'Разработчик интеграций МЛК',
-        description: 'Настройка интеграций с другими системами',
-        resourceId: mlk.id,
-      },
-      {
-        name: 'Аналитик коммуникаций МЛК',
-        description: 'Анализ активности пользователей',
-        resourceId: mlk.id,
-      },
-      {
-        name: 'Пользователь премиум МЛК',
-        description: 'Расширенные функции общения',
-        resourceId: mlk.id,
-      },
-      // ИС ВДНМ
-      {
-        name: 'Администратор витрины ИС ВДНМ',
-        description: 'Управление витриной данных',
-        resourceId: vdnm.id,
-      },
-      {
-        name: 'Бизнес-аналитик ИС ВДНМ',
-        description: 'Работа с бизнес-отчетами',
-        resourceId: vdnm.id,
-      },
-      {
-        name: 'Контролер данных ИС ВДНМ',
-        description: 'Проверка качества данных',
-        resourceId: vdnm.id,
-      },
-      {
-        name: 'Дата-инженер ИС ВДНМ',
-        description: 'Настройка ETL-процессов',
-        resourceId: vdnm.id,
-      },
-      {
-        name: 'Потребитель отчетов ИС ВДНМ',
-        description: 'Просмотр готовых отчетов',
-        resourceId: vdnm.id,
-      },
-      // ИС СКД (REP900)
-      {
-        name: 'Администратор договоров ИС СКД',
-        description: 'Управление реестром договоров',
-        resourceId: skd.id,
-      },
-      {
-        name: 'Юрист ИС СКД',
-        description: 'Проверка юридических аспектов',
-        resourceId: skd.id,
-      },
-      {
-        name: 'Менеджер контрактов ИС СКД',
-        description: 'Контроль исполнения договоров',
-        resourceId: skd.id,
-      },
-      {
-        name: 'Финансовый контролер ИС СКД',
-        description: 'Проверка финансовых условий',
-        resourceId: skd.id,
-      },
-      {
-        name: 'Архивариус договоров ИС СКД',
-        description: 'Ведение архива договоров',
-        resourceId: skd.id,
-      },
-      // Цифровой ассистент
-      {
-        name: 'Диалог-дизайнер Цифровой ассистент',
-        description: 'Настройка сценариев диалогов',
-        resourceId: assistant.id,
-      },
-      {
-        name: 'Лингвист Цифровой ассистент',
-        description: 'Обучение NLP-моделей',
-        resourceId: assistant.id,
-      },
-      {
-        name: 'Аналитик диалогов Цифровой ассистент',
-        description: 'Анализ эффективности диалогов',
-        resourceId: assistant.id,
-      },
-      {
-        name: 'Инженер знаний Цифровой ассистент',
-        description: 'Наполнение базы знаний',
-        resourceId: assistant.id,
-      },
-      {
-        name: 'Тестировщик Цифровой ассистент',
-        description: 'Проверка работы ассистента',
-        resourceId: assistant.id,
-      },
-      // ЗКПС
-      {
-        name: 'Администратор почты ЗКПС',
-        description: 'Управление почтовой системой',
-        resourceId: mail.id,
-      },
-      {
-        name: 'Специалист безопасности ЗКПС',
-        description: 'Контроль защищенной переписки',
-        resourceId: mail.id,
-      },
-      {
-        name: 'Технический специалист ЗКПС',
-        description: 'Поддержка почтовых клиентов',
-        resourceId: mail.id,
-      },
-      {
-        name: 'Аналитик угроз ЗКПС',
-        description: 'Мониторинг подозрительной активности',
-        resourceId: mail.id,
-      },
-      {
-        name: 'Пользователь с расширенными правами ЗКПС',
-        description: 'Дополнительные функции почты',
-        resourceId: mail.id,
+        name: 'Аудитор',
+        description: 'Возможность просмотра объектов внутри системы в режиме "только чтение"',
+        resourceId: suIt.id,
       },
     ],
   });
@@ -453,11 +274,25 @@ async function main() {
       status: 'APPROVED',
       requestType: 'GRANT_ACCESS',
       resourceId: digitalScience.id,
-      roleId: roles.find(
-        (r) => r.name === 'Администратор КЦС «Цифровая наука»',
-      )!.id,
+      roleId: roles.find((r) => r.name === 'Администратор КЦС «Цифровая наука»')!.id,
       createDate: new Date(),
       users: { connect: [{ id: admin.id }] },
+    },
+  });
+
+  // Новые заявки
+  const request4 = await prisma.request.create({
+    data: {
+      name: 'Ivan',
+      surname: 'Petrov',
+      middleName: 'Sergeevich',
+      email: 'user3@example.com',
+      status: 'PENDING',
+      requestType: 'GRANT_ACCESS',
+      resourceId: record.id,
+      roleId: roles.find((r) => r.name === 'Админ отраслевого провайдера Корп_Академия редактирование (EDU - Обучение )')!.id,
+      createDate: new Date(),
+      users: { connect: [{ id: user3.id }] },
     },
   });
 
@@ -467,16 +302,11 @@ async function main() {
       { accountId: user1.id, action: 'LOGIN', actionTime: new Date() },
       { accountId: user2.id, action: 'LOGIN', actionTime: new Date() },
       { accountId: admin.id, action: 'LOGIN', actionTime: new Date() },
-      {
-        accountId: user1.id,
-        action: 'REQUEST_CREATED',
-        actionTime: new Date(),
-      },
-      {
-        accountId: user2.id,
-        action: 'REQUEST_STATUS_UPDATED',
-        actionTime: new Date(),
-      },
+      { accountId: user1.id, action: 'REQUEST_CREATED', actionTime: new Date() },
+      { accountId: user2.id, action: 'REQUEST_STATUS_UPDATED', actionTime: new Date() },
+      { accountId: user3.id, action: 'LOGIN', actionTime: new Date() },
+      { accountId: user3.id, action: 'REQUEST_CREATED', actionTime: new Date() },
+      { accountId: user4.id, action: 'LOGIN', actionTime: new Date() },
     ],
   });
 
@@ -488,11 +318,24 @@ async function main() {
       expiresAt: new Date(Date.now() + 3600 * 1000),
     },
   });
-
   await prisma.refreshToken.create({
     data: {
       token: 'refresh_token_1',
       userId: user1.id,
+      expiresAt: new Date(Date.now() + 7 * 24 * 3600 * 1000),
+    },
+  });
+  await prisma.accessToken.create({
+    data: {
+      token: 'access_token_2',
+      userId: user3.id,
+      expiresAt: new Date(Date.now() + 3600 * 1000),
+    },
+  });
+  await prisma.refreshToken.create({
+    data: {
+      token: 'refresh_token_2',
+      userId: user3.id,
       expiresAt: new Date(Date.now() + 7 * 24 * 3600 * 1000),
     },
   });
@@ -504,8 +347,7 @@ async function main() {
         userId: user1.id,
         requestId: request1.id,
         status: 'PENDING',
-        message:
-          'Ваша заявка на предоставление доступа находится на рассмотрении',
+        message: 'Ваша заявка на предоставление доступа находится на рассмотрении',
         read: false,
       },
       {
@@ -520,6 +362,13 @@ async function main() {
         requestId: request3.id,
         status: 'APPROVED',
         message: 'Ваша заявка на предоставление доступа одобрена',
+        read: false,
+      },
+      {
+        userId: user3.id,
+        requestId: request4.id,
+        status: 'PENDING',
+        message: 'Ваша заявка на предоставление доступа находится на рассмотрении',
         read: false,
       },
     ],
@@ -549,6 +398,13 @@ async function main() {
         size: 139132,
         url: 'https://rosatomaccess.storage.yandexcloud.net/Описание_полного_функционала_системы.pdf_1748686832133.pdf',
       },
+      {
+        filename: 'Политика_безопасности.pdf',
+        originalname: 'Политика безопасности.pdf',
+        mimetype: 'application/pdf',
+        size: 123456,
+        url: 'https://storage.example.com/Политика_безопасности.pdf',
+      },
     ],
   });
 
@@ -560,6 +416,15 @@ async function main() {
       mimetype: 'video/quicktime',
       size: 20678624,
       url: 'https://rosatomaccess.storage.yandexcloud.net/Обзор_функционала_системы.mov_1748687338308.mov',
+    },
+  });
+  await prisma.video.create({
+    data: {
+      originalname: 'Инструкция по безопасности.mp4',
+      filename: 'Инструкция_по_безопасности.mp4',
+      mimetype: 'video/mp4',
+      size: 10485760,
+      url: 'https://storage.example.com/Инструкция_по_безопасности.mp4',
     },
   });
 }

@@ -15,11 +15,10 @@ import { AccessLevel } from '../auth/enums/user-role.enum';
 
 @Controller('management')
 @UseGuards(JwtAuthGuard, RolesGuard)
-@Roles(AccessLevel.ADMIN)
-@Controller('management')
 export class ManagementController {
   constructor(private readonly managementService: ManagementService) {}
 
+  @Roles(AccessLevel.ADMIN)
   @Get('users')
   async getUsers(): Promise<ManagementUserDto[]> {
     return this.managementService.getUsers();
@@ -30,6 +29,7 @@ export class ManagementController {
     return this.managementService.getRoles();
   }
 
+  @Roles(AccessLevel.ADMIN)
   @Post('roles')
   async addRole(
     @Body() createRoleDto: CreateRoleDto,
@@ -37,6 +37,7 @@ export class ManagementController {
     return this.managementService.addRole(createRoleDto);
   }
 
+  @Roles(AccessLevel.ADMIN)
   @Post('resources')
   async createResource(
     @Body() createResourceDto: CreateResourceDto,

@@ -28,6 +28,11 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     if (err || !user) {
       throw err || new UnauthorizedException('Invalid token');
     }
+
+    if (!user.accessLevel) {
+      throw new UnauthorizedException('User role not defined');
+    }
+
     return user;
   }
 }

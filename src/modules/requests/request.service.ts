@@ -1,5 +1,6 @@
 import {
   ConflictException,
+  ForbiddenException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -15,10 +16,15 @@ import {
   UpdateRequestStatusDto,
 } from './request.dto';
 import { Prisma } from '@prisma/client';
+import { JwtPayload } from '../auth/interfaces/jwt-payload.interface';
+import { NotificationsService } from '../notifications/notifications.service';
 
 @Injectable()
 export class RequestService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly notificationsService: NotificationsService,
+  ) {}
 
   async create(createRequestDto: CreateRequestDto): Promise<RequestDto> {
     try {
@@ -82,7 +88,13 @@ export class RequestService {
           users: true,
         },
       });
-
+      if (createRequestDto.userId) {
+        await this.notificationsService.create({
+          userId: createRequestDto.userId,
+          requestId: createdRequest.id,
+          status: RequestStatus.PENDING,
+        });
+      }
       if (createRequestDto.userId) {
         await this.prisma.log.create({
           data: {
@@ -107,10 +119,11 @@ export class RequestService {
     }
   }
 
-  async findAll(isAdmin: boolean, userId?: number): Promise<RequestDto[]> {
-    const whereCondition: Prisma.RequestWhereInput = isAdmin 
-      ? {} 
-      : { users: { some: { id: userId } } };
+  async findAll(currentUser: JwtPayload): Promise<RequestDto[]> {
+    const whereCondition: Prisma.RequestWhereInput =
+      currentUser.accessLevel === 'ADMIN'
+        ? {}
+        : { users: { some: { id: currentUser.userId } } };
 
     const requests = await this.prisma.request.findMany({
       where: whereCondition,
@@ -122,7 +135,43 @@ export class RequestService {
       orderBy: { createDate: 'desc' },
     });
 
-    return requests.map(request => this.mapToRequestDto(request));
+    return requests.map((request) => this.mapToRequestDto(request));
+  }
+
+  async findAccesses(userId?: number): Promise<RequestDto[]> {
+    if (!userId) {
+      throw new Error('User ID is required');
+    }
+
+    try {
+      const user = await this.prisma.user.findUniqueOrThrow({
+        where: { id: userId },
+        select: { email: true },
+      });
+
+      const requests = await this.prisma.request.findMany({
+        where: {
+          users: {
+            some: {
+              id: userId,
+              email: user.email,
+            },
+          },
+          status: 'APPROVED',
+        },
+        include: {
+          resource: true,
+          role: true,
+          users: true,
+        },
+        orderBy: { createDate: 'desc' },
+      });
+
+      return requests.map((request) => this.mapToRequestDto(request));
+    } catch (error) {
+      console.error('Error fetching user accesses:', error);
+      throw new Error('Failed to fetch user accesses');
+    }
   }
 
   async findOneById(id: number): Promise<RequestDto> {
@@ -143,7 +192,13 @@ export class RequestService {
   async updateStatus(
     id: number,
     updateStatusDto: UpdateRequestStatusDto,
+    currentUser: JwtPayload,
   ): Promise<RequestDto> {
+    if (currentUser.accessLevel !== 'ADMIN') {
+      throw new ForbiddenException(
+        'Только администратор может менять статусы заявок',
+      );
+    }
     try {
       const updatedRequest = await this.prisma.request.update({
         where: { id },

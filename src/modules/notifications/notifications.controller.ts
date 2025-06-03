@@ -14,6 +14,7 @@ export class NotificationsController {
   async getNotifications(
     @Query('email') email: string,
   ): Promise<Notification[]> {
+    console.log(email);
     return this.notificationsService.getByEmail(email);
   }
 

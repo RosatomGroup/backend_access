@@ -19,6 +19,7 @@ import { ManagementModule } from './modules/management/management.module';
 import { RequestModule } from './modules/requests/request.module';
 import * as cookieParser from 'cookie-parser';
 import { HttpLoggerMiddleware } from './modules/middleware/HttpLoggerMiddleware';
+import { NotificationsModule } from './modules/notifications/notifications.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { HttpLoggerMiddleware } from './modules/middleware/HttpLoggerMiddleware'
     }),
     DocumentsModule,
     VideosModule,
+    NotificationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
