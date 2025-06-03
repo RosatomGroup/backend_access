@@ -529,11 +529,11 @@ async function main() {
   await prisma.document.createMany({
     data: [
       {
-        filename: 'Инструкция_администратора.pdf_1748686367671.pdf',
+        filename: 'Инструкция_администратора.pdf_1748959677000.pdf',
         originalname: 'Инструкция администратора.pdf',
         mimetype: 'application/pdf',
         size: 142568,
-        url: 'https://rosatomaccess.storage.yandexcloud.net/Инструкция_администратора.pdf_1748686367671.pdf',
+        url: 'https://rosatomaccess.storage.yandexcloud.net/Инструкция_администратора.pdf_1748959677000.pdf',
       },
       {
         filename: 'Инструкция_пользователя.pdf_1748686736911.pdf',
