@@ -2,7 +2,7 @@ import {
   RequestStatus as PrismaRequestStatus,
   RequestType as PrismaRequestType,
 } from '@prisma/client';
-import { IsEmail, IsEnum, IsInt, IsString } from 'class-validator';
+import { IsEmail, IsEnum, IsInt, IsOptional, IsString } from 'class-validator';
 
 export enum RequestType {
   GRANT_ACCESS = 'GRANT_ACCESS',
@@ -22,8 +22,9 @@ export class CreateRequestDto {
   @IsString()
   surname: string;
 
+  @IsOptional()
   @IsString()
-  middleName: string;
+  middleName?: string;
 
   @IsEmail()
   email: string;
@@ -50,7 +51,7 @@ export class RequestDto {
   id: number;
   name: string;
   surname: string;
-  middleName: string;
+  middleName?: string | undefined;
   email: string;
   requestType: PrismaRequestType;
   status: PrismaRequestStatus;

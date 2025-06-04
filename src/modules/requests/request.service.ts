@@ -69,7 +69,7 @@ export class RequestService {
         data: {
           name: createRequestDto.name,
           surname: createRequestDto.surname,
-          middleName: createRequestDto.middleName,
+          middleName: createRequestDto.middleName ?? '',
           email: createRequestDto.email,
           requestType: createRequestDto.requestType,
           status: RequestStatus.PENDING,

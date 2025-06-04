@@ -175,14 +175,18 @@ async function main() {
   const allResources = await prisma.resource.findMany();
   const suIt = allResources.find((r) => r.name === 'СУ ИТ')!;
   const eosdo = allResources.find((r) => r.name === 'ЕОСДО 2.0')!;
-  const digitalScience = allResources.find((r) => r.name === 'КЦС «Цифровая наука»')!;
+  const digitalScience = allResources.find(
+    (r) => r.name === 'КЦС «Цифровая наука»',
+  )!;
   const sirius = allResources.find((r) => r.name === 'ИС Сириус')!;
   const record = allResources.find((r) => r.name === 'Рекорд 2.0')!;
   const mlk = allResources.find((r) => r.name === 'МЛК')!;
   const vdnm = allResources.find((r) => r.name === 'ИС ВДНМ')!;
   const skd = allResources.find((r) => r.name === 'ИС СКД (REP900)')!;
   const assistant = allResources.find((r) => r.name === 'Цифровой ассистент')!;
-  const mail = allResources.find((r) => r.name === 'Защищенная корпоративная почтовая система (ЗКПС)')!;
+  const mail = allResources.find(
+    (r) => r.name === 'Защищенная корпоративная почтовая система (ЗКПС)',
+  )!;
   const bi = allResources.find((r) => r.name === 'BI-платформа')!;
   const edu = allResources.find((r) => r.name === 'Портал обучения')!;
 
@@ -190,17 +194,41 @@ async function main() {
   await prisma.role.createMany({
     data: [
       // СУ ИТ
-      { name: 'Администратор СУ ИТ', description: 'Полный доступ ко всем функциям системы', resourceId: suIt.id },
-      { name: 'Аудитор СУ ИТ', description: 'Просмотр объектов в режиме только чтение', resourceId: suIt.id },
-      { name: 'Оператор СУ ИТ', description: 'Выполнение стандартных операций', resourceId: suIt.id },
+      {
+        name: 'Администратор СУ ИТ',
+        description: 'Полный доступ ко всем функциям системы',
+        resourceId: suIt.id,
+      },
+      {
+        name: 'Аудитор СУ ИТ',
+        description: 'Просмотр объектов в режиме только чтение',
+        resourceId: suIt.id,
+      },
+      {
+        name: 'Оператор СУ ИТ',
+        description: 'Выполнение стандартных операций',
+        resourceId: suIt.id,
+      },
       // BI-платформа
       { name: 'BI-аналитик', description: 'Анализ данных', resourceId: bi.id },
       // Портал обучения
-      { name: 'Обучающийся', description: 'Доступ к материалам', resourceId: edu.id },
+      {
+        name: 'Обучающийся',
+        description: 'Доступ к материалам',
+        resourceId: edu.id,
+      },
       // ЕОСДО 2.0
-      { name: 'Архивариус ЕОСДО 2.0', description: 'Управление документами и архивами', resourceId: eosdo.id },
+      {
+        name: 'Архивариус ЕОСДО 2.0',
+        description: 'Управление документами и архивами',
+        resourceId: eosdo.id,
+      },
       // КЦС «Цифровая наука»
-      { name: 'Администратор КЦС «Цифровая наука»', description: 'Полный доступ ко всем модулям системы', resourceId: digitalScience.id },
+      {
+        name: 'Администратор КЦС «Цифровая наука»',
+        description: 'Полный доступ ко всем модулям системы',
+        resourceId: digitalScience.id,
+      },
       // ... (добавьте остальные роли по аналогии)
     ],
   });
@@ -210,7 +238,8 @@ async function main() {
     data: [
       {
         name: 'Админ отраслевого провайдера Корп_Академия редактирование (EDU - Обучение )',
-        description: 'Администратор отраслевого провайдера с доступом на редактирование, с зоной ответственности на АНО Корпоративная академия',
+        description:
+          'Администратор отраслевого провайдера с доступом на редактирование, с зоной ответственности на АНО Корпоративная академия',
         resourceId: record.id,
       },
       {
@@ -225,7 +254,8 @@ async function main() {
       },
       {
         name: 'Аудитор',
-        description: 'Возможность просмотра объектов внутри системы в режиме "только чтение"',
+        description:
+          'Возможность просмотра объектов внутри системы в режиме "только чтение"',
         resourceId: suIt.id,
       },
     ],
@@ -274,7 +304,9 @@ async function main() {
       status: 'APPROVED',
       requestType: 'GRANT_ACCESS',
       resourceId: digitalScience.id,
-      roleId: roles.find((r) => r.name === 'Администратор КЦС «Цифровая наука»')!.id,
+      roleId: roles.find(
+        (r) => r.name === 'Администратор КЦС «Цифровая наука»',
+      )!.id,
       createDate: new Date(),
       users: { connect: [{ id: admin.id }] },
     },
@@ -290,7 +322,11 @@ async function main() {
       status: 'PENDING',
       requestType: 'GRANT_ACCESS',
       resourceId: record.id,
-      roleId: roles.find((r) => r.name === 'Админ отраслевого провайдера Корп_Академия редактирование (EDU - Обучение )')!.id,
+      roleId: roles.find(
+        (r) =>
+          r.name ===
+          'Админ отраслевого провайдера Корп_Академия редактирование (EDU - Обучение )',
+      )!.id,
       createDate: new Date(),
       users: { connect: [{ id: user3.id }] },
     },
@@ -302,10 +338,22 @@ async function main() {
       { accountId: user1.id, action: 'LOGIN', actionTime: new Date() },
       { accountId: user2.id, action: 'LOGIN', actionTime: new Date() },
       { accountId: admin.id, action: 'LOGIN', actionTime: new Date() },
-      { accountId: user1.id, action: 'REQUEST_CREATED', actionTime: new Date() },
-      { accountId: user2.id, action: 'REQUEST_STATUS_UPDATED', actionTime: new Date() },
+      {
+        accountId: user1.id,
+        action: 'REQUEST_CREATED',
+        actionTime: new Date(),
+      },
+      {
+        accountId: user2.id,
+        action: 'REQUEST_STATUS_UPDATED',
+        actionTime: new Date(),
+      },
       { accountId: user3.id, action: 'LOGIN', actionTime: new Date() },
-      { accountId: user3.id, action: 'REQUEST_CREATED', actionTime: new Date() },
+      {
+        accountId: user3.id,
+        action: 'REQUEST_CREATED',
+        actionTime: new Date(),
+      },
       { accountId: user4.id, action: 'LOGIN', actionTime: new Date() },
     ],
   });
@@ -347,7 +395,8 @@ async function main() {
         userId: user1.id,
         requestId: request1.id,
         status: 'PENDING',
-        message: 'Ваша заявка на предоставление доступа находится на рассмотрении',
+        message:
+          'Ваша заявка на предоставление доступа находится на рассмотрении',
         read: false,
       },
       {
@@ -368,7 +417,8 @@ async function main() {
         userId: user3.id,
         requestId: request4.id,
         status: 'PENDING',
-        message: 'Ваша заявка на предоставление доступа находится на рассмотрении',
+        message:
+          'Ваша заявка на предоставление доступа находится на рассмотрении',
         read: false,
       },
     ],
@@ -412,10 +462,10 @@ async function main() {
   await prisma.video.create({
     data: {
       originalname: 'Обзор функционала системы.mov',
-      filename: 'Обзор_функционала_системы.mov_1748687338308.mov',
+      filename: 'Обзор функционала системы.mov',
       mimetype: 'video/quicktime',
       size: 20678624,
-      url: 'https://rosatomaccess.storage.yandexcloud.net/Обзор_функционала_системы.mov_1748687338308.mov',
+      url: 'https://storage.yandexcloud.net/rosatomaccess/%D0%9E%D0%B1%D0%B7%D0%BE%D1%80%20%D1%84%D1%83%D0%BD%D0%BA%D1%86%D0%B8%D0%BE%D0%BD%D0%B0%D0%BB%D0%B0%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D1%8B.mov',
     },
   });
   await prisma.video.create({
