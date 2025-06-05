@@ -19,6 +19,8 @@ import {
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { JwtPayload } from '../auth/interfaces/jwt-payload.interface';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { AccessLevel } from '../auth/enums/user-role.enum';
 
 @Controller('requests')
 @UseGuards(JwtAuthGuard)
@@ -67,12 +69,19 @@ export class RequestController {
   }
 
   @Patch(':id/status')
+  @Roles(AccessLevel.ADMIN)
   async updateRequestStatus(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateStatusDto: UpdateRequestStatusDto,
-    @CurrentUser() user: JwtPayload,
   ): Promise<RequestDto> {
-    return this.requestService.updateStatus(id, updateStatusDto, user);
+    return this.requestService.updateStatus(id, updateStatusDto);
+  }
+
+  @Get(':id/status')
+  async getRequestStatus(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<RequestDto> {
+    return this.requestService.getStatus(id);
   }
 
   @Get('resources')

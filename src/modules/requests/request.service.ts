@@ -1,6 +1,5 @@
 import {
   ConflictException,
-  ForbiddenException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -192,21 +191,24 @@ export class RequestService {
   async updateStatus(
     id: number,
     updateStatusDto: UpdateRequestStatusDto,
-    currentUser: JwtPayload,
   ): Promise<RequestDto> {
-    if (currentUser.accessLevel !== 'ADMIN') {
-      throw new ForbiddenException(
-        'Только администратор может менять статусы заявок',
-      );
-    }
     try {
+      const existingRequest = await this.prisma.request.findUnique({
+        where: { id },
+        include: {
+          resource: true,
+          role: true,
+          users: true,
+        },
+      });
+      if (!existingRequest) {
+        throw new NotFoundException(`Request with id ${id} not found`);
+      }
+
       const updatedRequest = await this.prisma.request.update({
         where: { id },
         data: {
           status: updateStatusDto.status,
-          ...(updateStatusDto.status === RequestStatus.APPROVED && {
-            completeDate: new Date(),
-          }),
         },
         include: {
           resource: true,
@@ -216,22 +218,24 @@ export class RequestService {
       });
 
       if (updatedRequest.users.length > 0) {
-        await this.prisma.log.create({
-          data: {
-            accountId: updatedRequest.users[0].id,
-            action: 'REQUEST_STATUS_UPDATED',
-            actionTime: new Date(),
-          },
-        });
+        try {
+          await this.prisma.log.create({
+            data: {
+              accountId: updatedRequest.users[0].id,
+              action: 'REQUEST_STATUS_UPDATED',
+              actionTime: new Date(),
+            },
+          });
+        } catch (logError) {
+          console.error('Ошибка при создании лога:', logError);
+        }
       }
 
       return this.mapToRequestDto(updatedRequest);
     } catch (error) {
-      if (error.code === 'P2025') {
-        throw new NotFoundException(`Request with ID ${id} not found`);
-      }
+      console.error('Ошибка при обновлении статуса заявки:', error);
       throw new InternalServerErrorException(
-        `Failed to update request status: ${error.message}`,
+        'Ошибка при обновлении статуса заявки',
       );
     }
   }
@@ -278,7 +282,6 @@ export class RequestService {
       requestType: request.requestType,
       status: request.status,
       createDate: request.createDate,
-      // completeDate: request.completeDate || undefined,
       resourceId: request.resourceId,
       roleId: request.roleId,
       resourceName: request.resource?.name || '',
@@ -286,5 +289,22 @@ export class RequestService {
       resourceLink: request.resource?.link || undefined,
       userId: request.users?.[0]?.id,
     };
+  }
+
+  async getStatus(id: number): Promise<RequestDto> {
+    const request = await this.prisma.request.findUnique({
+      where: { id },
+      include: {
+        resource: true,
+        role: true,
+        users: true,
+      },
+    });
+
+    if (!request) {
+      throw new NotFoundException(`Request with id ${id} not found`);
+    }
+
+    return this.mapToRequestDto(request);
   }
 }
