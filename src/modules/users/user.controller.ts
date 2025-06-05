@@ -23,7 +23,7 @@ export class UserController {
 
   @Put(':id')
   async updateUser(
-    @CurrentUser() currentUser: { id: number; accessLevel: AccessLevel },
+    @CurrentUser() currentUser: { userId: number; accessLevel: AccessLevel },
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUserDto: UpdateUserDto,
   ) {
@@ -33,7 +33,7 @@ export class UserController {
 
   @Patch(':id')
   async partialUpdateUser(
-    @CurrentUser() currentUser: { id: number; accessLevel: AccessLevel },
+    @CurrentUser() currentUser: { userId: number; accessLevel: AccessLevel },
     @Param('id', ParseIntPipe) targetUserId: number,
     @Body() updateUserDto: UpdateUserDto,
   ) {
@@ -46,21 +46,37 @@ export class UserController {
     return this.userService.getAllUsers();
   }
 
+  @Get(':id')
+  async getUserById(@Param('id', ParseIntPipe) id: number) {
+    return this.userService.getUserById(id);
+  }
+
+
   private validateUserAccess(
-    currentUser: { id: number; accessLevel: AccessLevel },
+    currentUser: { userId: number; accessLevel: AccessLevel },
     targetUserId: number,
   ) {
+    console.log('validateUserAccess:');
+    console.log('  currentUser:', currentUser);
+    console.log('  targetUserId:', targetUserId);
+
     if (!currentUser) {
+      console.log('  ❌ User not authenticated');
       throw new UnauthorizedException('User not authenticated');
     }
 
     if (
-      currentUser.id !== targetUserId &&
+      currentUser.userId !== targetUserId &&
       currentUser.accessLevel !== AccessLevel.ADMIN
     ) {
+      console.log(
+        `  ❌ Access denied: currentUser.userId=${currentUser.userId}, currentUser.accessLevel=${currentUser.accessLevel}, targetUserId=${targetUserId}`,
+      );
       throw new ForbiddenException(
         'Вы не админ! Вам доступно обновление только вашего профиля',
       );
     }
+
+    console.log('  ✅ Access granted');
   }
 }

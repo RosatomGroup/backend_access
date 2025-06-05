@@ -39,6 +39,14 @@ export class UserService {
     return { id: user.id, email: user.email, accessLevel: user.accessLevel };
   }
 
+  async getUserById(id: number): Promise<ReplyUpdateUserDto> {
+    const userClient = await this.prisma.user.findUnique({ where: { id } });
+    if (!userClient) {
+      throw new NotFoundException(`Request with ID ${id} not found`);
+    }
+    return this.mapToReplyDto(userClient);
+  }
+
   async updateUser(
     id: number,
     updateUserDto: UpdateUserDto,
@@ -71,7 +79,7 @@ export class UserService {
 
   async partialUpdateUser(
     id: number,
-    updateUserDto: Partial<UpdateUserDto>,
+    updateUserDto: UpdateUserDto,
   ): Promise<ReplyUpdateUserDto> {
     if (!id || isNaN(id)) {
       throw new BadRequestException('Неверный ID пользователя');
