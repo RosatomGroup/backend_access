@@ -217,6 +217,20 @@ export class RequestService {
         },
       });
 
+      const user = await this.prisma.user.findUnique({
+        where: { email: updatedRequest.email },
+        select: { id: true },
+      });
+      const userId = user?.id;
+
+      if (userId) {
+        await this.notificationsService.create({
+          userId: userId,
+          requestId: id,
+          status: updateStatusDto.status,
+        });
+      }
+
       if (updatedRequest.users.length > 0) {
         try {
           await this.prisma.log.create({
@@ -306,5 +320,13 @@ export class RequestService {
     }
 
     return this.mapToRequestDto(request);
+  }
+
+  async getUserIdByEmail(email: string): Promise<number | null> {
+    const user = await this.prisma.user.findUnique({
+      where: { email },
+      select: { id: true },
+    });
+    return user?.id ?? null;
   }
 }
